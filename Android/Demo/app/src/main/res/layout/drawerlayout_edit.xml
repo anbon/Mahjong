@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+
+                android:id="@+id/custom_bar">
+
+
+    <TextView
+        android:id="@+id/titletextView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:background="#61cee5"
+        android:gravity="center"
+        android:text="編輯標題"
+        android:textSize="24sp"
+        android:textColor="#ffffff"/>
+    
+	<TextView android:background="@drawable/back"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="20dp"
+        android:scaleType="centerInside"
+        android:id="@+id/back"
+        android:layout_alignParentLeft="true"
+        />
+
+    <ImageView
+        android:src="@drawable/edit"
+        android:layout_width="65dp"
+        android:layout_height="match_parent"
+        android:adjustViewBounds="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dp"
+        android:scaleType="centerInside"
+        android:padding="10dp"
+        android:id="@+id/edit"
+        android:layout_alignParentRight="true"
+        />
+</RelativeLayout>

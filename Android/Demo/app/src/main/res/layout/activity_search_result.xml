@@ -1,0 +1,45 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    tools:context="com.example.demo.SearchResultActivity">
+
+    <RelativeLayout
+        android:id="@+id/result_item"
+        android:layout_width="match_parent"
+        android:layout_height="84dp"
+        android:background="#f7f7f7"
+        >
+        <ImageView
+            android:id="@+id/result_photo"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/about_photo_default"/>
+        <TextView
+            android:id="@+id/result_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/result_photo"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:textColor="#3f3f3f"
+            android:textSize="18sp"
+            android:text="小朋友"
+            />
+        <TextView
+            android:id="@+id/result_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="20dp"
+            android:textSize="16sp"
+            android:text="0.0km"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

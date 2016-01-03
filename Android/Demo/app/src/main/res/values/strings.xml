@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">Demo</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_nearby">附近</string>
+    <string name="title_search">搜尋</string>
+    <string name="title_about">我</string>
+    <string name="alertdialog_timeouttitle">連線逾時！</string>
+    <string name="alertdialog_timeoutcontent">請確認網路狀態。</string>
+    <string name="alertdialog_fixtitle">伺服器維修中！</string>
+    <string name="alertdialog_fixcontent">請稍後再試。</string>
+    <string name="alertdialog_exception">發生錯誤！</string>
+    <string name="login_btn_register">註冊</string>
+    <string name="login_btn_confirm">確認</string>
+    <string name="login_btn_cancel">取消</string>
+    <string name="title_activity_start">StartActivity</string>
+    <string name="title_activity_create_room">create_room</string>
+    <string name="title_activity_member">MemberActivity</string>
+    <string name="title_activity_search_result">SearchResultActivity</string>
+    <string name="title_activity_room_info">RoomInfoActivity</string>
+    <string name="age">年齡</string>
+    <string name="xlistview_header_hint_normal">下拉螢幕更新</string>
+    <string name="xlistview_header_hint_ready">鬆開開始更新</string>
+    <string name="xlistview_header_hint_loading">正在更新…</string>
+    <string name="xlistview_header_last_time">上次更新時間：</string>
+    <string name="xlistview_footer_hint_normal">查看更多</string>
+    <string name="xlistview_footer_hint_ready">鬆開查看更多</string>
+</resources>

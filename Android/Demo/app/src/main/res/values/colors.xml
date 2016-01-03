@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="background_window">#FFE5E5E5</color>
+    <color name="lighter_gray">#FFc1c1c1</color>
+    <color name="gray">#FFc1c1c1</color>
+    <color name="text_gray">#FF808080</color>
+    <color name="lighter_frame">#FFdcdcda</color>
+    <color name="lighter_background">#FFefefef</color>
+    <color name="darker_gray">#FF212121</color>
+    <color name="black_t">#A0000000</color>
+    <color name="pink">#FFDD6B80</color>
+    <color name="darker_pink">#FFC14965</color>
+    <color name="blue">#FF31A3D7</color>
+    <color name="green">#FF6bbb69</color>
+    <color name="ios_blue">#FF0753ce</color>
+    <color name="button_darker_pink">#FFa2273b</color>
+    <color name="red">#FFe80b2a</color>
+    <color name="darker_red">#FFa72635</color>
+	<color name="darker_green">#FF3e7e41</color>
+</resources>

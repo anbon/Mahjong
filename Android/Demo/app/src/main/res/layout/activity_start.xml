@@ -1,0 +1,73 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="50dp"
+    android:paddingBottom="40dp"
+    android:background="#61cee5"
+    tools:context="com.example.demo.StartActivity">
+
+    <ImageView
+        android:layout_width="@dimen/start_logo_size"
+        android:layout_height="@dimen/start_logo_size"
+        android:layout_marginTop="@dimen/start_margin_bottom"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/majong_logo"/>
+    <LinearLayout
+        android:id="@+id/start_btn_container"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/start_button_height"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/start_margin_bottom">
+        <View
+            android:layout_weight="0.3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent">
+        </View>
+        <ImageView
+            android:id="@+id/start_register"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:background="@drawable/start_register"
+            android:clickable="true"
+            android:onClick="goRegisterActivity"
+            />
+        <View
+            android:layout_weight="1.5"
+            android:layout_width="0dp"
+            android:layout_height="match_parent">
+
+        </View>
+        <ImageView
+            android:id="@+id/start_signin"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:adjustViewBounds="true"
+            android:background="@drawable/start_signin"
+            android:clickable="true"
+            android:onClick="goSignInActivity"
+            />
+        <View
+            android:layout_weight="0.3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent">
+
+        </View>
+    </LinearLayout>
+    <TextView
+        android:id="@+id/start_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/start_btn_container"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/start_margin_bottom"
+        android:textSize="@dimen/start_title_size"
+        android:textColor="#FFFFFF"
+        android:textStyle="normal"
+        android:text="M a h j o n g"/>
+
+</RelativeLayout>
