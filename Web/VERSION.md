@@ -1,3 +1,3 @@
 # Mahjong WEB
 
-Version
+Version 1.0
