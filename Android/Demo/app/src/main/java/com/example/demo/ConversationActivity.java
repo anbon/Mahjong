@@ -40,6 +40,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import io.rong.imkit.CustomizeMessageItemProvider;
 import io.rong.imkit.RongIM;
@@ -52,7 +54,7 @@ import io.rong.imlib.model.Conversation;
 public class ConversationActivity extends FragmentActivity  {
 
     private static final String TAG = ConversationActivity.class.getSimpleName();
-    public static boolean isAlive,isGuest;
+    public static boolean isAlive, isGuest;
     App myapi;
     App.LoadingDialog dialog;
     Thread mythread;
@@ -71,6 +73,7 @@ public class ConversationActivity extends FragmentActivity  {
     public void onDestroy() {
         isAlive = false;
         handler.removeCallbacks(runnable);
+        dhandler.removeCallbacks(drunnable);
         super.onDestroy();
     }
     @Override
@@ -88,6 +91,12 @@ public class ConversationActivity extends FragmentActivity  {
     public void onResume() {
         super.onResume();
         Log.v(TAG, "onResume");
+        dhandler.removeCallbacks(drunnable);
+        dhandler.postDelayed(drunnable, 1000);
+        if(!isGuest) {
+            handler.removeCallbacks(runnable);
+            handler.postDelayed(runnable, 2500);
+        }
         //
         /*handler.removeCallbacks(runnable);
         handler.postDelayed(runnable, 2000);*/
@@ -141,8 +150,7 @@ public class ConversationActivity extends FragmentActivity  {
         Intent intent = getIntent();
 
         getIntentDate(intent);
-        if(!isGuest)
-            handler.postDelayed(runnable, 2000);
+
 
     }
 
@@ -190,6 +198,7 @@ public class ConversationActivity extends FragmentActivity  {
     }
 
     private Handler handler = new Handler( );
+    private Handler dhandler = new Handler( );
     private Runnable runnable = new Runnable( ) {
         public void run ( ) {
 
@@ -219,6 +228,53 @@ public class ConversationActivity extends FragmentActivity  {
             } catch (JSONException e) {
                 //dialog.close();
                 handler.postDelayed(this, 5000);
+            }
+
+        }
+    };
+    private Runnable drunnable = new Runnable( ) {
+        public void run ( ) {
+
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair("user_ID", pref.getString("num", "")));
+            params.add(new BasicNameValuePair("room_ID", mTargetId));
+            String result = myapi.postMethod_getCode(ConversationActivity.this, App.destiny, params);
+            Log.v("destiny", result);
+            try {
+                final JSONObject o = new JSONObject(result);
+                if (o.getString("status").equals("0")) {
+                    if (ConversationActivity.this.hasWindowFocus())
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    dialog = myapi.new LoadingDialog(ConversationActivity.this, o.getString("message") , false);
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                TimerTask t= new TimerTask() {
+                                    public void run() {
+                                        if(!ConversationActivity.this.isFinishing())
+                                            finish();
+                                        cancel();
+                                    }
+                                };
+                                Timer timer = new Timer();
+                                timer.schedule(t, 5000); //5秒後關閉
+                                if(!ConversationActivity.this.isFinishing())
+                                    dialog.execute();
+                            }
+                        });
+                    else{
+                        dhandler.postDelayed(this, 3000);
+                    }
+                } else if (o.getString("status").equals("1")) {
+                    dhandler.postDelayed(this, 3000);
+                }
+            } catch (JSONException e) {
+                //dialog.close();
+                dhandler.postDelayed(this, 3000);
             }
 
         }
@@ -321,16 +377,17 @@ public class ConversationActivity extends FragmentActivity  {
                 params.add(new BasicNameValuePair("user_ID", Unum));
                 params.add(new BasicNameValuePair("room_ID", mTargetId));
                 String result = myapi.postMethod_getCode(ConversationActivity.this, App.VerifyChat, params);
+                dialog.close();
                 Log.v("VerifyChat", result);
                 try {
                     final JSONObject o = new JSONObject(result);
                     if(o.getString("status").equals("1")){
-                        dialog.close();
+
                         handler.postDelayed(runnable, 2000);
                         alertd.cancel();
                         alertd.dismiss();
                     }else if(o.getString("status").equals("0")){
-                        dialog.close();
+
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -348,7 +405,8 @@ public class ConversationActivity extends FragmentActivity  {
                     dialog.close();
                     e.printStackTrace();
                 }
-
+                if (!ConversationActivity.this.isFinishing())
+                    dialog.close();
             }
         });
         mythread.start();

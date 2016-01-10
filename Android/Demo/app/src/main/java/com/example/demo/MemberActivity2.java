@@ -188,8 +188,8 @@ public class MemberActivity2 extends Activity {
 
         if(pref.getString("num","").equals(bundle.getString("Unum"))){
             //TODO 看到自己時
-            //member_ban.setVisibility(View.GONE);
-            //member_comment.setVisibility(View.GONE);
+            member_ban.setVisibility(View.GONE);
+            member_comment_btn.setVisibility(View.GONE);
         }
 
         /*ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
@@ -230,8 +230,8 @@ public class MemberActivity2 extends Activity {
 
                     @Override
                     public void onClick(View v) {
-                        Log.v("onClick", "api");
-
+                        //Log.v("onClick", "api");
+                        addblock();
                         cancelBlockPanel(v);
 
                     }
@@ -249,6 +249,59 @@ public class MemberActivity2 extends Activity {
             block_btn_2.setVisibility(View.INVISIBLE);
         }
 
+    }
+    private void addblock(){
+        mythread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        dialog = myapi.new LoadingDialog(MemberActivity2.this, "請稍後...", false);
+                        dialog.execute();
+                    }
+                });
+                List<NameValuePair> params = new ArrayList<NameValuePair>();
+                params.add(new BasicNameValuePair("user_ID", pref.getString("num","")));
+                params.add(new BasicNameValuePair("block_ID", bundle.getString("Unum")));
+                String result = myapi.postMethod_getCode(MemberActivity2.this, App.blockadd, params);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        dialog.close();
+                    }
+                });
+                try {
+                    final JSONObject o = new JSONObject(result);
+                    Log.v(TAG, result);
+                    if(o.getString("status").equals("1")){
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                dialog = myapi.new LoadingDialog(MemberActivity2.this, "成功加入黑名單！", true);
+                                dialog.execute();
+
+                            }
+                        });
+                    }else if(o.getString("status").equals("0")){
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                dialog = myapi.new LoadingDialog(MemberActivity2.this, "加入黑名單失敗！", true);
+                                dialog.execute();
+                            }
+                        });
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    //finish();
+                }
+
+            }
+        });
+        mythread.start();
     }
     Dialog alertd;
     RatingBar dialog_ratingBar;

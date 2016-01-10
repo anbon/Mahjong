@@ -79,6 +79,7 @@ public class App extends Application {
     //http://www.anbon.tw//mj//assets//photo//21_2015_12_29_19_51_24.jpg
     public static final String Photo_Repository = "http:/www.anbon.tw/mj/assets/photo/";
     public static final String Domain = "http://www.anbon.tw/mj/index.php/";
+    public static final String register = Domain + "register";
     public static final String Verify = Domain + "verify";
     public static final String Search_User = Domain + "Search_User";
     public static final String Search_ID = Domain + "Search_ID";
@@ -94,8 +95,9 @@ public class App extends Application {
     public static final String upload = Domain + "User_Photo";
     public static final String User_Info = Domain + "User_Info";
     public static final String seed = Domain + "seed";
+    public static final String blockadd = Domain + "blockadd";
     public static final String chatamount = Domain + "chatamount";
-    public static final String UploadTest = "http://172.20.10.5:8080/" + "uploadfile.php";
+
     public int timeoutConnection = 5000;
     public int timeoutSocket = 4000;
     public boolean shutdown = true;
@@ -259,7 +261,7 @@ public class App extends Application {
     public String postMethod_getCode(Activity ctx, String strPostURL,
                                      List<NameValuePair> params) {
         shutdown = false;
-        if(strPostURL.equals(UploadTest)){
+        if(strPostURL.equals("")){
             timeoutSocket = 20000;
             timeoutConnection = 20000;
         }

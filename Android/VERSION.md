@@ -1,4 +1,4 @@
 # Mahjong Android
 
-Version 0.0.1 alpha
-20160110 Updated By x51811danny
+Version 0.0.2 alpha
+in 20160111 ,AM 12:21 Updated By x51811danny

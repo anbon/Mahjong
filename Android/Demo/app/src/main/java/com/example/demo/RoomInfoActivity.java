@@ -392,7 +392,7 @@ public class RoomInfoActivity extends Activity {
 
     }
     private void gotoMemberActivity2(String Unum, String Uname, String age, String gender, String rate, String photo, String level){
-        Intent i = new Intent(this , MemberActivity2.class);
+        Intent i = new Intent(this , MemberActivity3.class);
         Bundle b = new Bundle();
         b.putString("Unum",Unum);
         b.putString("Uname",Uname);
@@ -423,18 +423,21 @@ public class RoomInfoActivity extends Activity {
 
                 }else if(o.getString("status").equals("1")){
                     handler.removeCallbacks(runnable);
-                    enterRongChatRoom(); //進入Rong
+                    if(!RoomInfoActivity.this.isFinishing() && dialog.alertd.isShowing())
+                        enterRongChatRoom(); //進入Rong
                 }else if(o.getString("status").equals("2")){
                     handler.removeCallbacks(runnable);
-                    dialog.close();
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            dialog = myapi.new LoadingDialog(RoomInfoActivity.this, "請求被拒", true);
-                            if(!RoomInfoActivity.this.isFinishing())
-                                dialog.execute();
-                        }
-                    });
+                    if(dialog.alertd.isShowing()) {
+                        dialog.close();
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                dialog = myapi.new LoadingDialog(RoomInfoActivity.this, "請求被拒", true);
+                                if (!RoomInfoActivity.this.isFinishing())
+                                    dialog.execute();
+                            }
+                        });
+                    }
                 }
             } catch (JSONException e) {
                 dialog.close();
@@ -486,7 +489,8 @@ public class RoomInfoActivity extends Activity {
                             public void run() {
                                 dialog.close();
                                 dialog = myapi.new LoadingDialog(RoomInfoActivity.this, "等待回復", true);
-                                dialog.execute();
+                                if (!RoomInfoActivity.this.isFinishing())
+                                    dialog.execute();
                             }
                         });
                         handler.postDelayed(runnable, 1000);
@@ -495,6 +499,7 @@ public class RoomInfoActivity extends Activity {
                     dialog.close();
                     e.printStackTrace();
                 }
+
             }
         });
         mythread.start();

@@ -306,38 +306,47 @@ public class CreateRoomActivity extends Activity {
                     params.add(new BasicNameValuePair("rule", rule.getText().toString()));
                     String result = myapi.postMethod_getCode(CreateRoomActivity.this, App.Createchat, params);
                     Log.v(TAG, "result = " + result);
-                    JSONObject o;
-                    try {
-                        o = new JSONObject(result);
-                        room_id = o.getString("RoomNum");
-                        if (RongIM.getInstance() != null) {
-                            RongIM.getInstance().getRongIMClient().joinGroup(room_id, location.getText().toString(), new RongIMClient.OperationCallback() {
-
-                                @Override
-                                public void onSuccess() {
-                                    ConversationActivity.isGuest=false;
-                                    RongIM.getInstance().refreshUserInfoCache(new UserInfo(pref.getString("num","0"), pref.getString("name",""), Uri.parse(pref.getString("photo",""))));
-                                    //RongIM.getInstance().refreshGroupInfoCache(new Group(room_id, location.getText().toString(), Uri.parse("http://rongcloud-web.qiniudn.com/docs_demo_rongcloud_logo.png")));
-                                    RongIM.getInstance().startGroupChat(CreateRoomActivity.this, room_id, location.getText().toString());
-                                }
-
-                                @Override
-                                public void onError(RongIMClient.ErrorCode errorCode) {
-
-                                }
-                            });
-
-                            //RongIM.getInstance().startConversation(CreateRoomActivity.this, Conversation.ConversationType.CHATROOM, "9527", "這是測試");
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             dialog.close();
                         }
                     });
+                    JSONObject o;
+                    try {
+                        o = new JSONObject(result);
+                        if(o.getString("status").equals("1")) {
+                            room_id = o.getString("RoomNum");
+                            if (RongIM.getInstance() != null) {
+                                RongIM.getInstance().getRongIMClient().joinGroup(room_id, location.getText().toString(), new RongIMClient.OperationCallback() {
+
+                                    @Override
+                                    public void onSuccess() {
+                                        ConversationActivity.isGuest = false;
+                                        RongIM.getInstance().refreshUserInfoCache(new UserInfo(pref.getString("num", "0"), pref.getString("name", ""), Uri.parse(pref.getString("photo", ""))));
+                                        //RongIM.getInstance().refreshGroupInfoCache(new Group(room_id, location.getText().toString(), Uri.parse("http://rongcloud-web.qiniudn.com/docs_demo_rongcloud_logo.png")));
+                                        RongIM.getInstance().startGroupChat(CreateRoomActivity.this, room_id, location.getText().toString());
+                                    }
+
+                                    @Override
+                                    public void onError(RongIMClient.ErrorCode errorCode) {
+
+                                    }
+                                });
+                            }
+                        }else if(o.getString("status").equals("0")){
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    dialog = myapi.new LoadingDialog(CreateRoomActivity.this, "發生錯誤！", true);
+                                    dialog.execute();
+                                }
+                            });
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
 
                 }
             });

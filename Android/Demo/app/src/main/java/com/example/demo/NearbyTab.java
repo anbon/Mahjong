@@ -374,14 +374,7 @@ public class NearbyTab extends Fragment implements LocationListener,IXListViewLi
 
         }
     }
-    public Animation getAnimation()
-    {
-        Animation amt=new AlphaAnimation(0f,1.0f);
-        amt.setDuration(500);
-        amt.setFillAfter(true);
-        return amt;
 
-    }
 
     @Override
     public void onRefresh() {
@@ -491,6 +484,7 @@ public class NearbyTab extends Fragment implements LocationListener,IXListViewLi
                         b.putString("type",mList.get(position).gettype());
                         b.putString("cigarette",mList.get(position).getcigarette());
                         b.putString("users",mList.get(position).getusers());
+                        b.putString("rule",mList.get(position).getrule());
                         b.putString("dis",mList.get(position).getdistance());
 
 
@@ -550,6 +544,7 @@ public class NearbyTab extends Fragment implements LocationListener,IXListViewLi
         private String type="";
         private int need;
         private String cigarette="";
+        private String rule="";
         private String users="";
 
 
@@ -569,6 +564,7 @@ public class NearbyTab extends Fragment implements LocationListener,IXListViewLi
                 this.time = o.getString("time");
                 this.circle = o.getString("circle");
                 this.type = o.getString("type");
+                this.rule = o.getString("rule");
                 this.cigarette = o.getString("cigarette");
 
             } catch (JSONException e) {
@@ -612,6 +608,9 @@ public class NearbyTab extends Fragment implements LocationListener,IXListViewLi
         }
         public String getcigarette() {
             return cigarette;
+        }
+        public String getrule() {
+            return rule;
         }
         public String getusers() {
             return users;
