@@ -90,6 +90,8 @@ public class NearbyTab extends Fragment implements LocationListener,IXListViewLi
     private LocationManager lms;
     private Location location;
     private String bestProvider = LocationManager.GPS_PROVIDER;
+    App myapi;
+    App.LoadingDialog dialog;
     ProgressBar pb;
 
     SharedPreferences pref;
@@ -170,6 +172,7 @@ public class NearbyTab extends Fragment implements LocationListener,IXListViewLi
         pb.setVisibility(View.VISIBLE);
         ab = mActivity.getActionBar();
         ab.setDisplayShowCustomEnabled(true);
+        myapi = (App) this.getActivity().getApplicationContext();
         pref = mActivity.getSharedPreferences("Account", 0);
         View homeIcon = mActivity.findViewById(android.R.id.home);
         ((View) homeIcon.getParent()).setVisibility(View.GONE);
@@ -222,6 +225,15 @@ public class NearbyTab extends Fragment implements LocationListener,IXListViewLi
                 }
 
                 mAdapter.notifyDataSetChanged();
+            }else if(o.getString("status").equals("-1") && NearbyTab.this.isVisible()){
+                timer.cancel();
+                mActivity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        dialog = myapi.new LoadingDialog(NearbyTab.this.getActivity(), "伺服器發生錯誤！\n請下拉刷新重試 或 連繫客服。", true);
+                        dialog.execute();
+                    }
+                });
             }
 
         } catch (JSONException e) {
@@ -321,6 +333,8 @@ public class NearbyTab extends Fragment implements LocationListener,IXListViewLi
         Boolean st;
         protected void onPreExecute()
         {
+            if(mList.isEmpty())
+                pb.setVisibility(View.VISIBLE);
             //refresh=true;
         }
 
@@ -345,12 +359,15 @@ public class NearbyTab extends Fragment implements LocationListener,IXListViewLi
             Log.v("AsyncTaskGetMessage", "result : " + result);
             try {
                 JSONObject o = new JSONObject(result);
-                if(o.getString("status").equals("1")){
+                if(o.getString("status").equals("1") || o.getString("status").equals("-1")){
                     pref.edit().putString("nearby", result).apply();
-                    parseJSON(pref.getString("nearby", ""));
+                    parseJSON(result);
 
                 }
             } catch (JSONException e) {
+                if(NearbyTab.this.isVisible()){
+                    Toast.makeText(getActivity(),"網路連線狀態異常或不穩",Toast.LENGTH_LONG).show();
+                }
                 e.printStackTrace();
             }
             pb.setVisibility(View.INVISIBLE);
@@ -666,12 +683,13 @@ public class NearbyTab extends Fragment implements LocationListener,IXListViewLi
             if (httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                 String strRes = EntityUtils.toString(httpResponse.getEntity());
                 return strRes;
+            }else{
+                return "{\"status\":\"-1\"}";
             }
             // return executeRequest(post);
         } catch (ConnectTimeoutException cte) {
             // Took too long to connect to remote host
             Log.i("tag", "ConnectTimeoutException");
-
 
             cte.printStackTrace();
         } catch (SocketTimeoutException ste) {
@@ -682,8 +700,8 @@ public class NearbyTab extends Fragment implements LocationListener,IXListViewLi
             ste.printStackTrace();
         } catch (HttpHostConnectException e) {
             Log.i("tag", "HttpHostConnectException");
-
             e.printStackTrace();
+            return "{\"status\":\"-1\"}";
 
         } catch (UnknownHostException e) {
             Log.i("tag", "UnknownHostException");

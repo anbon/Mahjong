@@ -71,7 +71,7 @@ public class SearchResultActivity extends Activity {
 
                 Intent intent = new Intent(SearchResultActivity.this, MemberActivity.class);
                 intent.putExtras(bundle);
-                overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 startActivity(intent);
             }
         });

@@ -1,3 +1,3 @@
 # Mahjong Android
 
-Version 0.0.0 alpha
+Version 0.0.1 alpha

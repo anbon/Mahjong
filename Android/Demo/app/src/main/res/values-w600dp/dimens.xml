@@ -9,5 +9,6 @@
     <dimen name="start_title_size">38sp</dimen>
     <dimen name="start_logo_size">180dp</dimen>
     <dimen name="corner">22dp</dimen>
+    <dimen name="block_btn_margin">60dp</dimen>
 
 </resources>

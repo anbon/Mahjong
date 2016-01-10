@@ -80,7 +80,7 @@ public class NearbyService extends IntentService {
                         temp = postMethod_getCode(App.seed, params);
                         try {
                             JSONObject o = new JSONObject(temp);
-                            if(o.getString("status").equals("1"))
+                            if(o.getString("status").equals("1")||o.getString("status").equals("-1"))
                                 pref.edit().putString("nearby", temp).apply();
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -190,6 +190,8 @@ public class NearbyService extends IntentService {
             if (httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                 String strRes = EntityUtils.toString(httpResponse.getEntity());
                 return strRes;
+            }else{
+                return "{\"status\":\"-1\"}";
             }
             // return executeRequest(post);
         } catch (ConnectTimeoutException cte) {
@@ -208,7 +210,7 @@ public class NearbyService extends IntentService {
             Log.i("tag", "HttpHostConnectException");
 
             e.printStackTrace();
-
+            return "{\"status\":\"-1\"}";
         } catch (UnknownHostException e) {
             Log.i("tag", "UnknownHostException");
 

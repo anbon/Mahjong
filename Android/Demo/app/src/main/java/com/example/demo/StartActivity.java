@@ -32,7 +32,7 @@ public class StartActivity extends Activity {
     public void goSignInActivity(View v){
         Intent intent = new Intent();
         intent.setClass(this, SignInActivity.class);
-        overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         startActivity(intent);
     }
 

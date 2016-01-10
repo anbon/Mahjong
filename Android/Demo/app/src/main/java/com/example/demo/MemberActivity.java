@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.demo.util.RoundSquareTransform;
@@ -17,6 +18,7 @@ import com.squareup.picasso.Picasso;
 
 public class MemberActivity extends Activity {
     TextView titletextView, member_gender, member_nickname, member_age;
+    RelativeLayout member_comment_btn;
     View customView;
     Bundle bundle;
     ImageView member_photo;
@@ -37,7 +39,8 @@ public class MemberActivity extends Activity {
         bundle = getIntent().getExtras();
         LayoutInflater li = LayoutInflater.from(this);
         customView = li.inflate(R.layout.drawerlayout, null);
-
+        member_comment_btn = (RelativeLayout) findViewById(R.id.member_comment_btn);
+        member_comment_btn.setVisibility(View.GONE);
         titletextView = (TextView) customView.findViewById(R.id.titletextView);
         titletextView.setText(bundle.getString("name"));
         TextView back = (TextView) customView.findViewById(R.id.back);
@@ -64,8 +67,8 @@ public class MemberActivity extends Activity {
 
         ratingBar = (RatingBar) findViewById(R.id.ratingBar);
 
-        ratingBar.setRating(Float.valueOf(bundle.getString("rate","0")));
-        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+        ratingBar.setRating(Float.valueOf(bundle.getString("rate", "0")));
+        /*ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
 
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating,
@@ -74,7 +77,7 @@ public class MemberActivity extends Activity {
                     ratingBar.setRating(1.0f);
                 }
             }
-        });
+        });*/
         ratingBar.setIsIndicator(true);
     }
 

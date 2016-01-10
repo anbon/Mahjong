@@ -1,6 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ffffff"
     tools:context="com.example.demo.MemberActivity">
 
     <LinearLayout
@@ -58,7 +59,7 @@
                 android:layout_marginLeft="80dp"
                 android:textColor="#3f3f3f"
                 android:textSize="17sp"
-                android:text="男"/>
+                android:text=""/>
         </RelativeLayout>
         <RelativeLayout
             android:layout_width="match_parent"
@@ -81,7 +82,7 @@
                 android:layout_marginLeft="80dp"
                 android:textColor="#3f3f3f"
                 android:textSize="17sp"
-                android:text="哈哈哈"/>
+                android:text=""/>
         </RelativeLayout>
         <RelativeLayout
             android:layout_width="match_parent"
@@ -104,7 +105,7 @@
                 android:layout_marginLeft="80dp"
                 android:textColor="#3f3f3f"
                 android:textSize="17sp"
-                android:text="66"/>
+                android:text=""/>
         </RelativeLayout>
         <RelativeLayout
             android:layout_width="match_parent"
@@ -129,18 +130,78 @@
 
             <RatingBar
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="66dp"
                 android:id="@+id/ratingBar"
-                android:rating="1.2"
+                android:progressDrawable="@drawable/room_rating_bar"
+                android:rating="3.0"
                 android:isIndicator="false"
+                android:minHeight="36dip"
+                android:maxHeight="60dip"
+                style="?android:attr/ratingBarStyleSmall"
                 android:stepSize="1"
+                android:paddingTop="10dp"
                 android:layout_centerVertical="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
                 android:layout_marginLeft="20dp"
-                android:layout_marginStart="20dp" />
+                 />
+            <RelativeLayout
+                android:id="@+id/member_comment_btn"
+                android:layout_width="64dp"
+                android:layout_height="24dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="24dp"
+                android:background="@drawable/btn_blue_round_bg"
+                android:clickable="false">
+                <TextView
+                    android:id="@+id/member_comment"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#ffffff"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:text="評 論"
+                    android:textSize="14sp"/>
+            </RelativeLayout>
         </RelativeLayout>
 
     </LinearLayout>
+    <RelativeLayout
+        android:id="@+id/frame_block_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#88000000"
+        android:visibility="invisible"
+        android:clickable="true"
+        android:onClick="cancelBlockPanel">
+        <TextView
+            android:id="@+id/block_btn_1"
+            android:layout_width="match_parent"
+            android:layout_height="58dp"
+            android:background="@drawable/block_btn"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="25dp"
+            android:layout_marginLeft="@dimen/block_btn_margin"
+            android:layout_marginRight="@dimen/block_btn_margin"
+            android:gravity="center"
+            android:padding="12dp"
+            android:textColor="#35acc5"
+            android:textSize="24dp"
+            android:text="取  消"/>
+        <TextView
+            android:id="@+id/block_btn_2"
+            android:layout_width="match_parent"
+            android:layout_height="58dp"
+            android:background="@drawable/block_btn"
+            android:layout_above="@+id/block_btn_1"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="@dimen/block_btn_margin"
+            android:layout_marginRight="@dimen/block_btn_margin"
+            android:gravity="center"
+            android:padding="12dp"
+            android:textColor="#35acc5"
+            android:textSize="24dp"
+            android:text="新稱黑名單"/>
+    </RelativeLayout>
 
 </RelativeLayout>

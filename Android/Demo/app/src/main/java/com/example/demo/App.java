@@ -8,9 +8,11 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -79,9 +81,16 @@ public class App extends Application {
     public static final String Domain = "http://www.anbon.tw/mj/index.php/";
     public static final String Verify = Domain + "verify";
     public static final String Search_User = Domain + "Search_User";
+    public static final String Search_ID = Domain + "Search_ID";
     public static final String Getmember = Domain + "getmember";
     public static final String Createchat = Domain + "createchat";
+    public static final String Rating = Domain + "rating";
     public static final String getChatroom = Domain + "getChatroom";
+    public static final String destiny = Domain + "destiny";
+    public static final String applyChat = Domain + "applyChat";
+    public static final String waitChat = Domain + "waitChat";
+    public static final String SearchChat = Domain + "SearchChat";
+    public static final String VerifyChat = Domain + "VerifyChat";
     public static final String upload = Domain + "User_Photo";
     public static final String User_Info = Domain + "User_Info";
     public static final String seed = Domain + "seed";
@@ -168,6 +177,15 @@ public class App extends Application {
         }
         return null;
     }
+    private void gotoMemberActivity2(String Unum, String Uname){
+        Intent i = new Intent(this , MemberActivity2.class);
+        Bundle b = new Bundle();
+        b.putString("Unum",Unum);
+        b.putString("Uname",Uname);
+        i.putExtras(b);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(i);
+    }
     class MyConversationBehaviorListener implements RongIM.ConversationBehaviorListener{
 
         /**
@@ -180,7 +198,9 @@ public class App extends Application {
          */
         @Override
         public boolean onUserPortraitClick(Context context, Conversation.ConversationType conversationType, UserInfo userInfo) {
-            return false;
+            Log.v("onUserPortraitClick", "Unum = " + userInfo.getUserId() + ", Uname = " + userInfo.getUserId());
+            gotoMemberActivity2(userInfo.getUserId(), userInfo.getUserId());
+            return true;
         }
 
         /**

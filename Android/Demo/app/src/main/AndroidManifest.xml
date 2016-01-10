@@ -104,8 +104,23 @@
             android:exported="false" >
         </service>
 
+        <service
+            android:name=".NearbyService"
+            android:exported="false" >
+        </service>
+
         <activity
             android:name=".MemberActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/title_activity_member" >
+        </activity>
+        <activity
+            android:name=".MemberActivity2"
+            android:screenOrientation="portrait"
+            android:label="@string/title_activity_member" >
+        </activity>
+        <activity
+            android:name=".MemberActivity3"
             android:screenOrientation="portrait"
             android:label="@string/title_activity_member" >
         </activity>

@@ -295,9 +295,9 @@ public class CreateRoomActivity extends Activity {
                     List<NameValuePair> params = new ArrayList<NameValuePair>();
                     params.add(new BasicNameValuePair("userid", pref.getString("num", "")));
 
-                    params.add(new BasicNameValuePair("base", base.getText().toString()));
-                    params.add(new BasicNameValuePair("unit", unit.getText().toString()));
-                    params.add(new BasicNameValuePair("circle", circle.getText().toString()));
+                    params.add(new BasicNameValuePair("base", Integer.parseInt(base.getText().toString())+""));
+                    params.add(new BasicNameValuePair("unit", Integer.parseInt(unit.getText().toString())+""));
+                    params.add(new BasicNameValuePair("circle", Integer.parseInt(circle.getText().toString())+""));
                     params.add(new BasicNameValuePair("time", create_time.getText().toString()));
                     params.add(new BasicNameValuePair("name", location.getText().toString()));
                     params.add(new BasicNameValuePair("people", create_ppl_in_need.getText().toString()));
@@ -315,6 +315,7 @@ public class CreateRoomActivity extends Activity {
 
                                 @Override
                                 public void onSuccess() {
+                                    ConversationActivity.isGuest=false;
                                     RongIM.getInstance().refreshUserInfoCache(new UserInfo(pref.getString("num","0"), pref.getString("name",""), Uri.parse(pref.getString("photo",""))));
                                     //RongIM.getInstance().refreshGroupInfoCache(new Group(room_id, location.getText().toString(), Uri.parse("http://rongcloud-web.qiniudn.com/docs_demo_rongcloud_logo.png")));
                                     RongIM.getInstance().startGroupChat(CreateRoomActivity.this, room_id, location.getText().toString());
@@ -338,23 +339,11 @@ public class CreateRoomActivity extends Activity {
                         }
                     });
 
-
-
-
-
                 }
             });
             mythread.start();
 
         }
-    }
-    public static String toUtf8(String str) {
-        try {
-            return new String(str.getBytes("UTF-8"),"UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return str;
     }
     private boolean CheckIsComplete() {
         if(base.getText().toString().isEmpty() ||
@@ -373,6 +362,16 @@ public class CreateRoomActivity extends Activity {
                 }
             });
             return false;
+        }else if(Integer.parseInt(base.getText().toString())==0 ||
+                Integer.parseInt(unit.getText().toString())==0 ||
+                Integer.parseInt(circle.getText().toString())==0 ){
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    dialog = myapi.new LoadingDialog(CreateRoomActivity.this, "金額不得為0！", true);
+                    dialog.execute();
+                }
+            });
         }
 
         return true;

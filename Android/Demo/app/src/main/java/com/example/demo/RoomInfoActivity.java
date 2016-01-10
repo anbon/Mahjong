@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.StrictMode;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -50,6 +52,15 @@ public class RoomInfoActivity extends Activity {
             mythread.interrupt();
             mythread = null;
         }
+
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.v(TAG, "onDestroy");
+        //
+        if(!this.isFinishing())
+            dialog.close();
 
     }
     @Override
@@ -144,6 +155,14 @@ public class RoomInfoActivity extends Activity {
                                     public void onClick(View v) {
                                         try {
                                             Log.v("onClick", a.getJSONObject(0).getString("Unum"));
+                                            JSONObject o_o = a.getJSONObject(0);
+                                            gotoMemberActivity2(o_o.getString("Unum"),
+                                                    o_o.getString("Uname"),
+                                                    o_o.getString("age"),
+                                                    o_o.getString("gender"),
+                                                    o_o.getString("rate"),
+                                                    o_o.getString("photo"),
+                                                    o_o.getString("level"));
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
@@ -158,6 +177,14 @@ public class RoomInfoActivity extends Activity {
                                     public void onClick(View v) {
                                         try {
                                             Log.v("onClick", a.getJSONObject(1).getString("Unum"));
+                                            JSONObject o_o = a.getJSONObject(1);
+                                            gotoMemberActivity2(o_o.getString("Unum"),
+                                                    o_o.getString("Uname"),
+                                                    o_o.getString("age"),
+                                                    o_o.getString("gender"),
+                                                    o_o.getString("rate"),
+                                                    o_o.getString("photo"),
+                                                    o_o.getString("level"));
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
@@ -172,6 +199,14 @@ public class RoomInfoActivity extends Activity {
                                     public void onClick(View v) {
                                         try {
                                             Log.v("onClick", a.getJSONObject(2).getString("Unum"));
+                                            JSONObject o_o = a.getJSONObject(2);
+                                            gotoMemberActivity2(o_o.getString("Unum"),
+                                                    o_o.getString("Uname"),
+                                                    o_o.getString("age"),
+                                                    o_o.getString("gender"),
+                                                    o_o.getString("rate"),
+                                                    o_o.getString("photo"),
+                                                    o_o.getString("level"));
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
@@ -188,6 +223,14 @@ public class RoomInfoActivity extends Activity {
                                     public void onClick(View v) {
                                         try {
                                             Log.v("onClick", a.getJSONObject(0).getString("Unum"));
+                                            JSONObject o_o = a.getJSONObject(0);
+                                            gotoMemberActivity2(o_o.getString("Unum"),
+                                                    o_o.getString("Uname"),
+                                                    o_o.getString("age"),
+                                                    o_o.getString("gender"),
+                                                    o_o.getString("rate"),
+                                                    o_o.getString("photo"),
+                                                    o_o.getString("level"));
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
@@ -202,6 +245,14 @@ public class RoomInfoActivity extends Activity {
                                     public void onClick(View v) {
                                         try {
                                             Log.v("onClick", a.getJSONObject(1).getString("Unum"));
+                                            JSONObject o_o = a.getJSONObject(1);
+                                            gotoMemberActivity2(o_o.getString("Unum"),
+                                                    o_o.getString("Uname"),
+                                                    o_o.getString("age"),
+                                                    o_o.getString("gender"),
+                                                    o_o.getString("rate"),
+                                                    o_o.getString("photo"),
+                                                    o_o.getString("level"));
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
@@ -218,6 +269,14 @@ public class RoomInfoActivity extends Activity {
                                     public void onClick(View v) {
                                         try {
                                             Log.v("onClick", a.getJSONObject(0).getString("Unum"));
+                                            JSONObject o_o = a.getJSONObject(0);
+                                            gotoMemberActivity2(o_o.getString("Unum"),
+                                                    o_o.getString("Uname"),
+                                                    o_o.getString("age"),
+                                                    o_o.getString("gender"),
+                                                    o_o.getString("rate"),
+                                                    o_o.getString("photo"),
+                                                    o_o.getString("level"));
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
@@ -238,6 +297,14 @@ public class RoomInfoActivity extends Activity {
                                     public void onClick(View v) {
                                         try {
                                             Log.v("onClick", a.getJSONObject(0).getString("Unum"));
+                                            JSONObject o_o = a.getJSONObject(0);
+                                            gotoMemberActivity2(o_o.getString("Unum"),
+                                                    o_o.getString("Uname"),
+                                                    o_o.getString("age"),
+                                                    o_o.getString("gender"),
+                                                    o_o.getString("rate"),
+                                                    o_o.getString("photo"),
+                                                    o_o.getString("level"));
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
@@ -252,6 +319,14 @@ public class RoomInfoActivity extends Activity {
                                     public void onClick(View v) {
                                         try {
                                             Log.v("onClick", a.getJSONObject(1).getString("Unum"));
+                                            JSONObject o_o = a.getJSONObject(1);
+                                            gotoMemberActivity2(o_o.getString("Unum"),
+                                                    o_o.getString("Uname"),
+                                                    o_o.getString("age"),
+                                                    o_o.getString("gender"),
+                                                    o_o.getString("rate"),
+                                                    o_o.getString("photo"),
+                                                    o_o.getString("level"));
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
@@ -268,6 +343,14 @@ public class RoomInfoActivity extends Activity {
                                     public void onClick(View v) {
                                         try {
                                             Log.v("onClick", a.getJSONObject(0).getString("Unum"));
+                                            JSONObject o_o = a.getJSONObject(0);
+                                            gotoMemberActivity2(o_o.getString("Unum"),
+                                                    o_o.getString("Uname"),
+                                                    o_o.getString("age"),
+                                                    o_o.getString("gender"),
+                                                    o_o.getString("rate"),
+                                                    o_o.getString("photo"),
+                                                    o_o.getString("level"));
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
@@ -284,6 +367,14 @@ public class RoomInfoActivity extends Activity {
                                 public void onClick(View v) {
                                     try {
                                         Log.v("onClick", a.getJSONObject(0).getString("Unum"));
+                                        JSONObject o_o = a.getJSONObject(0);
+                                        gotoMemberActivity2(o_o.getString("Unum"),
+                                                            o_o.getString("Uname"),
+                                                            o_o.getString("age"),
+                                                            o_o.getString("gender"),
+                                                            o_o.getString("rate"),
+                                                            o_o.getString("photo"),
+                                                            o_o.getString("level"));
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
@@ -300,14 +391,127 @@ public class RoomInfoActivity extends Activity {
         });
 
     }
+    private void gotoMemberActivity2(String Unum, String Uname, String age, String gender, String rate, String photo, String level){
+        Intent i = new Intent(this , MemberActivity2.class);
+        Bundle b = new Bundle();
+        b.putString("Unum",Unum);
+        b.putString("Uname",Uname);
+        b.putString("age",age);
+        b.putString("gender",gender);
+        b.putString("rate",rate);
+        b.putString("photo",photo);
+        b.putString("level",level);
+        i.putExtras(b);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(i);
+    }
+    private Handler handler = new Handler( );
+    private Runnable runnable = new Runnable( ) {
+        public void run ( ) {
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair("user_ID", pref.getString("num", "")));
+            params.add(new BasicNameValuePair("room_ID", bundle.getString("RoomNum")));
+            String result = myapi.postMethod_getCode(RoomInfoActivity.this, App.waitChat, params);
+            Log.v("waitChat", result);
+            try {
+                JSONObject o = new JSONObject(result);
+                if(o.getString("status").equals("0")){
+                    if(dialog.alertd.isShowing())
+                        handler.postDelayed(this, 5000);
+                    else
+                        handler.removeCallbacks(this);
+
+                }else if(o.getString("status").equals("1")){
+                    handler.removeCallbacks(runnable);
+                    enterRongChatRoom(); //進入Rong
+                }else if(o.getString("status").equals("2")){
+                    handler.removeCallbacks(runnable);
+                    dialog.close();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            dialog = myapi.new LoadingDialog(RoomInfoActivity.this, "請求被拒", true);
+                            if(!RoomInfoActivity.this.isFinishing())
+                                dialog.execute();
+                        }
+                    });
+                }
+            } catch (JSONException e) {
+                dialog.close();
+                handler.removeCallbacks(runnable); //停止Timer
+            }
+
+
+        }
+    };
     public void confirm(View v){
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+        mythread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        dialog = myapi.new LoadingDialog(RoomInfoActivity.this, "送出請求", false);
+                        dialog.execute();
+                    }
+                });
+                List<NameValuePair> params = new ArrayList<NameValuePair>();
+                params.add(new BasicNameValuePair("user_ID", pref.getString("num", "")));
+                params.add(new BasicNameValuePair("room_ID", bundle.getString("RoomNum")));
+                String result = myapi.postMethod_getCode(RoomInfoActivity.this, App.applyChat, params);
+                Log.v("applyChat", result);
+                try {
+                    final JSONObject o = new JSONObject(result);
+                    if(o.getString("status").equals("0")){
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                dialog.close();
+                                try {
+                                    dialog = myapi.new LoadingDialog(RoomInfoActivity.this, o.getString("message"), true);
+                                    dialog.execute();
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        });
+                    }else if(o.getString("status").equals("1")){
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                dialog.close();
+                                dialog = myapi.new LoadingDialog(RoomInfoActivity.this, "等待回復", true);
+                                dialog.execute();
+                            }
+                        });
+                        handler.postDelayed(runnable, 1000);
+                    }
+                } catch (JSONException e) {
+                    dialog.close();
+                    e.printStackTrace();
+                }
+            }
+        });
+        mythread.start();
+
+
+
+    }
+    private void enterRongChatRoom(){
+        //TODO 進入Rong聊天室
         RongIM.getInstance().getRongIMClient().joinGroup(bundle.getString("RoomNum"), bundle.getString("location"), new RongIMClient.OperationCallback() {
 
             @Override
             public void onSuccess() {
+                ConversationActivity.isGuest = true;
                 RongIM.getInstance().refreshUserInfoCache(new UserInfo(pref.getString("num","0"), pref.getString("name",""), Uri.parse(pref.getString("photo",""))));
-                //RongIM.getInstance().refreshGroupInfoCache(new Group(bundle.getString("RoomNum"),  bundle.getString("location"), Uri.parse("http://rongcloud-web.qiniudn.com/docs_demo_rongcloud_logo.png")));
-                RongIM.getInstance().startGroupChat(RoomInfoActivity.this , bundle.getString("RoomNum"),  bundle.getString("location"));
+                RongIM.getInstance().startGroupChat(RoomInfoActivity.this, bundle.getString("RoomNum"), bundle.getString("location"));
+                finish();
             }
 
             @Override

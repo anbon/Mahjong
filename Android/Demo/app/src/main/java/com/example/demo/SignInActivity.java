@@ -48,7 +48,8 @@ public class SignInActivity extends Activity {
     public void onDestroy() {
         super.onDestroy();
         Log.v("LifeCycle", "SignInActivity onDestroy");
-        dialog.close();
+        if(dialog!=null)
+            dialog.close();
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,7 +140,7 @@ public class SignInActivity extends Activity {
 
                 Intent intent = new Intent();
                 intent.setClass(this, MainActivity.class);
-                overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 startActivity(intent);
                 finish();
 
