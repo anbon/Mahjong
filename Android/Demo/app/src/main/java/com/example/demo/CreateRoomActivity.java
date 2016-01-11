@@ -326,6 +326,7 @@ public class CreateRoomActivity extends Activity {
                                         RongIM.getInstance().refreshUserInfoCache(new UserInfo(pref.getString("num", "0"), pref.getString("name", ""), Uri.parse(pref.getString("photo", ""))));
                                         //RongIM.getInstance().refreshGroupInfoCache(new Group(room_id, location.getText().toString(), Uri.parse("http://rongcloud-web.qiniudn.com/docs_demo_rongcloud_logo.png")));
                                         RongIM.getInstance().startGroupChat(CreateRoomActivity.this, room_id, location.getText().toString());
+                                        finish();
                                     }
 
                                     @Override

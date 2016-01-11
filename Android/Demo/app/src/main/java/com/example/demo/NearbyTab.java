@@ -294,7 +294,7 @@ public class NearbyTab extends Fragment implements LocationListener,IXListViewLi
             Log.v("getLocation", "( " + longitude+", " + latitude + " )");
         }
         else {
-            Toast.makeText(mActivity, "無法定位座標", Toast.LENGTH_LONG).show();
+            Toast.makeText(mActivity, "無法定位座標, 請開啟手機定位功能", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -330,7 +330,7 @@ public class NearbyTab extends Fragment implements LocationListener,IXListViewLi
     }*/
     public class AsyncTaskGetMessage extends AsyncTask<Boolean, Integer, String>
     {
-        Boolean st;
+
         protected void onPreExecute()
         {
             if(mList.isEmpty())

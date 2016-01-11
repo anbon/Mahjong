@@ -97,9 +97,7 @@ public class ConversationActivity extends FragmentActivity  {
             handler.removeCallbacks(runnable);
             handler.postDelayed(runnable, 2500);
         }
-        //
-        /*handler.removeCallbacks(runnable);
-        handler.postDelayed(runnable, 2000);*/
+
 
     }
     /**

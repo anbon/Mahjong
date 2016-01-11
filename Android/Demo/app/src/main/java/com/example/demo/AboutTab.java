@@ -125,7 +125,6 @@ public class AboutTab extends Fragment {
         super.onDestroy();
         isAlive = false;
         InputMethodManager imm = (InputMethodManager) relative_age.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        //if(imm.isActive())
         imm.hideSoftInputFromWindow(mActivity.getCurrentFocus().getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
         undo(getView());
     }

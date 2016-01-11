@@ -52,7 +52,7 @@
             android:clearTaskOnLaunch="true"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden">
+            android:windowSoftInputMode="adjustPan|stateHidden" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -106,30 +106,35 @@
 
         <activity
             android:name=".MemberActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/title_activity_member" >
+            android:label="@string/title_activity_member"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".MemberActivity2"
-            android:screenOrientation="portrait"
-            android:label="@string/title_activity_member" >
+            android:label="@string/title_activity_member"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".MemberActivity3"
-            android:screenOrientation="portrait"
-            android:label="@string/title_activity_member" >
+            android:label="@string/title_activity_member"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".SearchResultActivity"
-            android:screenOrientation="portrait"
             android:label="@string/title_activity_search_result"
-            >
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".RoomInfoActivity"
             android:label="@string/title_activity_room_info"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="adjustResize" >
+        </activity>
+        <activity
+            android:name=".FillInActivity"
+            android:label="@string/title_activity_fill_in"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden">
         </activity>
     </application>
 

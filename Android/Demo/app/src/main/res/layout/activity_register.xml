@@ -1,0 +1,109 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="30dp"
+    android:paddingRight="30dp"
+    android:paddingTop="50dp"
+    android:paddingBottom="40dp"
+    android:background="#61cee5"
+    tools:context="com.example.demo.RegisterActivity">
+
+
+    <RelativeLayout
+        android:id="@+id/signin_acount_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/dot1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/white_dot"
+            android:layout_marginLeft="15dp"
+             />
+        <EditText
+            android:id="@+id/signin_account"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_toRightOf="@+id/dot1"
+            android:layout_marginTop="-13dp"
+            android:layout_marginLeft="13dp"
+            android:singleLine="true"
+            android:padding="10dp"
+            android:background="@null"
+            android:gravity="center_vertical"
+            android:textSize="22sp"
+            android:textColorHint="#FFFFFF"
+            android:textColor="#FFFFFF"
+            android:hint="請輸入帳號"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#FFFFFF"
+            android:layout_alignLeft="@id/dot1"
+            android:layout_below="@id/dot1"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="2dp"
+            >
+
+        </View>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/signin_password_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/signin_acount_panel"
+        android:layout_marginTop="16dp">
+        <ImageView
+            android:id="@+id/dot2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/white_dot"
+            android:layout_marginLeft="15dp"
+            />
+        <EditText
+            android:id="@+id/signin_password"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_toRightOf="@+id/dot2"
+            android:layout_marginTop="-13dp"
+            android:layout_marginLeft="13dp"
+            android:singleLine="true"
+            android:digits="1234567890qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM"
+            android:inputType="textPassword"
+            android:padding="10dp"
+            android:background="@null"
+            android:gravity="center_vertical"
+            android:textSize="22sp"
+            android:textColorHint="#FFFFFF"
+            android:textColor="#FFFFFF"
+            android:hint="請輸入密碼"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#FFFFFF"
+            android:layout_alignLeft="@id/dot2"
+            android:layout_below="@id/dot2"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="2dp"
+            >
+
+        </View>
+
+    </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/signin_confirm"
+        android:layout_width="130dp"
+        android:layout_height="56dp"
+        android:layout_below="@id/signin_password_panel"
+        android:layout_marginTop="60dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/white_confirm"
+        android:clickable="true"
+        android:onClick="login"/>
+        />
+
+
+</RelativeLayout>

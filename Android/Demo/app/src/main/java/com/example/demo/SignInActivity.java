@@ -42,12 +42,12 @@ public class SignInActivity extends Activity {
     @Override
     public void onResume() {
         super.onResume();
-        Log.v("LifeCycle", "SignInActivity onResume");
+        Log.v(TAG, "onResume");
     }
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.v("LifeCycle", "SignInActivity onDestroy");
+        Log.v(TAG, "onDestroy");
         if(dialog!=null)
             dialog.close();
     }
@@ -59,8 +59,8 @@ public class SignInActivity extends Activity {
         setContentView(R.layout.activity_signin);
         username = (EditText) findViewById(R.id.signin_account);
         password = (EditText) findViewById(R.id.signin_password);
-        username.setText("x51811danny");
-        password.setText("as1597530");
+        username.setText("");
+        password.setText("");
         myapi = (App) this.getApplicationContext();
 
 
@@ -113,10 +113,6 @@ public class SignInActivity extends Activity {
             if(o.getString("status").equals("1")) {
                 Log.v(TAG, "Token = " + o.getString("message"));
                 App.Token =  o.getString("message");
-
-
-
-
 
                 JSONObject o_o = o.getJSONObject("data");
                 Log.v(TAG,o_o.toString());
@@ -175,12 +171,12 @@ public class SignInActivity extends Activity {
             });*/
             e.printStackTrace();
         }
-        runOnUiThread(new Runnable() {
+        /*runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 dialog.close();
             }
-        });
+        });*/
     }
 
 

@@ -12,7 +12,8 @@
         android:layout_height="@dimen/start_logo_size"
         android:layout_marginTop="@dimen/start_margin_bottom"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/majong_logo"/>
+        android:src="@drawable/majong_logo"
+        android:id="@+id/imageView" />
     <LinearLayout
         android:id="@+id/start_btn_container"
         android:layout_width="match_parent"
@@ -69,5 +70,14 @@
         android:textColor="#FFFFFF"
         android:textStyle="normal"
         android:text="M a h j o n g"/>
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar"
+        android:visibility="invisible"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:indeterminate="false" />
 
 </RelativeLayout>

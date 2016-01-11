@@ -135,27 +135,6 @@ public class App extends Application {
 
         }, true);
 
-
-
-
-
-        /*RongIM.connect(Token, new RongIMClient.ConnectCallback() {
-            @Override
-            public void onTokenIncorrect() {
-                Log.d("onTokenIncorrect","Token Incorrect!");
-            }
-
-            @Override
-            public void onSuccess(String s) {
-                Log.d("onSuccess","Token Success!");
-            }
-
-            @Override
-            public void onError(RongIMClient.ErrorCode errorCode) {
-                Log.d("onError","Token Error!");
-            }
-        });*/
-
     }
     /**
      * 获得当前进程的名字
