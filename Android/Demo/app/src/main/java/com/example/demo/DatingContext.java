@@ -286,8 +286,10 @@ public class DatingContext {
             params = new ArrayList<NameValuePair>();
             params.add(new BasicNameValuePair("", ""));
         }
-        else
-            timeoutSocket = 4000;
+        else {
+            timeoutConnection = 3000;
+            timeoutSocket = 3000;
+        }
         try {
             //setup multipart entity
             MultipartEntity entity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);

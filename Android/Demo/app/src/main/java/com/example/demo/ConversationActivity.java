@@ -58,7 +58,7 @@ public class ConversationActivity extends FragmentActivity  {
     App myapi;
     App.LoadingDialog dialog;
     Thread mythread;
-    SharedPreferences pref;
+    SharedPreferences pref, pref_member;
 
     /**
      * 目标 Id
@@ -144,7 +144,7 @@ public class ConversationActivity extends FragmentActivity  {
         ab.setCustomView(customView);
         myapi = (App) this.getApplicationContext();
         pref = getSharedPreferences("Account", 0);
-
+        pref_member = getSharedPreferences("Info", 0);
         Intent intent = getIntent();
 
         getIntentDate(intent);
@@ -203,6 +203,8 @@ public class ConversationActivity extends FragmentActivity  {
             List<NameValuePair> params = new ArrayList<NameValuePair>();
             params.add(new BasicNameValuePair("user_ID", pref.getString("num", "")));
             params.add(new BasicNameValuePair("room_ID", mTargetId));
+
+            //TODO Thread
             String result = myapi.postMethod_getCode(ConversationActivity.this, App.SearchChat, params);
             Log.v("SearchChat", result);
             try {
@@ -214,6 +216,7 @@ public class ConversationActivity extends FragmentActivity  {
                     handler.removeCallbacks(runnable);
                     //TODO show  RequestDialog
                     JSONObject o_o = o.getJSONObject("message");
+
                     if (!alertd.isShowing())
                         RequestDialog(o_o.getString("Uname"),
                                     o_o.getString("Unum"),
@@ -236,6 +239,7 @@ public class ConversationActivity extends FragmentActivity  {
             List<NameValuePair> params = new ArrayList<NameValuePair>();
             params.add(new BasicNameValuePair("user_ID", pref.getString("num", "")));
             params.add(new BasicNameValuePair("room_ID", mTargetId));
+            //TODO Thread
             String result = myapi.postMethod_getCode(ConversationActivity.this, App.destiny, params);
             Log.v("destiny", result);
             try {

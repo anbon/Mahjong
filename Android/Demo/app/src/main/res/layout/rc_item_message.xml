@@ -87,7 +87,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:layout_marginRight="11dp"
                 android:src="@drawable/rc_ic_warning"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@id/rc_read_receipt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="11dp"
+                android:src="@drawable/rc_read_receipt"
                 android:visibility="gone" />
 
             <io.rong.imkit.widget.ProviderContainerView

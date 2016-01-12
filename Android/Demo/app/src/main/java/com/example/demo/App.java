@@ -19,6 +19,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import io.rong.imkit.CustomizeMessage;
 import io.rong.imkit.CustomizeMessageItemProvider;
@@ -236,13 +237,16 @@ public class App extends Application {
             return false;
         }
     }
+    Boolean hint = false;
     @SuppressWarnings("deprecation")
     public String postMethod_getCode(Activity ctx, String strPostURL,
                                      List<NameValuePair> params) {
         shutdown = false;
-        if(strPostURL.equals("")){
-            timeoutSocket = 20000;
-            timeoutConnection = 20000;
+        hint = false;
+        if(strPostURL.equals(App.destiny) || strPostURL.equals(App.SearchChat)){
+            hint = true;
+            timeoutConnection = 3000;
+            timeoutSocket = 3000;
         }
         else
             timeoutConnection = 5000;
@@ -322,22 +326,27 @@ public class App extends Application {
         } catch (ConnectTimeoutException cte) {
             // Took too long to connect to remote host
             Log.i("tag", "ConnectTimeoutException");
+            if(!hint)
             alertdialog(
                     ctx,
                     getResources().getString(R.string.alertdialog_timeouttitle),
                     getResources().getString(
                             R.string.alertdialog_timeoutcontent), shutdown);
+            else
+                Toast.makeText(ctx, "Warn:當前網路連線不穩", Toast.LENGTH_SHORT).show();
 
             cte.printStackTrace();
         } catch (SocketTimeoutException ste) {
             // Remote host didn嚙踝蕭t respond in time
             Log.i("tag", "ConnectTimeoutException");
-
+            if(!hint)
             alertdialog(
                     ctx,
                     getResources().getString(R.string.alertdialog_timeouttitle),
                     getResources().getString(
                             R.string.alertdialog_timeoutcontent), shutdown);
+            else
+                Toast.makeText(ctx,"Warn:當前網路連線不穩",Toast.LENGTH_SHORT).show();
 
             ste.printStackTrace();
         } catch (HttpHostConnectException e) {

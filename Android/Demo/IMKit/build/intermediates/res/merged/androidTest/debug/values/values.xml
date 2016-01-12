@@ -263,6 +263,8 @@
         <item>@drawable/u23f3</item>
     </array>
     <bool name="rc_is_show_warning_notification">true</bool>
+    <bool name="rc_play_audio_continuous">true</bool>
+    <bool name="rc_read_receipt">false</bool>
     <color name="rc_conversation_top_bg">#f2faff</color>
     <color name="rc_draft_color">#cb120f</color>
     <color name="rc_input_bg">#F4F4F4</color>
@@ -294,6 +296,7 @@
     <item name="rc_content" type="id"/>
     <item name="rc_conversation_content" type="id"/>
     <item name="rc_conversation_msg_block" type="id"/>
+    <item name="rc_conversation_status" type="id"/>
     <item name="rc_conversation_time" type="id"/>
     <item name="rc_conversation_title" type="id"/>
     <item name="rc_fragment" type="id"/>
@@ -325,8 +328,10 @@
     <item name="rc_portrait" type="id"/>
     <item name="rc_portrait_right" type="id"/>
     <item name="rc_progress" type="id"/>
+    <item name="rc_read_receipt" type="id"/>
     <item name="rc_right" type="id"/>
     <item name="rc_send" type="id"/>
+    <item name="rc_sent_status" type="id"/>
     <item name="rc_time" type="id"/>
     <item name="rc_title" type="id"/>
     <item name="rc_title_layout" type="id"/>
