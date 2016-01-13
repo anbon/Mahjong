@@ -77,7 +77,7 @@ import io.rong.imlib.model.UserInfo;
 
 public class App extends Application {
     public static HttpParams httpParameters;
-    //http://www.anbon.tw//mj//assets//photo//21_2015_12_29_19_51_24.jpg
+
     public static final String Photo_Repository = "http:/www.anbon.tw/mj/assets/photo/";
     public static final String Domain = "http://www.anbon.tw/mj/index.php/";
     public static final String register = Domain + "register";

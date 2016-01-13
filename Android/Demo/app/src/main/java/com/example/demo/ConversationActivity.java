@@ -249,6 +249,7 @@ public class ConversationActivity extends FragmentActivity  {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                dhandler.removeCallbacks(drunnable); //先取消destiny
                                 try {
                                     dialog = myapi.new LoadingDialog(ConversationActivity.this, o.getString("message") , false);
 
