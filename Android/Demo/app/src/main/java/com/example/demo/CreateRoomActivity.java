@@ -246,7 +246,7 @@ public class CreateRoomActivity extends Activity {
 
     }
 
-    String[] CigaretteListStr = {"不菸", "桌菸"};
+    String[] CigaretteListStr = {"不菸", "桌菸", "雀菸"};
     String cigarette = "0";
     public void CigaretteListAlertDialog(View v) {
 

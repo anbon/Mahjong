@@ -15,6 +15,9 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.baidu.android.pushservice.PushConstants;
+import com.baidu.android.pushservice.PushManager;
+
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
@@ -41,7 +44,8 @@ public class StartActivity extends Activity {
         pref = getSharedPreferences("Account", 0);
         dialog = myapi.new LoadingDialog(this,"手機認證已成功",true);
         pb = (ProgressBar) findViewById(R.id.progressBar);
-
+        PushManager.startWork(getApplicationContext(),
+                PushConstants.LOGIN_TYPE_API_KEY, "pGK0Dq6SVkHCpDkASiCf4sng");
         /*if(pref.getString("num","").isEmpty()){
             pb.setVisibility(View.INVISIBLE);
         }else{

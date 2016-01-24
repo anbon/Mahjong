@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/loadingpanel"
+    android:layout_width="@dimen/loadingpanel_width"
+    android:layout_height="300dp"
+    android:gravity="center|top"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
+    android:orientation="vertical"
+    android:background="@drawable/window_border">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <!--     <ImageView -->
+    <!--         android:id="@+id/loading_book" -->
+    <!--         android:layout_width="150dp" -->
+    <!--         android:layout_height="150dp" -->
+
+    <!--         android:src="@drawable/loading_book" /> -->
+        <RelativeLayout
+            android:id="@+id/loading_title_bar"
+            android:layout_width="match_parent"
+            android:layout_margin="1.2dp"
+            android:layout_height="64dp"
+            android:background="@drawable/window_border2"
+
+            >
+            <TextView
+                android:id="@+id/request_photo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="篩選條件"
+                android:textSize="24dp"
+                android:textColor="#fff"
+                 />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/filter_people"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/loading_title_bar"
+            android:layout_marginLeft="45dp"
+            android:layout_marginTop="36dp"
+            android:textColor="#3f3f3f"
+            android:textSize="22dp"
+            android:text="人數 :"/>
+        <RelativeLayout
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="36dp"
+            android:layout_below="@+id/loading_title_bar"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/btn_blue_round_bg2"
+            android:clickable="true">
+            <TextView
+                android:id="@+id/create_ppl_in_need"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#ffffff"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="3人以內"
+                android:textSize="18sp"/>
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/filter_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/filter_people"
+            android:layout_marginLeft="45dp"
+            android:layout_marginTop="36dp"
+            android:textColor="#3f3f3f"
+            android:textSize="22dp"
+            android:text="抬 : "/>
+        <EditText
+            android:id="@+id/filter_limit_lower"
+            android:layout_width="84dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/filter_unit"
+            android:layout_marginBottom="-7dp"
+            android:layout_toLeftOf="@+id/filter_limit_upper"
+            android:layout_marginRight="4dp"
+            android:maxLength="6"
+            android:gravity="center"
+            android:digits="0123456789"
+            android:textColor="#3f3f3f"
+            android:textSize="17dp"
+            android:text="0"/>
+        <TextView
+            android:id="@+id/filter_between"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/filter_unit"
+            android:layout_marginBottom="0dp"
+            android:layout_toLeftOf="@+id/filter_limit_upper"
+            android:layout_marginRight="-4dp"
+            android:textSize="20dp"
+            android:text="~"/>
+        <EditText
+            android:id="@+id/filter_limit_upper"
+            android:layout_width="84dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/filter_unit"
+            android:layout_marginBottom="-7dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="36dp"
+            android:maxLength="6"
+            android:gravity="center"
+            android:digits="0123456789"
+            android:textColor="#3f3f3f"
+            android:textSize="17dp"
+            android:text="999999"/>
+
+
+        <TextView
+            android:id="@+id/request_confirm"
+            android:layout_width="95dp"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="40dp"
+            android:layout_marginBottom="20dp"
+            android:gravity="center"
+            android:textColor="#35acc5"
+            android:textSize="22dp"
+            android:text="確認"
+            android:background="@drawable/btn_confirm_bg"/>
+        <TextView
+            android:id="@+id/request_default"
+            android:layout_width="95dp"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="40dp"
+            android:layout_marginBottom="20dp"
+            android:gravity="center"
+            android:textColor="#eeFF3B30"
+            android:textSize="22dp"
+            android:text="預設"
+            android:background="@drawable/btn_default_bg"/>
+    </RelativeLayout>
+
+
+</LinearLayout>

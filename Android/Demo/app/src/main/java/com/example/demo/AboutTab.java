@@ -330,6 +330,8 @@ public class AboutTab extends Fragment {
 
     }
 
+
+    Uri uritempFile;
     //拍照完畢或選取圖片後呼叫此函式
     @Override
     public void onActivityResult(int requestCode, int resultCode,Intent data)
@@ -338,9 +340,9 @@ public class AboutTab extends Fragment {
         if ((requestCode == PHOTO ) && data != null && resultCode == Activity.RESULT_OK)
         {
             Uri uri = data.getData();
-            File filePath=new File(Environment.getExternalStorageDirectory().toString()+"/Android/data/com.example.demo");
-            tmpFile = new File(filePath,getPhotoFileName());
-            Log.v("tmpFile",tmpFile.toString());
+            /*File filePath=new File(Environment.getExternalStorageDirectory().toString()+"/Android/data/com.example.demo");
+            tmpFile = new File(filePath,getPhotoFileName());*/
+            //Log.v("tmpFile",tmpFile.toString());
             Intent i=getCropImageIntent(uri);
             startActivityForResult(i,GET);
             super.onActivityResult(requestCode, resultCode, data);
@@ -349,7 +351,7 @@ public class AboutTab extends Fragment {
 
         }else if(requestCode == GET && resultCode == Activity.RESULT_OK)
         {
-            Uri uri=Uri.fromFile(tmpFile);
+            Uri uri= uritempFile;
 
             //image1.setImageBitmap(bmp);
             if(uri.getPath()!=null)
@@ -410,8 +412,9 @@ public class AboutTab extends Fragment {
         intent.putExtra("outputX", 600);
         intent.putExtra("outputY", 600);
         intent.putExtra("scale", true);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(tmpFile));
-        intent.putExtra("return-data", true);
+        uritempFile = Uri.parse("file://" + "/" + Environment.getExternalStorageDirectory().getPath() + "/Android/data/com.example.demo" + getPhotoFileName());
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, uritempFile);
+        //intent.putExtra("return-data", true);
         return intent;
     }
     private void ScalePic(ImageView photo, Bitmap bitmap,int phone)

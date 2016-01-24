@@ -2,7 +2,10 @@ package com.example.demo;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Criteria;
@@ -19,6 +22,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.BaseAdapter;
@@ -94,13 +99,13 @@ public class NearbyTab extends Fragment implements LocationListener,IXListViewLi
     App.LoadingDialog dialog;
     ProgressBar pb;
 
-    SharedPreferences pref;
+    SharedPreferences pref, pref2;
     FragmentActivity mActivity;
     Context ctx;
     ActionBar ab;
     View customView;
     TextView titletextView;
-    ImageView create;
+    ImageView create, filter;
     //private OnFragmentInteractionListener mListener;
     /**
      * Use this factory method to create a new instance of
@@ -174,6 +179,7 @@ public class NearbyTab extends Fragment implements LocationListener,IXListViewLi
         ab.setDisplayShowCustomEnabled(true);
         myapi = (App) this.getActivity().getApplicationContext();
         pref = mActivity.getSharedPreferences("Account", 0);
+        pref2 = mActivity.getSharedPreferences("Setting", 0);
         View homeIcon = mActivity.findViewById(android.R.id.home);
         ((View) homeIcon.getParent()).setVisibility(View.GONE);
 
@@ -190,6 +196,14 @@ public class NearbyTab extends Fragment implements LocationListener,IXListViewLi
             @Override
             public void onClick(View v) {
                 gotoCreateRoom();
+            }
+        });
+        filter = (ImageView) customView.findViewById(R.id.filter);
+        create.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                FilterDialog(mActivity);
             }
         });
         current_no_room =(TextView) mActivity.findViewById(R.id.current_no_room);
@@ -209,7 +223,47 @@ public class NearbyTab extends Fragment implements LocationListener,IXListViewLi
 
 
     }
+    Dialog alertd;
+    TextView people_limit;
+    public void FilterDialog(Activity act) {
+        alertd = new Dialog(act);
+        alertd.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        alertd.setContentView(R.layout.request_dialog);
+        alertd.setCanceledOnTouchOutside(true);
+        alertd.setCancelable(true);
+        Window dialogWindow = alertd.getWindow();
+        WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+        //dialogWindow.setGravity(Gravity.CENTER | Gravity.TOP);
+        View v = dialogWindow.getDecorView();
+        v.setBackgroundResource(android.R.color.transparent);
+        lp.dimAmount = 0.5f;
 
+        lp.y = -150; // 新位置Y坐标
+        lp.alpha = 1f;
+    }
+    String[] PeopleListStr = {"1人", "2人以內", "3人以內"};
+    int people=3;
+    public void PeopleListAlertDialog(View v) {
+
+        AlertDialog.Builder TimeListAlertDialog = new AlertDialog.Builder(mActivity);
+        TimeListAlertDialog.setTitle("請選擇人數");
+        DialogInterface.OnClickListener ListItemClick = new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                people_limit.setText(PeopleListStr[which]);
+            }
+        };
+        people_limit.setText(PeopleListStr[pref2.getInt("people_limit",3)]);
+        DialogInterface.OnClickListener OkClick = new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                //Nothing
+            }
+        };
+
+        TimeListAlertDialog.setItems(PeopleListStr, ListItemClick);
+        TimeListAlertDialog.setNeutralButton("取消", OkClick);
+        TimeListAlertDialog.show();
+
+    }
     private void parseJSON(String result) {
         try {
 
@@ -345,6 +399,9 @@ public class NearbyTab extends Fragment implements LocationListener,IXListViewLi
             params.add(new BasicNameValuePair("user_ID", pref.getString("num", "")));
             params.add(new BasicNameValuePair("location_x", pref.getString("location_x", "")));
             params.add(new BasicNameValuePair("location_y", pref.getString("location_y", "")));
+            params.add(new BasicNameValuePair("upper_limit", pref2.getString("upper_limit", "99999")));
+            params.add(new BasicNameValuePair("lower_limit", pref2.getString("lower_limit", "0")));
+            params.add(new BasicNameValuePair("people_limit", pref2.getString("people_limit", "3")));
             //Log.v("params",params.toString());
 
             return postMethod_getCode(App.seed, params);

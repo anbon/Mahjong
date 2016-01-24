@@ -22,4 +22,4 @@
         android:textColor="@android:color/white"
         android:layout_gravity="center"
         android:visibility="gone"/>
-</FrameLayout><!-- From: file:/C:/Users/x51811danny/Desktop/FaceDetection-master/Demo/IMKit/src/main/res/layout/rc_fr_photo.xml -->
+</FrameLayout><!-- From: file:/C:/Users/x51811danny/Desktop/Github/Mahjong/Android/Demo/IMKit/src/main/res/layout/rc_fr_photo.xml -->

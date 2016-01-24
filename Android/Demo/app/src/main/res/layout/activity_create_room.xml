@@ -129,7 +129,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="20dp"
                 android:textColor="#3f3f3f"
-                android:maxLength="5"
+                android:maxLength="6"
                 android:singleLine="true"
                 android:digits="0123456789"
                 android:textSize="18sp"

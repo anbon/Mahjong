@@ -75,6 +75,9 @@ public class NearbyService extends IntentService {
                         params.add(new BasicNameValuePair("user_ID", pref.getString("num", "")));
                         params.add(new BasicNameValuePair("location_x", pref.getString("location_x", "")));
                         params.add(new BasicNameValuePair("location_y", pref.getString("location_y", "")));
+                        params.add(new BasicNameValuePair("upper_limit", pref2.getString("upper_limit", "99999")));
+                        params.add(new BasicNameValuePair("lower_limit", pref2.getString("lower_limit", "0")));
+                        params.add(new BasicNameValuePair("people_limit", pref2.getString("people_limit", "3")));
                         //Log.v("params",params.toString());
                         String temp="";
                         temp = postMethod_getCode(App.seed, params);
@@ -103,7 +106,7 @@ public class NearbyService extends IntentService {
     public NearbyService() {
         super("NearbyService");
     }
-    SharedPreferences pref;
+    SharedPreferences pref, pref2;
     @Override
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
@@ -111,6 +114,7 @@ public class NearbyService extends IntentService {
             myapi = (App) this.getApplicationContext();
             //int requestId = intent.getIntExtra("requestId", 0);
             pref = getSharedPreferences("Account", 0);
+            pref2 = getSharedPreferences("Setting", 0);
             handler.postDelayed(runnable, 5000);//每两秒执行一次runnable.
 
             Log.d(TAG, "Service Stopping!");

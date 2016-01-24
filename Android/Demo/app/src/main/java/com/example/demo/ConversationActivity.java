@@ -252,7 +252,8 @@ public class ConversationActivity extends FragmentActivity  {
                                 dhandler.removeCallbacks(drunnable); //先取消destiny
                                 try {
                                     dialog = myapi.new LoadingDialog(ConversationActivity.this, o.getString("message") , false);
-
+                                    if(!ConversationActivity.this.isFinishing())
+                                        dialog.execute();
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -265,8 +266,7 @@ public class ConversationActivity extends FragmentActivity  {
                                 };
                                 Timer timer = new Timer();
                                 timer.schedule(t, 5000); //5秒後關閉
-                                if(!ConversationActivity.this.isFinishing())
-                                    dialog.execute();
+
                             }
                         });
                     else{

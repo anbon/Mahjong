@@ -9,4 +9,4 @@
     <!-- Pressed -->
     <item android:drawable="@color/rc_conversation_top_bg" android:state_pressed="true"/>
 
-</selector><!-- From: file:/C:/Users/x51811danny/Desktop/FaceDetection-master/Demo/IMKit/src/main/res/drawable/rc_item_top_list_selector.xml -->
+</selector><!-- From: file:/C:/Users/x51811danny/Desktop/Github/Mahjong/Android/Demo/IMKit/src/main/res/drawable/rc_item_top_list_selector.xml -->

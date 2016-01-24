@@ -25,6 +25,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.baidu.android.pushservice.PushConstants;
+import com.baidu.android.pushservice.PushManager;
 import com.example.demo.util.TabAdapter;
 
 import java.util.ArrayList;
@@ -119,6 +121,7 @@ public class MainActivity extends FragmentActivity {
         Intent intent = new Intent(Intent.ACTION_SYNC, null, this, NearbyService.class);
         intent.putExtra("requestId", 1);
         startService(intent);
+
 
         mythread = new HandlerThread("MyHandlerThread") {
             public void run() {

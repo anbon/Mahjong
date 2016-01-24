@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- From: file:/C:/Users/x51811danny/Desktop/FaceDetection-master/Demo/IMKit/build/intermediates/bundles/debug/res/values-en/values-en.xml -->
+    <!-- From: file:/C:/Users/x51811danny/Desktop/Github/Mahjong/Android/Demo/IMKit/build/intermediates/bundles/debug/res/values-en/values-en.xml -->
     <eat-comment/>
     <string name="rc_called_accept">The other accepted the call request</string>
     <string name="rc_called_is_calling">Calling number is talking</string>
