@@ -11,7 +11,6 @@
 
 @protocol StarRatingViewDelegate <NSObject>
 
-@optional
 -(void)starRatingView:(TQStarRatingView *)view score:(float)score;
 
 @end

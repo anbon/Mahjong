@@ -70,7 +70,7 @@
     [Mahjong setText:@"M a h j o n g"];
     [Mahjong setTextColor:[UIColor whiteColor]];
     [Mahjong setTextAlignment:NSTextAlignmentCenter];
-    [Mahjong setFont:[UIFont systemFontOfSize:40]];
+    [Mahjong setFont:[UIFont systemFontOfSize:40*RATIO]];
     [Mahjong sizeToFit];
     [self.view addSubview:Mahjong];
 }

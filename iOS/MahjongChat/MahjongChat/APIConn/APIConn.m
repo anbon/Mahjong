@@ -27,7 +27,7 @@
 #define APPLY_CHAT 17
 #define SEARCH_CHAT 18
 #define VERIFY_CHAT 19
-
+#define DESTINY 20
 #define DOMAIN_MAIN @"http://www.anbon.tw/mj/index.php"
 #define TOKEN [[[UIDevice currentDevice] identifierForVendor] UUIDString]
 
@@ -83,14 +83,14 @@
 //====
 -(void)applyChat:(NSDictionary*)data{
     action_type = APPLY_CHAT;
-    NSString *post = [NSString stringWithFormat:@"user_ID=%@&room_ID=%@",data[@"user_Id"],data[@"room_ID"]];
+    NSString *post = [NSString stringWithFormat:@"user_ID=%@&room_ID=%@",data[@"user_ID"],data[@"room_ID"]];
     NSString *url=[NSString stringWithFormat:@"%@/applyChat", DOMAIN_MAIN];
     [self openConnect:post andURL:url andMethod:@"POST"];
 }
 
 -(void)waitChat:(NSDictionary*)data{
     action_type = WAIT_CHAT;
-    NSString *post = [NSString stringWithFormat:@"user_ID=%@&room_ID=%@",data[@"user_Id"],data[@"room_ID"]];
+    NSString *post = [NSString stringWithFormat:@"user_ID=%@&room_ID=%@",data[@"user_ID"],data[@"room_ID"]];
     NSString *url=[NSString stringWithFormat:@"%@/waitChat", DOMAIN_MAIN];
     [self openConnect:post andURL:url andMethod:@"POST"];
 }
@@ -129,7 +129,6 @@
 }
 -(void)seed:(NSDictionary*)data{
     action_type = SEED;
-    NSLog(@"locationX= %@ locationY=%@",data[@"locationX"],data[@"locationY"]);
     NSString *post = [NSString stringWithFormat:@"user_ID=%@&location_x=%@&location_y=%@",data[@"user_ID"],data[@"locationX"],data[@"locationY"]];
     NSString *url=[NSString stringWithFormat:@"%@/seed", DOMAIN_MAIN];
     [self openConnect:post andURL:url andMethod:@"POST"];
@@ -187,16 +186,23 @@
 }
 
 -(void)Search_Chat:(NSDictionary*)data{
-    action_type = SEARCH_ID;
+    action_type = SEARCH_CHAT;
     NSString *post = [NSString stringWithFormat:@"user_ID=%@&room_ID=%@",data[@"user_ID"],data[@"room_ID"]];
     NSString *url=[NSString stringWithFormat:@"%@/SearchChat", DOMAIN_MAIN];
     [self openConnect:post andURL:url andMethod:@"POST"];
 }
 
 -(void)VerifyChat:(NSDictionary*)data{
-    action_type = SEARCH_ID;
-    NSString *post = [NSString stringWithFormat:@"user_ID=%@",data[@"user_ID"]];
+    action_type = VERIFY_CHAT;
+    NSString *post = [NSString stringWithFormat:@"status=%@&user_ID=%@&room_ID=%@",data[@"status"],data[@"user_ID"],data[@"room_ID"]];
     NSString *url=[NSString stringWithFormat:@"%@/VerifyChat", DOMAIN_MAIN];
+    [self openConnect:post andURL:url andMethod:@"POST"];
+}
+
+-(void)Destiny:(NSDictionary*)data{
+    action_type = DESTINY;
+    NSString *post = [NSString stringWithFormat:@"user_ID=%@&room_ID=%@",data[@"user_ID"],data[@"room_ID"]];
+    NSString *url = [NSString stringWithFormat:@"%@/destiny", DOMAIN_MAIN];
     [self openConnect:post andURL:url andMethod:@"POST"];
 }
 
@@ -325,6 +331,9 @@
             break;
         case VERIFY_CHAT:
             [self.apiDelegate VerifyChatFinished:[loadData JSONValueFromString]];
+            break;
+        case DESTINY:
+            [self.apiDelegate DestinyFinished:[loadData JSONValueFromString]];
             break;
     }
 }

@@ -19,11 +19,20 @@
 @implementation AppDelegate
 {
     UIView *pauseView;
+    NSString *userIDDDD,*userName,*userUrl;
 }
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    
+    location = [[CLLocationManager alloc]init];
+    location.delegate = self;
+    location.allowsBackgroundLocationUpdates = YES;
+    [location requestAlwaysAuthorization];
+    location.desiredAccuracy = kCLLocationAccuracyBest;
+    [location startUpdatingLocation];
     
     _mainViewController = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
     _mainNavi=[[UINavigationController alloc] initWithRootViewController:_mainViewController];
@@ -41,6 +50,8 @@
 //------------------------------------------------------------
     [[RCIM sharedRCIM] initWithAppKey:@"25wehl3uwk9bw" ];
     [[RCIM sharedRCIM] setConnectionStatusDelegate:self];
+    [[RCIM sharedRCIM] setUserInfoDataSource:self];
+    [[RCIM sharedRCIM] setGroupInfoDataSource:self];
     
     
 //---------------------------------------------------------------------------
@@ -57,6 +68,7 @@
      */
     if ([application
          respondsToSelector:@selector(registerUserNotificationSettings:)]) {
+        //注册推送, 用于iOS8以及iOS8之后的系统
         UIUserNotificationSettings *settings = [UIUserNotificationSettings
                                                 settingsForTypes:(UIUserNotificationTypeBadge |
                                                                   UIUserNotificationTypeSound |
@@ -64,6 +76,7 @@
                                                 categories:nil];
         [application registerUserNotificationSettings:settings];
     } else {
+        //注册推送，用于iOS8之前的系统
         UIRemoteNotificationType myTypes = UIRemoteNotificationTypeBadge |
         UIRemoteNotificationTypeAlert |
         UIRemoteNotificationTypeSound;
@@ -91,15 +104,16 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
         UIAlertView *alert = [[UIAlertView alloc]
                               initWithTitle:@"提示"
                               message:@"您"
-                              @"的帐号在别的设备上登录，您被迫下线！"
+                              @"的帳號在别的裝置上登入，將為您轉回登入頁面"
                               delegate:nil
                               cancelButtonTitle:@"知道了"
                               otherButtonTitles:nil, nil];
         [alert show];
         
-        UINavigationController *_navi =
-        [[UINavigationController alloc] initWithRootViewController:_mainViewController];
-        self.window.rootViewController = _navi;
+//        UINavigationController *_navi =
+//        [[UINavigationController alloc] initWithRootViewController:_mainViewController];
+//        self.window.rootViewController = _navi;
+        self.window.rootViewController=_loginViewController;
     }
 }
 
@@ -150,7 +164,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     pauseView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, WIDTH, HEIGHT)];
     UIView *alert = [[UIView alloc]initWithFrame:CGRectMake(WIDTH/2 - 135*RATIO, 100*RATIO, 270*RATIO, 150*RATIO)];
     [alert.layer setBorderColor:[MAIN_COLOR CGColor]];
-    [alert.layer setBorderWidth:3.2f];
+    [alert.layer setBorderWidth:0.8f];
     [alert.layer setCornerRadius:40*RATIO];
     alert.backgroundColor = [UIColor whiteColor];
     [alert setClipsToBounds:YES];
@@ -212,6 +226,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
         [defaults setObject:[[dic objectForKey:@"data"]objectForKey:@"photo"] forKey:@"accountPhoto"];
         [defaults setObject:[[dic objectForKey:@"data"]objectForKey:@"level"] forKey:@"accountLevel"];
         [defaults setObject:[[dic objectForKey:@"data"]objectForKey:@"dis"] forKey:@"accountDistance"];
+        [defaults setObject:[[dic objectForKey:@"data"]objectForKey:@"rate"] forKey:@"accountRate"];
         NSLog(@"login token = %@",[dic objectForKey:@"message"]);
         [defaults synchronize];
         NSLog(@"login success");
@@ -248,6 +263,56 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
         [self dismissPauseView];
         NSLog(@"token無效，請確保生成token 使用的appkey和初始化時的appkey一致");
     }];
+}
+- (void)getUserInfoWithUserId:(NSString *)userId completion:(void (^)(RCUserInfo *))completion{
+        NSLog(@"getUserInfo work");
+        NSLog(@"userID= %@",userId);
+        RCUserInfo *user = [[RCUserInfo alloc]init];
+        user.userId = userId;
+    userIDDDD = userId;
+    
+    [self performSelectorOnMainThread:@selector(SearchIDDDDDDDDD) withObject:nil waitUntilDone:YES];
+#warning dispatch api until get member info
+    user.name = userName;
+    user.portraitUri = userUrl;
+        return completion(user);
+    
+}
+-(void)SearchIDDDDDDDDD{
+    APIConn *conn = [APIConn new];
+    conn.apiDelegate = self;
+    [conn Search_ID:@{@"user_ID":userIDDDD}];
+}
+-(void)Search_IDFinished:(NSDictionary *)dic{
+    if ([[dic objectForKey:@"status"]isEqualToString:@"1"]) {
+        userName = [[dic objectForKey:@"message"]objectForKey:@"name"];
+        userUrl = [[dic objectForKey:@"message"]objectForKey:@"photo"];
+    }else{
+        userName =@"";
+        userUrl = @"http://rongcloud-web.qiniudn.com/docs_demo_rongcloud_logo.png";
+    }
+}
+#pragma mark - location
+-(void)locationManager:(CLLocationManager *)manager
+    didUpdateLocations:(NSArray *)locations {
+    NSLog(@"loc=%@",locations.lastObject);
+    CLLocation *c = [locations objectAtIndex:0];
+    NSLog(@"緯度 經度 ＝ %f   %f",c.coordinate.latitude,c.coordinate.longitude);
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:[NSString stringWithFormat:@"%f",c.coordinate.latitude] forKey:@"locationX"];
+    [defaults setObject:[NSString stringWithFormat:@"%f",c.coordinate.longitude] forKey:@"locationY"];
+    [defaults synchronize];
+    [location stopUpdatingLocation];
+}
+-(void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error{
+    NSLog(@"error = %@",error);
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:@"0" forKey:@"locationX"];
+    [defaults setObject:@"0" forKey:@"locationY"];
+    [defaults synchronize];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"獲取您的位置失敗!" message:@"請開啟定位,開啟前無法使用本app" delegate:nil cancelButtonTitle:@"確定" otherButtonTitles:nil];
+    
+    [alert show];
 }
 
 @end

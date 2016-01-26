@@ -10,7 +10,7 @@
 #import "APIConn.h"
 #import <RongIMKit/RongIMKit.h>
 #import "UIImageView+WebCache.h"
-@interface LocationViewController : UITableViewController<APIConnDelegate,UITableViewDelegate,UITableViewDataSource,RCIMUserInfoDataSource>
+@interface LocationViewController : UITableViewController<APIConnDelegate,UITableViewDelegate,UITableViewDataSource,RCIMUserInfoDataSource,UITextFieldDelegate>
 
-
+-(void)filterRoom;
 @end

@@ -11,6 +11,7 @@
 #import "CropImageViewController.h"
 #import "MainViewController.h"
 #import "ZHPickView.h"
+#import "TQStarRatingView.h"
 @interface ProfileViewController ()
 
 @end
@@ -26,6 +27,8 @@
     ZHPickView *sexPicker;
     NSString *accountID;
     UIImageView *popupCleanerIcon;
+    TQStarRatingView *starRatingView;
+    float rating;
 }
 #pragma mark - life Cycle
 - (void)viewDidLoad {
@@ -44,7 +47,8 @@
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     accountID = [defaults objectForKey:@"accountID"];
-    
+    rating = [[defaults objectForKey:@"accountRate"] intValue];
+    NSLog(@"rating = %f",rating);
     [self initByDuke];
     [sexText setHidden:YES];
     [nickNameText setHidden:YES];
@@ -110,8 +114,10 @@
 }
 #pragma mark - API Delegate
 -(void)networkError:(NSString *)err{
+    [appdelegate dismissPauseView];
 }
 -(void)UserInfoFinished:(NSDictionary *)dic{
+    [appdelegate dismissPauseView];
     if ([[dic objectForKey:@"status"]isEqualToString:@"1"]) {
         UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"個人資料更新成功" message:@"" delegate:self cancelButtonTitle:@"確定" otherButtonTitles:nil];
         [alert show];
@@ -195,6 +201,7 @@
         }else{
             sextempforapi = @"1";
         }
+        [appdelegate initPauseView:@"更新中..請稍候.."];
         [conn User_Info:@{@"user_ID":accountID,@"gender":sextempforapi,@"name":nickName.text,@"age":agetext.text}];
     }
     
@@ -210,7 +217,18 @@
     [self.view endEditing:YES];
     [sexPicker show];
 }
-
+-(void)tapView:(UITapGestureRecognizer*)tap{//UITextField *nickNameText,*ageText,*locationText;
+    [nickNameText resignFirstResponder];
+    [ageText resignFirstResponder];
+    NSLog(@"tapview");
+    
+}
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    NSLog(@"textShoulrreturn");
+    return YES;
+}
 #pragma mark - getters & setters
 -(void)initByDuke{
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -289,7 +307,8 @@
     nickName.text = name;
     nickName.textAlignment = NSTextAlignmentLeft;
     
-    nickNameText  = [[UITextField alloc]initWithFrame:CGRectMake(80*RATIO, y+25*RATIO, 70*RATIO, 20*RATIO)];
+    nickNameText  = [[UITextField alloc]initWithFrame:CGRectMake(80*RATIO, y+15*RATIO, 170*RATIO, 40*RATIO)];
+    [nickNameText setDelegate:self];
     
     y += 70*RATIO;
     
@@ -306,15 +325,32 @@
     agetext.text = age;
     agetext.textAlignment = NSTextAlignmentLeft;
     
-    ageText = [[UITextField alloc]initWithFrame:CGRectMake(80*RATIO, y+25*RATIO, 70*RATIO, 20*RATIO)];
+    ageText = [[UITextField alloc]initWithFrame:CGRectMake(80*RATIO, y+15*RATIO, 170*RATIO, 40*RATIO)];
+    [ageText setDelegate:self];
     
     y += 70*RATIO;
     
 
     UILabel *ratingBg = [[UILabel alloc]initWithFrame:CGRectMake(0, y, WIDTH, 70*RATIO)];
     ratingBg.backgroundColor = LIGHT_BLUE;
+    [scrollView addSubview:ratingBg];
     
+    CGFloat xforStar = 15*RATIO;
+    for (int i = 0; i < rating; i++) {
+        UIImageView *starFull = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"star_filled.png"]];
+        starFull.frame = CGRectMake(xforStar , y+10*RATIO, 50*RATIO ,50*RATIO);
+        [scrollView addSubview:starFull];
+        xforStar = xforStar + 50*RATIO;
+        NSLog(@"star i = %d",i);
+    }
+    for (int i = 0; i <5-rating; i++) {
+        UIImageView *starFull = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"star.png"]];
+        starFull.frame = CGRectMake(xforStar , y+10*RATIO, 50*RATIO ,50*RATIO);
+        [scrollView addSubview:starFull];
+        xforStar = xforStar + 50*RATIO;
+    }
     
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapView:)];
     
     y += 70*RATIO;
     
@@ -329,20 +365,23 @@
     [scrollView addSubview:ageBg];
     [scrollView addSubview:ageTitle];
     [scrollView addSubview:agetext];
-    
     [scrollView addSubview:sexText];
     [scrollView addSubview:nickNameText];
     [scrollView addSubview:ageText];
-    [scrollView addSubview:ratingBg];
-    
+    [scrollView addSubview:starRatingView];
     [scrollView addSubview:changePhoto];
     
+    [scrollView addGestureRecognizer:tap];
     
     
+    [scrollView setContentSize:CGSizeMake(WIDTH, y)];
     [scrollView setShowsHorizontalScrollIndicator:NO];
     [scrollView setShowsVerticalScrollIndicator:NO];
     [scrollView setScrollEnabled:YES];
     [self.view addSubview:scrollView];
+    
+    
+    
     
 }
 
@@ -363,6 +402,37 @@
     sex.text = sexselect;
     
 }
+#pragma mark - TextField Delegate
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    CGRect frame = textField.frame;
+    UIView *superView = [textField superview];
+    int offset = frame.origin.y + frame.size.height + superView.frame.origin.y - (HEIGHT - 240.0);//键盘高度216
+    NSTimeInterval animationDuration = 0.20f;
+    [UIView beginAnimations:@"ResizeForKeyBoard" context:nil];
+    [UIView setAnimationDuration:animationDuration];
+    float width = WIDTH;
+    float height = HEIGHT;
+    if(offset > 0)
+    {
+        CGRect rect = CGRectMake(0.0f, -offset,width,height);
+        self.view.frame = rect;
+    }
+    [UIView commitAnimations];
+}
 
+-(void)textFieldDidEndEditing:(UITextField *)textField{
+    [self recoverView];
+}
+
+-(void) recoverView{
+    NSTimeInterval animationDuration = 0.10f;
+    [UIView beginAnimations:@"ResizeForKeyboard" context:nil];
+    [UIView setAnimationDuration:animationDuration];
+    float y=0.0f;
+    CGRect rect = CGRectMake(0.0f, y, self.view.frame.size.width, self.view.frame.size.height);
+    self.view.frame = rect;
+    [UIView commitAnimations];
+}
 
 @end

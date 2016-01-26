@@ -7,6 +7,10 @@
 //
 
 #import <RongIMKit/RongIMKit.h>
-@interface RongViewController : RCConversationViewController
+#import "APIConn.h"
+#import "UIImageView+WebCache.h"
+//#import <RongIMLib/RCMessageContentView.h>
+@interface RongViewController : RCConversationViewController<APIConnDelegate,RCMessageCellDelegate,RCRealTimeLocationObserver,RCChatSessionInputBarControlDelegate>
 
+@property (nonatomic) RCUserAvatarStyle portaitStyle; 
 @end

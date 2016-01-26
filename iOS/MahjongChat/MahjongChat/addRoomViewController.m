@@ -58,14 +58,18 @@
 //----------------------------------------------------------------------------------------------------------------------------------------
 {
     NSLog(@"networkError");
+    [appDelegate dismissPauseView];
 }
 -(void)creatChatFinished:(NSDictionary *)dic{
+    
     if ([[dic objectForKey:@"status"]isEqualToString:@"1"]) {
         NSLog(@"success");
-        [[NSUserDefaults standardUserDefaults]setObject:[dic objectForKey:@"RoomNum"] forKey:@"RoomNum"];
+        [[NSUserDefaults standardUserDefaults]setObject:[dic objectForKey:@"RoomNum"] forKey:@"CreatRoomNum"];
+        [[NSUserDefaults standardUserDefaults]setObject:@"RoomOnwer" forKey:@"Identity"];
         NSLog(@"%@ roomnum=",[[NSUserDefaults standardUserDefaults] valueForKey:@"RoomNum"]);
         [self nextView];
     }else if ([[dic objectForKey:@"status"]isEqualToString:@"0"]){
+        [appDelegate dismissPauseView];
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"創立房間失敗" message:@"" delegate:nil cancelButtonTitle:@"我知道了" otherButtonTitles:nil];
         
         [alert show];
@@ -132,9 +136,17 @@
         APIConn *conn=[[APIConn alloc] init];
         conn.apiDelegate=self;
         [conn creatChat:@{@"user_Id":userID,@"name":location.text,@"base":base.text,@"unit":unit.text,@"circle":circle.text,@"time":timetemp,@"location":locationtemp,@"people":people,@"type":type,@"cigarette":cigar,@"rule":rule.text}];
-        
+        [appDelegate initPauseView:@"進入房間中..請稍候.."];
     }
     
+    
+}
+-(void)tapView:(UITapGestureRecognizer*)tap{//UITextField location,base,unit,circle,rule
+    [location resignFirstResponder];
+    [base resignFirstResponder];
+    [unit resignFirstResponder];
+    [circle resignFirstResponder];
+    [rule resignFirstResponder];
     
 }
 #pragma mark - ZHPick Delegate
@@ -163,24 +175,43 @@
 }
 
 #pragma mark - TextField Delegate
-//----------------------------------------------------------------------------------------------------------------------------------------
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
-//----------------------------------------------------------------------------------------------------------------------------------------
-{
-    [textField resignFirstResponder];
-    return YES;
-}
-//----------------------------------------------------------------------------------------------------------------------------------------
 - (void)textFieldDidBeginEditing:(UITextField *)textField
-//----------------------------------------------------------------------------------------------------------------------------------------
 {
-    
+    NSLog(@"textfielddidbegin");
+    CGRect frame = textField.frame;
+    UIView *superView = [textField superview];
+    //    UIView *supersuperView = [[textField superview] superview];
+    int offset = frame.origin.y + frame.size.height + superView.frame.origin.y - (HEIGHT - 250.0);//键盘高度216
+    NSLog(@"%d,%f,%f,%f,%f",offset,frame.origin.y,frame.size.height,superView.frame.origin.y,(HEIGHT - 250.0));
+    NSTimeInterval animationDuration = 0.20f;
+    [UIView beginAnimations:@"ResizeForKeyBoard" context:nil];
+    [UIView setAnimationDuration:animationDuration];
+    float width = WIDTH;
+    float height = HEIGHT;
+    //  NSLog(@"%f %f %i", frame.origin.y, self.view.frame.size.height, offset);
+    if(offset > 0)
+    {
+        CGRect rect = CGRectMake(0.0f, -offset-20*RATIO,width,height);
+        self.view.frame = rect;
+        NSLog(@"%f %f", rect.origin.x, rect.origin.y);
+    }
+    [UIView commitAnimations];
 }
-//----------------------------------------------------------------------------------------------------------------------------------------
-- (void)textFieldDidEndEditing:(UITextField *)textField
-//----------------------------------------------------------------------------------------------------------------------------------------
-{
+
+-(void)textFieldDidEndEditing:(UITextField *)textField{
+    [self recoverView];
 }
+
+-(void) recoverView{
+    NSTimeInterval animationDuration = 0.10f;
+    [UIView beginAnimations:@"ResizeForKeyboard" context:nil];
+    [UIView setAnimationDuration:animationDuration];
+    float y=0.0f;
+    CGRect rect = CGRectMake(0.0f, 64, WIDTH, HEIGHT);
+    self.view.frame = rect;
+    [UIView commitAnimations];
+}
+
 #pragma mark - getters & setters
 //----------------------------------------------------------------------------------------------------------------------------------------
 -(void)initByDuke
@@ -208,7 +239,7 @@
     UILabel *pplbg = [[UILabel alloc]initWithFrame:CGRectMake(0, y, WIDTH, 40*RATIO)];
     pplbg.backgroundColor = LIGHTG_COLOR;
     
-    UILabel *pplTitle = [[UILabel alloc]initWithFrame:CGRectMake(15*RATIO, y+10*RATIO, 40*RATIO, 70*RATIO)];
+    UILabel *pplTitle = [[UILabel alloc]initWithFrame:CGRectMake(15*RATIO, y+10*RATIO, 80*RATIO, 70*RATIO)];
     pplTitle.backgroundColor = [UIColor clearColor];
     pplTitle.text = @"缺幾人";
     [pplTitle sizeToFit];
@@ -229,6 +260,7 @@
     base = [[UITextField alloc]initWithFrame:CGRectMake(15*RATIO, y, WIDTH, 35*RATIO)];
     base.placeholder = @"底";
     base.delegate = self;
+    base.keyboardType = UIKeyboardTypeNumberPad;
     
     y = y+40*RATIO;
     
@@ -238,13 +270,14 @@
     unit = [[UITextField alloc]initWithFrame:CGRectMake(15*RATIO, y, WIDTH, 35*RATIO)];
     unit.placeholder = @"抬";
     unit.delegate = self;
+    unit.keyboardType = UIKeyboardTypeNumberPad;
     
     y = y+40*RATIO;
     
     UILabel *timebg = [[UILabel alloc]initWithFrame:CGRectMake(0, y, WIDTH, 40*RATIO)];
     timebg.backgroundColor = LIGHT_BLUE;
     
-    UILabel *timeTitle = [[UILabel alloc]initWithFrame:CGRectMake(15*RATIO, y+10*RATIO, 40*RATIO, 20*RATIO)];
+    UILabel *timeTitle = [[UILabel alloc]initWithFrame:CGRectMake(15*RATIO, y+10*RATIO, 80*RATIO, 20*RATIO)];
     timeTitle.backgroundColor = [UIColor clearColor];
     timeTitle.text = @"時間";
     timeTitle.textAlignment = NSTextAlignmentLeft;
@@ -264,13 +297,14 @@
     circle = [[UITextField alloc]initWithFrame:CGRectMake(15*RATIO, y, WIDTH, 35*RATIO)];
     circle.placeholder = @"將數";
     circle.delegate = self;
+    circle.keyboardType = UIKeyboardTypeNumberPad;
     
     y = y+40*RATIO;
     
     UILabel *tablebg = [[UILabel alloc]initWithFrame:CGRectMake(0, y, WIDTH, 40*RATIO)];
     tablebg.backgroundColor = LIGHT_BLUE;
     
-    UILabel *tableTitle = [[UILabel alloc]initWithFrame:CGRectMake(15*RATIO, y+10*RATIO, 40*RATIO, 20*RATIO)];
+    UILabel *tableTitle = [[UILabel alloc]initWithFrame:CGRectMake(15*RATIO, y+10*RATIO, 80*RATIO, 20*RATIO)];
     tableTitle.backgroundColor = [UIColor clearColor];
     tableTitle.text = @"桌型";
     tableTitle.textAlignment = NSTextAlignmentLeft;
@@ -287,7 +321,7 @@
     UILabel *cigarettebg = [[UILabel alloc]initWithFrame:CGRectMake(0, y, WIDTH, 40*RATIO)];
     cigarettebg.backgroundColor = LIGHTG_COLOR;
     
-    UILabel *cigaretteTitle = [[UILabel alloc]initWithFrame:CGRectMake(15*RATIO, y+10*RATIO, 40*RATIO, 20*RATIO)];
+    UILabel *cigaretteTitle = [[UILabel alloc]initWithFrame:CGRectMake(15*RATIO, y+10*RATIO, 80*RATIO, 20*RATIO)];
     cigaretteTitle.backgroundColor = [UIColor clearColor];
     cigaretteTitle.text = @"菸";
     cigaretteTitle.textAlignment = NSTextAlignmentLeft;
@@ -301,19 +335,17 @@
     
     y = y+40*RATIO;
     
-    UILabel *rulebg = [[UILabel alloc]initWithFrame:CGRectMake(0, y, WIDTH, 60*RATIO)];
+    UILabel *rulebg = [[UILabel alloc]initWithFrame:CGRectMake(0, y, WIDTH, 150*RATIO)];
     rulebg.backgroundColor = LIGHT_BLUE;
     
-    rule = [[UITextField alloc]initWithFrame:CGRectMake(15*RATIO, y, WIDTH, 70*RATIO)];
+    rule = [[UITextField alloc]initWithFrame:CGRectMake(15*RATIO, y+10*RATIO, WIDTH, 150*RATIO)];
     rule.placeholder = @"規則";
     rule.delegate = self;
     
-    y = y+70*RATIO;
+    y = y+150*RATIO;
     
     UIButton *checkBtn = [[UIButton alloc]initWithFrame:CGRectMake(WIDTH/2-60*RATIO, y , 120*RATIO, 50*RATIO)];
     [checkBtn setTitle:@"確認" forState:UIControlStateNormal];
-//    checkBtn.titleLabel.textColor = MAIN_COLOR;
-//    checkBtn.tintColor = MAIN_COLOR;
     [checkBtn setTitleColor:MAIN_COLOR forState:UIControlStateNormal];
     [checkBtn.titleLabel setFont:[UIFont systemFontOfSize:20*RATIO]];
     [checkBtn.layer setBorderWidth:0.8f];
@@ -322,7 +354,7 @@
     [checkBtn addTarget:self action:@selector(nextAction) forControlEvents:UIControlEventTouchUpInside];
     
     UIScrollView *backGroud= [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, WIDTH, HEIGHT)];
-    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapView:)];
     
     [backGroud addSubview:head];
     [backGroud addSubview:locationbg];
@@ -349,6 +381,7 @@
     [backGroud addSubview:circle];
     [backGroud addSubview:rule];
     [backGroud addSubview:checkBtn];
+    [backGroud addGestureRecognizer:tap];
     
     [backGroud setShowsHorizontalScrollIndicator:NO];
     [backGroud setShowsVerticalScrollIndicator:NO];
@@ -360,7 +393,7 @@
 #pragma mark - rong
 -(void)nextView{
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *group = [defaults objectForKey:@"RoomNum"];
+    NSString *group = [defaults objectForKey:@"CreatRoomNum"];
     NSString *roomname = location.text;
     NSLog(@"group = %@,roomname= %@",group,roomname);
     [[RCIMClient sharedRCIMClient] joinGroup:[NSString stringWithFormat:@"%@",group] groupName:roomname success:^(void){
@@ -375,7 +408,9 @@
     [appDelegate dismissPauseView];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *roomname = location.text;
-    NSString *group = [defaults objectForKey:@"RoomNum"];
+    NSString *group = [defaults objectForKey:@"CreatRoomNum"];
+    [defaults setObject:group forKey:@"RoomNum"];
+    [defaults synchronize];
     NSLog(@"group = %@,roomname= %@",group,roomname);
     RongViewController *temp = [[RongViewController alloc]init];
     temp.targetId = [NSString stringWithFormat:@"%@",group];
@@ -383,7 +418,15 @@
     [defaults synchronize];
     temp.conversationType = ConversationType_GROUP;// 传入讨论组类型
     temp.title = roomname;
+    temp.chatSessionInputBarControl.emojiButton = nil;
     [self.navigationController pushViewController:temp animated:YES];
+}
+#pragma mark - REGEX
+- (BOOL)validateNumber:(NSString *) textString
+{
+    NSString* number=@"^[0-9]+$";
+    NSPredicate *numberPre = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",number];
+    return [numberPre evaluateWithObject:textString];
 }
 
 

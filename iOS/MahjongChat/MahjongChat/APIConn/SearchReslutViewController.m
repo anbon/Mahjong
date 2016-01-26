@@ -13,7 +13,9 @@
 
 @end
 
-@implementation SearchReslutViewController
+@implementation SearchReslutViewController{
+    float  rating;
+}
 
 #pragma mark - life Cycle
 - (void)viewDidLoad {
@@ -28,21 +30,17 @@
 }
 #pragma mark - API Delegate
 #pragma mark - event response
+-(void)followAction{
+#warning  api follow/unfollow
+}
 #pragma mark - getters & setters
 -(void)initByDuke{
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *num = [defaults objectForKey:@"searchResultNum"];
     NSString *name = [defaults objectForKey:@"searchResultName"];
-    NSString *email = [defaults objectForKey:@"searchResultEmail"];
-    NSString *username = [defaults objectForKey:@"searchResultUsername"];
-    NSString *password = [defaults objectForKey:@"searchResultPassword"];
     NSString *gender = [defaults objectForKey:@"searchResultGender"];
     NSString *age = [defaults objectForKey:@"searchResultAge"];
-    NSString *locationX = [defaults objectForKey:@"searchResultLocationX"];
-    NSString *locationY = [defaults objectForKey:@"searchResultLocationY"];
     NSString *photo = [defaults objectForKey:@"searchResultPhoto"];
-    NSString *level = [defaults objectForKey:@"searchResultLevel"];
-    NSString *distance = [defaults objectForKey:@"searchResultDistance"];
+    rating = [[defaults objectForKey:@"searchResultRate"] intValue];
     
     CGFloat y = 0;
     
@@ -64,6 +62,19 @@
             popupCleanerIcon.alpha = 1.0f;
         }];
     }];
+    
+    UIButton *follow = [[UIButton alloc]initWithFrame:CGRectMake(WIDTH-110*RATIO, y+30*RATIO, 90*RATIO, 30*RATIO)];
+    if (rating == 2) {
+        [follow setTitle:@"Follow" forState:UIControlStateNormal];
+        [follow setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [follow.layer setBackgroundColor:[MAIN_COLOR CGColor]];
+    }else if(rating == 1){
+        [follow setTitle:@"UnFollow" forState:UIControlStateNormal];
+        [follow setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [follow.layer setBackgroundColor:[[UIColor redColor] CGColor]];
+    }
+    [follow.layer setBorderWidth:15*RATIO];
+    [follow addTarget:self action:@selector(followAction) forControlEvents:UIControlEventTouchUpInside];
     
     y += 90*RATIO;
     
@@ -96,7 +107,7 @@
     nickNameTitle.text = @"暱稱";
     nickNameTitle.textAlignment = NSTextAlignmentLeft;
     
-    UILabel *nickName = [[UILabel alloc]initWithFrame:CGRectMake(80*RATIO, y+25*RATIO, 40*RATIO, 20*RATIO)];
+    UILabel *nickName = [[UILabel alloc]initWithFrame:CGRectMake(80*RATIO, y+25*RATIO, 90*RATIO, 20*RATIO)];
     nickName.backgroundColor = [UIColor clearColor];
     nickName.text = name;
     nickName.textAlignment = NSTextAlignmentLeft;
@@ -118,24 +129,28 @@
     
     y += 70*RATIO;
     
-    UILabel *locationBg = [[UILabel alloc]initWithFrame:CGRectMake(0, y, WIDTH, 70*RATIO)];
-    locationBg.backgroundColor = LIGHTG_COLOR;
-    
-    UILabel *locationTitle = [[UILabel alloc]initWithFrame:CGRectMake(20*RATIO, y+25*RATIO, 40*RATIO, 20*RATIO)];
-    locationTitle.backgroundColor = [UIColor clearColor];
-    locationTitle.text = @"地區";
-    locationTitle.textAlignment = NSTextAlignmentLeft;
-    
-    UILabel *locationXY = [[UILabel alloc]initWithFrame:CGRectMake(80*RATIO, y+25*RATIO, 80*RATIO, 20*RATIO)];
-    locationXY.backgroundColor = [UIColor clearColor];
-    locationXY.text = @"地區(by後台)";
-    locationXY.textAlignment = NSTextAlignmentLeft;
-    
-    y += 70*RATIO;
     
     UILabel *ratingBg = [[UILabel alloc]initWithFrame:CGRectMake(0, y, WIDTH, 70*RATIO)];
     ratingBg.backgroundColor = LIGHT_BLUE;
+    [scrollView addSubview:ratingBg];
 #warning rating stiil need to insert
+    CGFloat xforStar = 15*RATIO;
+    for (int i = 0; i < rating; i++) {
+        UIImageView *starFull = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"star_filled.png"]];
+        starFull.frame = CGRectMake(xforStar , y+10*RATIO, 50*RATIO ,50*RATIO);
+        [scrollView addSubview:starFull];
+        xforStar = xforStar + 50*RATIO;
+        NSLog(@"star i = %d",i);
+    }
+    for (int i = 0; i <5-rating; i++) {
+        UIImageView *starFull = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"star.png"]];
+        starFull.frame = CGRectMake(xforStar , y+10*RATIO, 50*RATIO ,50*RATIO);
+        [scrollView addSubview:starFull];
+        xforStar = xforStar + 50*RATIO;
+    }
+
+    
+    
     
     y += 70*RATIO;
     
@@ -147,13 +162,10 @@
     [scrollView addSubview:nickNameBg];
     [scrollView addSubview:nickNameTitle];
     [scrollView addSubview:nickName];
+    [scrollView addSubview:follow];
     [scrollView addSubview:ageBg];
     [scrollView addSubview:ageTitle];
     [scrollView addSubview:agetext];
-//    [scrollView addSubview:locationBg];
-//    [scrollView addSubview:locationTitle];
-//    [scrollView addSubview:locationXY];
-    [scrollView addSubview:ratingBg];
     
     [scrollView setShowsHorizontalScrollIndicator:NO];
     [scrollView setShowsVerticalScrollIndicator:NO];

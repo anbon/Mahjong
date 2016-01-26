@@ -27,8 +27,8 @@
     self = [super initWithFrame:frame];
     if (self) {
         _numberOfStar = number;
-        self.starBackgroundView = [self buidlStarViewWithImageName:@"star-01"];
-        self.starForegroundView = [self buidlStarViewWithImageName:@"star-02"];
+        self.starBackgroundView = [self buidlStarViewWithImageName:@"star.png"];
+        self.starForegroundView = [self buidlStarViewWithImageName:@"star_filled.png"];
         [self addSubview:self.starBackgroundView];
         [self addSubview:self.starForegroundView];
     }
@@ -120,6 +120,7 @@
     {
         [self.delegate starRatingView:self score:score];
     }
+    NSLog(@"%f",score);
 }
 
 @end

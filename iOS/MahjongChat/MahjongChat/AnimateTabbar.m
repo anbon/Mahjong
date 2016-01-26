@@ -10,6 +10,9 @@
 //#import "M13BadgeView.h"
 
 @implementation AnimateTabbarView
+{
+    int g_selectedTag;
+}
 @synthesize  firstBtn,secondBtn,thirdBtn,fourthBtn,delegate,backBtn,shadeBtn;
 
 enum barsize{
@@ -18,6 +21,7 @@ enum barsize{
 float tab_width, tab_hight, tabitem_width, tabitem_hight, img_x, img_y, img_width, img_hight;
 - (id)initWithFrame:(CGRect)frame
 {
+    g_selectedTag=1;
     tab_width = WIDTH;
     tab_hight = WIDTH * (46.0f/320.0f);
     tabitem_width = WIDTH / 3.0f;
@@ -120,7 +124,6 @@ float tab_width, tab_hight, tabitem_width, tabitem_hight, img_x, img_y, img_widt
         [backBtn addSubview:firstBtn];
         [backBtn addSubview:secondBtn];
         [backBtn addSubview:thirdBtn];
-       // [backBtn addSubview:fourthBtn];
         
         
         
@@ -171,7 +174,7 @@ float tab_width, tab_hight, tabitem_width, tabitem_hight, img_x, img_y, img_widt
     
 }
 
-int g_selectedTag=1;
+
 -(void)buttonClickAction:(id)sender{
     UIButton *btn=(UIButton *)sender;
    // UIImageView *view=btn1.subviews[0];

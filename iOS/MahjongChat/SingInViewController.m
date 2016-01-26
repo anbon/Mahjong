@@ -112,6 +112,12 @@
 -(void)cancelview{
     NSLog(@"hahaha..oh");
 }
+
+-(void)tapView:(UITapGestureRecognizer*)tap{//UITextField account,pwd
+    [account resignFirstResponder];
+    [pwd resignFirstResponder];
+    
+}
 #pragma mark - getters & setters
 //----------------------------------------------------------------------------------------------------------------------------------------
 -(void)initByDuke{
@@ -160,6 +166,9 @@
     [checkBtn.layer setBorderColor:[[UIColor whiteColor] CGColor]];
     [checkBtn addTarget:self action:@selector(login) forControlEvents:UIControlEventTouchUpInside];
     
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapView:)];
+    
+    [self.view addGestureRecognizer:tap];
     [self.view addSubview:account];
     [self.view addSubview:line];
     [self.view addSubview:pwd];

@@ -16,11 +16,13 @@
 @implementation SearchViewController
 {
     UITextField *search;
+    AppDelegate *appDelegate;
 }
 
 #pragma mark - life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
+    appDelegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
     [self initByDuke];
 }
 
@@ -31,6 +33,7 @@
 -(void)searchUserFinished:(NSDictionary *)dic{
     NSLog(@"member dic = %@",dic);
     NSString *msg = [dic objectForKey:@"message"];
+    [appDelegate dismissPauseView];
     if ([[dic objectForKey:@"status"]isEqualToString:@"1"]) {
         
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -41,11 +44,9 @@
         [defaults setObject:[[dic objectForKey:@"message"]objectForKey:@"password"] forKey:@"searchResultPassword"];
         [defaults setObject:[[dic objectForKey:@"message"]objectForKey:@"gender"] forKey:@"searchResultGender"];
         [defaults setObject:[[dic objectForKey:@"message"]objectForKey:@"age"] forKey:@"searchResultAge"];
-        [defaults setObject:[[dic objectForKey:@"message"]objectForKey:@"location_x"] forKey:@"searchResultLocationX"];
-        [defaults setObject:[[dic objectForKey:@"message"]objectForKey:@"location_y"] forKey:@"searchResultLocationY"];
         [defaults setObject:[[dic objectForKey:@"message"]objectForKey:@"photo"] forKey:@"searchResultPhoto"];
         [defaults setObject:[[dic objectForKey:@"message"]objectForKey:@"level"] forKey:@"searchResultLevel"];
-        [defaults setObject:[[dic objectForKey:@"message"]objectForKey:@"dis"] forKey:@"searchResultDistance"];
+        [defaults setObject:[[dic objectForKey:@"message"]objectForKey:@"rate"] forKey:@"searchResultRate"];
         [defaults synchronize];
         
         SearchReslutViewController *result = [SearchReslutViewController new];
@@ -62,10 +63,11 @@
 #pragma mark - event response
 -(void)searchAction{
     if ([search.text isEqualToString:@""]) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"請輸入欲查詢之會員ID" message:@"" delegate:nil cancelButtonTitle:@"確定" otherButtonTitles:nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"請輸入欲查詢之會員名稱" message:@"" delegate:nil cancelButtonTitle:@"確定" otherButtonTitles:nil];
         
         [alert show];
     }else{
+        [appDelegate initPauseView:@"查詢中..請稍候.."];
         APIConn *conn = [APIConn new];
         conn.apiDelegate = self;
         [conn searchUser:@{@"username":search.text}];
@@ -74,10 +76,20 @@
     //需修正
     
 }
+-(void)tapView:(UITapGestureRecognizer*)tap{//UITextField search
+    [search resignFirstResponder];
+    
+}
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    return YES;
+}
 #pragma mark - getters & setters
 -(void)initByDuke{
     search = [[UITextField alloc]initWithFrame:CGRectMake(WIDTH/2-150*RATIO, 64+20*RATIO, 300*RATIO, 50*RATIO)];
     search.placeholder = @"輸入ID";
+    search.delegate = self;
     [search setLeftViewMode:UITextFieldViewModeAlways];
     [search.layer setBorderColor:[MAIN_COLOR CGColor]];
     [search.layer setBorderWidth:1.5f];
@@ -96,7 +108,9 @@
     checkBtn.backgroundColor = MAIN_COLOR;
     [checkBtn.titleLabel setFont:[UIFont systemFontOfSize:20]];
     [checkBtn addTarget:self action:@selector(searchAction) forControlEvents:UIControlEventTouchUpInside];
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapView:)];
 
+    [self.view addGestureRecognizer:tap];
     [self.view addSubview:checkBtn];
     [self.view addSubview:search];
 }

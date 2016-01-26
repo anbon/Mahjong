@@ -9,21 +9,26 @@
 #import "WaitForEmpowerViewController.h"
 #import "AppDelegate.h"
 #import "RongViewController.h"
+#import "RoomMemberViewController.h"
 @interface WaitForEmpowerViewController ()
 
 @end
 
 @implementation WaitForEmpowerViewController
 {
-    NSString *onwer,*pplNeed,*baseSet,*unitSet,*timeSet,*circleSet,*tableSet,*smokeSet,*ruleSet,*photoSet,*locationSet;
+    NSString *onwer,*pplNeed,*baseSet,*unitSet,*timeSet,*circleSet,*tableSet,*smokeSet,*ruleSet,*photoSet,*locationSet,*roooomNum;
     UILabel *ppl;
     AppDelegate *appDelegate;
+    NSMutableArray *users;
+    NSTimer *timer;
+    UIView *waitRoom;
 }
 #pragma mark - life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
     appDelegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    users = [[defaults objectForKey:@"selectChatRoom"]objectForKey:@"users"];
     onwer = [[[[defaults objectForKey:@"selectChatRoom"]objectForKey:@"users"]objectAtIndex:0]objectForKey:@"Uname"];
     pplNeed = [[defaults objectForKey:@"selectChatRoom"]objectForKey:@"people"];
     baseSet =  [[defaults objectForKey:@"selectChatRoom"]objectForKey:@"base"];
@@ -46,7 +51,7 @@
     ruleSet = [[defaults objectForKey:@"selectChatRoom"]objectForKey:@"rule"];
     photoSet = [[[[defaults objectForKey:@"selectChatRoom"]objectForKey:@"users"]objectAtIndex:0]objectForKey:@"photo"];
     locationSet = [[defaults objectForKey:@"selectChatRoom"]objectForKey:@"RoomName"];
-    
+    roooomNum = [[defaults objectForKey:@"selectChatRoom"]objectForKey:@"RoomNum"];
     [self initByDuke];
 }
 
@@ -54,16 +59,155 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    [timer invalidate];
+
+}
 #pragma mark - API Delegate
 -(void)networkError:(NSString *)err{
     
 }
+-(void)applyChatFinished:(NSDictionary *)dic{
+    if ([[dic objectForKey:@"status"]isEqualToString:@"0"]) {
+        //房間已滿
+    }else{
+        [self waitChat];
+    }
+    
+}
+-(void)waitChatFinished:(NSDictionary *)dic{
+    NSLog(@"waitChar dic = %@",dic);
+    if ([[dic objectForKey:@"status"]isEqualToString:@"0"]) {
+        //do nothing keep going
+    }else if([[dic objectForKey:@"status"]isEqualToString:@"1"]){
+        //gotoroom
+        [waitRoom removeFromSuperview];
+        [self nextView];
+        
+        [timer invalidate];
+    }else if([[dic objectForKey:@"status"]isEqualToString:@"2"]){
+        [waitRoom removeFromSuperview];
+        NSString *msg = [dic objectForKey:@"message"];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"加入失敗!!" message:msg delegate:nil cancelButtonTitle:@"確定" otherButtonTitles:nil];
+        
+        [alert show];
+        [timer invalidate];
+   
+    }
+    
+}
 #pragma mark - event response
+-(void)memberCheck:(UIButton*)btn{
+    NSLog(@"%@",[users objectAtIndex:btn.tag]);
+    NSMutableDictionary *memberTemp = [users objectAtIndex:btn.tag];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:[memberTemp objectForKey:@"Uname"] forKey:@"memberUserName"];
+    [defaults setObject:[memberTemp objectForKey:@"Unum"] forKey:@"memberUserNum"];
+    [defaults setObject:[memberTemp objectForKey:@"level"] forKey:@"memberLevel"];
+    [defaults setObject:[memberTemp objectForKey:@"photo"] forKey:@"memberPhoto"];
+    [defaults setObject:[memberTemp objectForKey:@"age"] forKey:@"memberAge"];
+    [defaults setObject:[memberTemp objectForKey:@"gender"] forKey:@"memberGender"];
+    [defaults setObject:[memberTemp objectForKey:@"rate"] forKey:@"memberRate"];
+    [defaults synchronize];
+    
+    RoomMemberViewController *result = [RoomMemberViewController new];
+    [self.navigationController pushViewController:result animated:YES];
+}
+-(void)nextAction{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *userID = [defaults objectForKey:@"accountID"];
+    NSLog(@"userID=%@",userID);
+    APIConn *conn=[[APIConn alloc] init];
+    conn.apiDelegate=self;
+    [conn applyChat:@{@"user_ID":userID,@"room_ID":[[defaults objectForKey:@"selectChatRoom"]objectForKey:@"RoomNum"]}];
+}
+-(void)waitChat{
+    waitRoom = [[UIView alloc]initWithFrame:CGRectMake(0, 0, WIDTH, HEIGHT)];
+    [waitRoom setBackgroundColor:[UIColor clearColor]];
+    
+    UIView *alert = [[UIView alloc]initWithFrame:CGRectMake(WIDTH/2 - 135*RATIO, 100*RATIO, 270*RATIO, 150*RATIO)];
+    [alert.layer setBorderColor:[MAIN_COLOR CGColor]];
+    [alert.layer setBorderWidth:0.8f];
+    [alert.layer setCornerRadius:40*RATIO];
+    alert.backgroundColor = [UIColor whiteColor];
+    [alert setClipsToBounds:YES];
+    
+    UILabel *lab = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 270*RATIO, 50*RATIO)];
+    lab.backgroundColor = MAIN_COLOR;
+    
+    UIImageView *logoimg = [[UIImageView alloc]initWithFrame:CGRectMake(115*RATIO, 5*RATIO, 40*RATIO,40*RATIO)];
+    logoimg.contentMode = UIViewContentModeScaleAspectFill;
+    logoimg.image = [UIImage imageNamed:@"logo.png"];
+    
+    UILabel *statusView = [[UILabel alloc]initWithFrame:CGRectMake(0, 60*RATIO, 270*RATIO, 30*RATIO)];
+    statusView.text = @"等待回覆";
+    [statusView setFont:[UIFont systemFontOfSize:20*RATIO]];
+    statusView.textAlignment = NSTextAlignmentCenter;
+    //[statusView sizeToFit];
+    
+    UIButton *cancelBtn = [[UIButton alloc]initWithFrame:CGRectMake(85*RATIO, 100*RATIO, 100*RATIO, 35*RATIO)];
+    [cancelBtn setTitle:@"取消等待.." forState:UIControlStateNormal];
+    [cancelBtn setTitleColor:MAIN_COLOR forState:UIControlStateNormal];
+    [cancelBtn.titleLabel setFont:[UIFont systemFontOfSize:15*RATIO]];
+    [cancelBtn.layer setBorderWidth:0.8f];
+    [cancelBtn.layer setCornerRadius:35/2*RATIO];
+    [cancelBtn.layer setBorderColor:[MAIN_COLOR CGColor]];
+    [cancelBtn addTarget:self action:@selector(cancelWaitRoomView) forControlEvents:UIControlEventTouchUpInside];
+    
+    statusView.textAlignment = NSTextAlignmentCenter;
+    [statusView setClipsToBounds:YES];
+    [statusView setFont:[UIFont systemFontOfSize:15]];
+    
+    statusView.textColor = [UIColor blackColor];
+    
+    
+    [alert addSubview:lab];
+    [alert addSubview:logoimg];
+    [alert addSubview:statusView];
+    [alert addSubview:cancelBtn];
+    
+    alert.layer.shadowColor = [[UIColor blackColor] CGColor];
+    alert.layer.shadowOffset = CGSizeMake(3.0f, 3.0f); // [水平偏移, 垂直偏移]
+    alert.layer.shadowOpacity = 0.5f; // 0.0 ~ 1.0 的值
+    alert.layer.shadowRadius = 10.0f; // 陰影發散的程度
+    
+    [waitRoom addSubview:alert];
+    
+    [appDelegate.mainNavi.view addSubview:waitRoom];
+
+    
+    [self initializeTimer];
+}
+-(void)cancelWaitRoomView{
+    [waitRoom removeFromSuperview];
+    [timer invalidate];
+}
+-(void)initializeTimer {
+    NSLog(@"inittimer");
+    float theInterval = 1.0/0.2;
+    timer = [NSTimer scheduledTimerWithTimeInterval:theInterval
+                                             target:self
+                                           selector:@selector(timerConnWait)
+                                           userInfo:nil
+                                            repeats:YES];
+}
+-(void)timerConnWait{
+    NSLog(@"timer working");
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *userID = [defaults objectForKey:@"accountID"];
+    APIConn *conn=[[APIConn alloc] init];
+    conn.apiDelegate=self;
+    [conn waitChat:@{@"user_ID":userID,@"room_ID":[[defaults objectForKey:@"selectChatRoom"]objectForKey:@"RoomNum"]}];
+}
 #pragma mark - getters & setters
 -(void)initByDuke{
     CGFloat y = 0;
     
     y= y+22;
+    
+    UIScrollView *backGroud= [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, WIDTH, HEIGHT)];
+    
     
     UIImageView *head = [[UIImageView alloc] initWithFrame:CGRectMake(0-20*RATIO, y, WIDTH+40*RATIO, 180*RATIO)];
     [head setImage:[UIImage imageNamed:@"info_bg.png"]];
@@ -109,7 +253,6 @@
     UILabel *pplTitle = [[UILabel alloc]initWithFrame:CGRectMake(15*RATIO, y+10*RATIO, 80*RATIO, 45*RATIO)];
     pplTitle.backgroundColor = [UIColor clearColor];
     pplTitle.text = @"缺幾人";
-//    [pplTitle sizeToFit];
     pplTitle.textAlignment = NSTextAlignmentLeft;
     
     ppl = [[UILabel alloc]initWithFrame:CGRectMake(WIDTH-85*RATIO, y+45*RATIO/2, 70*RATIO, 20*RATIO)];
@@ -207,9 +350,52 @@
     table.textAlignment = NSTextAlignmentCenter;
     
     y = y+65*RATIO;
-#warning member
     UILabel *memberbg = [[UILabel alloc]initWithFrame:CGRectMake(0, y, WIDTH, 80*RATIO)];
     memberbg.backgroundColor = LIGHTG_COLOR;
+    
+    UILabel *memberTitle = [[UILabel alloc]initWithFrame:CGRectMake(15*RATIO, y+35*RATIO/2, 80*RATIO, 45*RATIO)];
+    memberTitle.backgroundColor = [UIColor clearColor];
+    memberTitle.text = @"成員";
+    memberTitle.textAlignment = NSTextAlignmentLeft;
+    
+    [backGroud addSubview:memberbg];
+    [backGroud addSubview:memberTitle];
+    
+    //ppl+roomonwer - users.count;
+    float userCount = users.count;
+    NSLog(@"%f",userCount);
+    
+    int memberNum = [pplNeed intValue] +1 - userCount;
+    NSLog(@"%d",[pplNeed intValue]);
+    
+    CGFloat btnLastX = 0.0;
+    CGFloat x = WIDTH-15*RATIO-60*RATIO;
+    
+    
+    for (int i = 0; i < memberNum; i++) {
+        UIButton *btn = [[UIButton alloc]initWithFrame:CGRectMake(x, y+10*RATIO, 60*RATIO, 60*RATIO)];
+        [btn setImage:[UIImage imageNamed:@"more2.png"] forState:UIControlStateNormal];
+        [backGroud addSubview:btn];
+        btnLastX = btn.frame.origin.x;
+        x = x-70*RATIO;
+        NSLog(@"%d",i);
+    }
+    btnLastX = x;
+    for (int i = 0; i < users.count; i++) {
+        UIButton *btn = [[UIButton alloc]initWithFrame:CGRectMake(btnLastX, y+10*RATIO, 60*RATIO, 60*RATIO)];
+        [btn.layer setCornerRadius:15*RATIO];
+        [btn setClipsToBounds:YES];
+        NSString *btnimageName = [NSString stringWithFormat:@"%@",[[users objectAtIndex:users.count-i-1] objectForKey:@"photo"]];
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@",btnimageName]];
+        UIImage *urlImage = [[UIImage alloc] initWithData:[NSData dataWithContentsOfURL:url]];
+        [btn.layer setCornerRadius:15*RATIO];
+        btn.backgroundColor = [UIColor clearColor];
+        btn.tag = userCount - i - 1;
+        [btn setImage:urlImage forState:UIControlStateNormal];
+        [btn addTarget:self action:@selector(memberCheck:) forControlEvents:UIControlEventTouchUpInside];
+        [backGroud addSubview:btn];
+        btnLastX = btnLastX - 70*RATIO;
+    }
     
     y = y+80*RATIO;
     
@@ -253,7 +439,7 @@
     
     NSLog(@"%f  %f",y,HEIGHT);
     
-    UIScrollView *backGroud= [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, WIDTH, HEIGHT)];
+    
     
     
     [backGroud addSubview:head];
@@ -286,7 +472,7 @@
     [backGroud addSubview:ruleTitle];
     [backGroud addSubview:checkBtn];
 
-    [backGroud addSubview:checkBtn];
+    
     
     [backGroud setShowsHorizontalScrollIndicator:NO];
     [backGroud setShowsVerticalScrollIndicator:NO];
@@ -300,8 +486,11 @@
 #pragma mark - rong
 -(void)nextView{
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *roomName = [[defaults objectForKey:@"selectChatRoom"]objectForKey:@"RoomName"];
-    NSString *roomNum =  [[defaults objectForKey:@"selectChatRoom"]objectForKey:@"RoonNum"];
+    NSString *roomName = locationSet;//[[defaults objectForKey:@"selectChatRoom"]objectForKey:@"RoomName"];
+    NSString *roomNum =  roooomNum;//[[defaults objectForKey:@"selectChatRoom"]objectForKey:@"RoonNum"];
+    NSString *roomSum =  [defaults objectForKey:@"selectChatRoom"];
+    NSLog(@"selectROom%=@",roomSum);
+    NSLog(@"roomNum=%@,roomNumByNsuser=%@",roomNum,[[[NSUserDefaults standardUserDefaults]objectForKey:@"selectChatRoom"] objectForKey:@"RoomNum"]);
     [[RCIMClient sharedRCIMClient] joinGroup:[NSString stringWithFormat:@"%@",roomNum] groupName:roomName success:^(void){
         
         [self performSelectorOnMainThread:@selector(nextView2) withObject:nil waitUntilDone:YES];
@@ -313,17 +502,21 @@
 -(void)nextView2{
     [appDelegate dismissPauseView];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *roomName = [[defaults objectForKey:@"selectChatRoom"]objectForKey:@"RoomName"];
-    NSString *roomNum =  [[defaults objectForKey:@"selectChatRoom"]objectForKey:@"RoonNum"];
+    [[NSUserDefaults standardUserDefaults]setObject:@"RoomMember" forKey:@"Identity"];
+    NSString *roomName = locationSet;//[[defaults objectForKey:@"selectChatRoom"]objectForKey:@"RoomName"];
+    NSString *roomNum =  roooomNum;//[[defaults objectForKey:@"selectChatRoom"]objectForKey:@"RoonNum"];
+    NSLog(@"roomNum=%@",roomNum);
+    [defaults setObject:roomNum forKey:@"RoomNum"];
+    [defaults synchronize];
     RongViewController *temp = [[RongViewController alloc]init];
     temp.targetId = [NSString stringWithFormat:@"%@",roomNum];
+    
     [defaults setObject:temp.targetId forKey:@"groupid"];
     [defaults synchronize];
     temp.conversationType = ConversationType_GROUP;// 传入讨论组类型
     temp.title = roomName;
     [self.navigationController pushViewController:temp animated:YES];
 }
-
 
 
 @end

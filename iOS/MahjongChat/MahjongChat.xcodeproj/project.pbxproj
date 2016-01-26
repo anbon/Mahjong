@@ -38,6 +38,10 @@
 		AB15A0E21C2E8AE4009C2501 /* UIImageView+HighlightedWebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = AB15A0D21C2E8AE4009C2501 /* UIImageView+HighlightedWebCache.m */; };
 		AB15A0E31C2E8AE4009C2501 /* UIImageView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = AB15A0D41C2E8AE4009C2501 /* UIImageView+WebCache.m */; };
 		AB15A0E41C2E8AE4009C2501 /* UIView+WebCacheOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = AB15A0D61C2E8AE4009C2501 /* UIView+WebCacheOperation.m */; };
+		AB68E72A1C39520B00D50613 /* star_filled.png in Resources */ = {isa = PBXBuildFile; fileRef = AB68E7281C39520B00D50613 /* star_filled.png */; };
+		AB68E72B1C39520B00D50613 /* star.png in Resources */ = {isa = PBXBuildFile; fileRef = AB68E7291C39520B00D50613 /* star.png */; };
+		AB68E72F1C3A69DC00D50613 /* RoomMemberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB68E72D1C3A69DC00D50613 /* RoomMemberViewController.m */; };
+		AB68E7301C3A69DC00D50613 /* RoomMemberViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB68E72E1C3A69DC00D50613 /* RoomMemberViewController.xib */; };
 		ABC20A111BFCCA580025AFD5 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ABC20A0F1BFCCA580025AFD5 /* LoginViewController.m */; };
 		ABC20A121BFCCA580025AFD5 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = ABC20A101BFCCA580025AFD5 /* LoginViewController.xib */; };
 		ABC20A171BFCCAEB0025AFD5 /* APIConn.m in Sources */ = {isa = PBXBuildFile; fileRef = ABC20A161BFCCAEB0025AFD5 /* APIConn.m */; };
@@ -225,6 +229,11 @@
 		AB15A0D41C2E8AE4009C2501 /* UIImageView+WebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+WebCache.m"; sourceTree = "<group>"; };
 		AB15A0D51C2E8AE4009C2501 /* UIView+WebCacheOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+WebCacheOperation.h"; sourceTree = "<group>"; };
 		AB15A0D61C2E8AE4009C2501 /* UIView+WebCacheOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+WebCacheOperation.m"; sourceTree = "<group>"; };
+		AB68E7281C39520B00D50613 /* star_filled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = star_filled.png; sourceTree = "<group>"; };
+		AB68E7291C39520B00D50613 /* star.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = star.png; sourceTree = "<group>"; };
+		AB68E72C1C3A69DC00D50613 /* RoomMemberViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomMemberViewController.h; sourceTree = "<group>"; };
+		AB68E72D1C3A69DC00D50613 /* RoomMemberViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomMemberViewController.m; sourceTree = "<group>"; };
+		AB68E72E1C3A69DC00D50613 /* RoomMemberViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomMemberViewController.xib; sourceTree = "<group>"; };
 		ABC20A0E1BFCCA580025AFD5 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		ABC20A0F1BFCCA580025AFD5 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		ABC20A101BFCCA580025AFD5 /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
@@ -456,9 +465,6 @@
 				ABC20ABC1C01DFC30025AFD5 /* LocationViewController.h */,
 				ABC20ABD1C01DFC30025AFD5 /* LocationViewController.m */,
 				ABC20ABE1C01DFC30025AFD5 /* LocationViewController.xib */,
-				AB0A97F01C0D7DD000309A0A /* RongViewController.h */,
-				AB0A97F11C0D7DD000309A0A /* RongViewController.m */,
-				AB0A97F21C0D7DD000309A0A /* RongViewController.xib */,
 				ABC20AD61C0308390025AFD5 /* ChatRoomViewController.h */,
 				ABC20AD71C0308390025AFD5 /* ChatRoomViewController.m */,
 				ABC20AD81C0308390025AFD5 /* ChatRoomViewController.xib */,
@@ -501,6 +507,12 @@
 				AB0A97F91C0D8A3300309A0A /* addRoomViewController.h */,
 				AB0A97FA1C0D8A3300309A0A /* addRoomViewController.m */,
 				AB0A97FB1C0D8A3300309A0A /* addRoomViewController.xib */,
+				AB0A97F01C0D7DD000309A0A /* RongViewController.h */,
+				AB0A97F11C0D7DD000309A0A /* RongViewController.m */,
+				AB0A97F21C0D7DD000309A0A /* RongViewController.xib */,
+				AB68E72C1C3A69DC00D50613 /* RoomMemberViewController.h */,
+				AB68E72D1C3A69DC00D50613 /* RoomMemberViewController.m */,
+				AB68E72E1C3A69DC00D50613 /* RoomMemberViewController.xib */,
 			);
 			name = newRoom;
 			sourceTree = "<group>";
@@ -549,6 +561,13 @@
 				AB15A0D61C2E8AE4009C2501 /* UIView+WebCacheOperation.m */,
 			);
 			path = SDWebImage;
+			sourceTree = "<group>";
+		};
+		AB68E7351C426DE300D50613 /* RongCloud */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = RongCloud;
 			sourceTree = "<group>";
 		};
 		ABC20A061BFC38030025AFD5 /* Main */ = {
@@ -602,6 +621,7 @@
 				ABC20ADD1C0310D40025AFD5 /* AudioToolbox.framework */,
 				ABC20ADB1C0310CB0025AFD5 /* AssetsLibrary.framework */,
 				ABC20AC51C03004B0025AFD5 /* Rong_Cloud_iOS_SDK_v2_3_7_stable */,
+				AB68E7351C426DE300D50613 /* RongCloud */,
 				ABC20AC11C02F5750025AFD5 /* EMAsyncImage */,
 				ABC20AAD1C01DA730025AFD5 /* AnimateTabbar */,
 				AB15A0B91C2E8AE4009C2501 /* SDWebImage */,
@@ -627,6 +647,8 @@
 		ABC20A181BFCCB690025AFD5 /* image */ = {
 			isa = PBXGroup;
 			children = (
+				AB68E7281C39520B00D50613 /* star_filled.png */,
+				AB68E7291C39520B00D50613 /* star.png */,
 				ABC20A5D1BFCCB950025AFD5 /* 麻將content.psd */,
 				ABC20A5E1BFCCB950025AFD5 /* addnew.png */,
 				ABC20A5F1BFCCB950025AFD5 /* base.png */,
@@ -887,6 +909,11 @@
 					ABEF50A01BCF96C3001512F6 = {
 						CreatedOnToolsVersion = 7.0.1;
 						DevelopmentTeam = 3KSR4CQDWE;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 					ABEF50B91BCF96C3001512F6 = {
 						CreatedOnToolsVersion = 7.0.1;
@@ -937,11 +964,13 @@
 				ABC20A411BFCCB8D0025AFD5 /* confirm2.png in Resources */,
 				AB09F9561C30423B00495723 /* CropImageViewController.xib in Resources */,
 				ABC20A571BFCCB8D0025AFD5 /* signin.png in Resources */,
+				AB68E72B1C39520B00D50613 /* star.png in Resources */,
 				ABC20A3C1BFCCB8D0025AFD5 /* area.png in Resources */,
 				ABC20A6D1BFCCB950025AFD5 /* need1.png in Resources */,
 				ABC20A421BFCCB8D0025AFD5 /* confirm3.png in Resources */,
 				ABC20A751BFCCB950025AFD5 /* tabsearch.png in Resources */,
 				ABC20A6C1BFCCB950025AFD5 /* base.png in Resources */,
+				AB68E72A1C39520B00D50613 /* star_filled.png in Resources */,
 				ABC20A5A1BFCCB8D0025AFD5 /* Smokeon.png in Resources */,
 				AB0A97FD1C0D8A3300309A0A /* addRoomViewController.xib in Resources */,
 				ABC20AD21C03004B0025AFD5 /* release_notes_ios.txt in Resources */,
@@ -975,6 +1004,7 @@
 				ABC20A711BFCCB950025AFD5 /* selected_tabprofile.png in Resources */,
 				AB09F9581C3159C100495723 /* confirm6.png in Resources */,
 				ABC20A5C1BFCCB8D0025AFD5 /* user.psd in Resources */,
+				AB68E7301C3A69DC00D50613 /* RoomMemberViewController.xib in Resources */,
 				ABC20ABB1C01DFAF0025AFD5 /* ProfileViewController.xib in Resources */,
 				ABC20A5B1BFCCB8D0025AFD5 /* user.png in Resources */,
 				ABC20A701BFCCB950025AFD5 /* selected_tablocation.png in Resources */,
@@ -1056,6 +1086,7 @@
 				AB09F95C1C32B2D600495723 /* WaitForEmpowerViewController.m in Sources */,
 				ABC20A961BFCCF840025AFD5 /* SBJsonStreamParserState.m in Sources */,
 				AB15A0DB1C2E8AE4009C2501 /* SDWebImageDownloader.m in Sources */,
+				AB68E72F1C3A69DC00D50613 /* RoomMemberViewController.m in Sources */,
 				ABC20A111BFCCA580025AFD5 /* LoginViewController.m in Sources */,
 				AB15A0D71C2E8AE4009C2501 /* NSData+ImageContentType.m in Sources */,
 				AB0A97F31C0D7DD000309A0A /* RongViewController.m in Sources */,

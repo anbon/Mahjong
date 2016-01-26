@@ -8,14 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "AnimateTabbar.h"
-#import <CoreLocation/CoreLocation.h>
-@interface MainViewController : UIViewController<AnimateTabbarDelegate,CLLocationManagerDelegate>
+@interface MainViewController : UIViewController<AnimateTabbarDelegate>
 {
-    CLLocationManager *location;
     UIBarButtonItem *edit;
-//    UIButton *imageButtonForEdit;
 }
 @property (retain, nonatomic) UIButton *imageButtonForEdit;
 @property (retain, nonatomic) AnimateTabbarView *tabbar;
 @property (nonatomic, strong) IBOutlet UIView *childView;
+@property (nonatomic, strong) IBOutlet UIBarButtonItem *filter;
 @end

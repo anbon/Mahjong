@@ -11,7 +11,7 @@
 #import "TQStarRatingView.h"
 #import "ZHPickView.h"
 #import "APIConn.h"
-@interface ProfileViewController : UIViewController<StarRatingViewDelegate,ZHPickViewDelegate,APIConnDelegate>
+@interface ProfileViewController : UIViewController<StarRatingViewDelegate,ZHPickViewDelegate,APIConnDelegate,UITextFieldDelegate>
 
 -(void)editProfile;
 @end

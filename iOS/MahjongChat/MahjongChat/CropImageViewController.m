@@ -34,6 +34,7 @@
     [appdelegate dismissPauseView];
 }
 -(void)UpdateUserPhotoFinished:(NSDictionary *)dic{
+    [appdelegate dismissPauseView];
     if ([[dic objectForKey:@"status"]isEqualToString:@"1"]) {
         UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"相片上傳成功" message:@"" delegate:self cancelButtonTitle:@"確定" otherButtonTitles:nil];
         [alert show];

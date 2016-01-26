@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "APIConn.h"
 
-@interface SearchViewController : UIViewController<APIConnDelegate>
+@interface SearchViewController : UIViewController<APIConnDelegate,UITextFieldDelegate>
 
 @end

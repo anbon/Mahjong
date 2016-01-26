@@ -35,9 +35,21 @@
     [imageButton setBackgroundImage:[UIImage imageNamed:@"addnew.png"] forState:UIControlStateNormal];
     [imageButton addTarget:self action:@selector(addRoom) forControlEvents:UIControlEventTouchUpInside];
     addRoomBtn = [[UIBarButtonItem alloc] initWithCustomView:imageButton];
+    
+    _imageButtonForEdit = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 50, 22)];
+    [_imageButtonForEdit setBackgroundImage:[UIImage imageNamed:@"edit.png"] forState:UIControlStateNormal];
+    [_imageButtonForEdit setBackgroundImage:[UIImage imageNamed:@"confirm6.png"] forState:UIControlStateSelected];
+    [_imageButtonForEdit addTarget:self action:@selector(editByMain:) forControlEvents:UIControlEventTouchUpInside];
+    
+    edit = [[UIBarButtonItem alloc] initWithCustomView:_imageButtonForEdit];
+    
+    //
     self.navigationItem.rightBarButtonItem = addRoomBtn;
+    
     self.view.frame = CGRectMake(0, 0, WIDTH, HEIGHT);
     
+    
+    self.navigationController.navigationBar.translucent = NO;
     self.navigationController.navigationBar.barTintColor = MAIN_COLOR;
     self.navigationController.navigationBar.tintColor= [UIColor whiteColor];
     [self.navigationController.navigationBar
@@ -66,45 +78,12 @@
     currentVC=locationVC;
     
     [self.view addSubview:_tabbar];
-    _imageButtonForEdit = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 50, 22)];
-    [_imageButtonForEdit setBackgroundImage:[UIImage imageNamed:@"edit.png"] forState:UIControlStateNormal];
-    [_imageButtonForEdit setBackgroundImage:[UIImage imageNamed:@"confirm6.png"] forState:UIControlStateSelected];
-    [_imageButtonForEdit addTarget:self action:@selector(editByMain:) forControlEvents:UIControlEventTouchUpInside];
+    _filter = [[UIBarButtonItem alloc]initWithTitle:@"篩選"
+                                              style:UIBarButtonItemStylePlain
+                                             target:self
+                                             action:@selector(locationViewFilter)];
+    self.navigationItem.leftBarButtonItem = _filter;
     
-    edit = [[UIBarButtonItem alloc] initWithCustomView:_imageButtonForEdit];
-    
-
-//    location = [CLLocationManager new];
-//    location.delegate = self;
-//    [location startUpdatingHeading];
-    
-    
-//    location = [[CLLocationManager alloc] init];
-//    location.delegate = self;
-//    location.distanceFilter = kCLDistanceFilterNone;
-//    location.desiredAccuracy = kCLLocationAccuracyBest;
-    
-//    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
-//        [self->location requestWhenInUseAuthorization];
-//    
-//    [location startUpdatingLocation];
-//    
-//    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0 &&
-//        [CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorizedWhenInUse
-//        //[CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorizedAlways
-//        ) {
-//        // Will open an confirm dialog to get user's approval
-//        [location requestWhenInUseAuthorization];
-//        //[_locationManager requestAlwaysAuthorization];
-//    } else {
-//        [location startUpdatingLocation]; //Will update location immediately
-//    }
-//    NSLog(@"locato works here");
-//    location = [[CLLocationManager alloc] init];
-//    location.delegate = self;
-//    location.desiredAccuracy = kCLLocationAccuracyBest;
-//    
-//    [location startUpdatingLocation];
     
 }
 
@@ -126,6 +105,7 @@ int g_flags=1;
         g_flags=1;
         _imageButtonForEdit.selected = NO;
         self.navigationItem.rightBarButtonItem = addRoomBtn;
+        self.navigationItem.leftBarButtonItem = _filter;
         self.title = @"";
     }];
 }
@@ -169,4 +149,9 @@ int g_flags=1;
     
     NSLog(@"main edit push");
 }
+
+-(void)locationViewFilter{
+    [locationVC filterRoom];
+}
+
 @end

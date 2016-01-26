@@ -10,6 +10,7 @@
 #import "MainViewController.h"
 #import <RongIMKit/RongIMKit.h>
 #import "APIConn.h"
+#import <CoreLocation/CoreLocation.h>
 #define WIDTH [[UIScreen mainScreen] bounds].size.width
 #define HEIGHT [[UIScreen mainScreen] bounds].size.height
 #define RATIO WIDTH / 414
@@ -24,7 +25,10 @@
 #define LIGHTG_COLOR [UIColor colorWithRed:0.97 green:0.97 blue:0.97 alpha:1.0];
 #define LIGHT_BLUE [UIColor colorWithRed:0.94 green:0.98 blue:0.99 alpha:1.0];
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate,RCIMConnectionStatusDelegate,APIConnDelegate,RCIMUserInfoDataSource>
+@interface AppDelegate : UIResponder <UIApplicationDelegate,RCIMConnectionStatusDelegate,APIConnDelegate,RCIMUserInfoDataSource,RCIMGroupInfoDataSource,CLLocationManagerDelegate>
+{
+    CLLocationManager *location;
+}
 
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) MainViewController *mainViewController;
