@@ -3,7 +3,6 @@ package com.example.demo;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -31,16 +30,15 @@ import java.util.List;
 
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
-import io.rong.imlib.model.Group;
 import io.rong.imlib.model.UserInfo;
 
-public class RoomInfoActivity extends Activity {
+public class RoomInfoEditActivity extends Activity {
     private final String TAG = "RoomInfoActivity";
     App myapi;
     App.LoadingDialog dialog;
     Thread mythread;
     TextView create_host,create_time, create_ppl_in_need, create_category, create_cigarette, create_base, create_unit, create_circle, create_rule, room_name;
-    ImageView photo0, photo1, photo2, photo3,info_photo;
+    ImageView back, photo0, photo1, photo2, photo3,info_photo;
     SharedPreferences pref;
     Bundle bundle;
     @Override
@@ -67,7 +65,7 @@ public class RoomInfoActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.activity_room_info);
+        setContentView(R.layout.activity_room_info_edit);
         create_time = (TextView) findViewById(R.id.create_time);
         create_ppl_in_need = (TextView) findViewById(R.id.create_ppl_in_need);
         create_category = (TextView) findViewById(R.id.create_category);
@@ -111,13 +109,13 @@ public class RoomInfoActivity extends Activity {
 
 
 
-        Picasso.with(RoomInfoActivity.this)
+        Picasso.with(RoomInfoEditActivity.this)
                 .load(R.drawable.more2)
                 .transform(new RoundSquareTransform()).into(photo0);
-        Picasso.with(RoomInfoActivity.this)
+        Picasso.with(RoomInfoEditActivity.this)
                 .load(R.drawable.more2)
                 .transform(new RoundSquareTransform()).into(photo1);
-        Picasso.with(RoomInfoActivity.this)
+        Picasso.with(RoomInfoEditActivity.this)
                 .load(R.drawable.more2)
                 .transform(new RoundSquareTransform()).into(photo2);
 
@@ -141,12 +139,12 @@ public class RoomInfoActivity extends Activity {
                 try {
                     final JSONArray a = new JSONArray(result);
                     final int vacant = Integer.parseInt(bundle.getString("people")) - a.length()+1;
-                    Picasso.with(RoomInfoActivity.this)
+                    Picasso.with(RoomInfoEditActivity.this)
                             .load(a.getJSONObject(0).getString("photo"))
                             .transform(new CircleImageTransform()).into(info_photo);
                         if (vacant==1) {
                             if(a.length()==3) {
-                                Picasso.with(RoomInfoActivity.this)
+                                Picasso.with(RoomInfoEditActivity.this)
                                         .load(a.getJSONObject(0).getString("photo"))
                                         .transform(new RoundSquareTransform()).into(photo3);
                                 photo3.setOnClickListener(new View.OnClickListener() {
@@ -156,7 +154,7 @@ public class RoomInfoActivity extends Activity {
                                         try {
                                             Log.v("onClick", a.getJSONObject(0).getString("Unum"));
                                             JSONObject o_o = a.getJSONObject(0);
-                                            gotoMemberActivity2(o_o.getString("Unum"),
+                                            choose_Action(o_o.getString("Unum"),
                                                     o_o.getString("Uname"),
                                                     o_o.getString("age"),
                                                     o_o.getString("gender"),
@@ -168,7 +166,7 @@ public class RoomInfoActivity extends Activity {
                                         }
                                     }
                                 });
-                                Picasso.with(RoomInfoActivity.this)
+                                Picasso.with(RoomInfoEditActivity.this)
                                         .load(a.getJSONObject(1).getString("photo"))
                                         .transform(new RoundSquareTransform()).into(photo2);
                                 photo2.setOnClickListener(new View.OnClickListener() {
@@ -178,7 +176,7 @@ public class RoomInfoActivity extends Activity {
                                         try {
                                             Log.v("onClick", a.getJSONObject(1).getString("Unum"));
                                             JSONObject o_o = a.getJSONObject(1);
-                                            gotoMemberActivity2(o_o.getString("Unum"),
+                                            choose_Action(o_o.getString("Unum"),
                                                     o_o.getString("Uname"),
                                                     o_o.getString("age"),
                                                     o_o.getString("gender"),
@@ -190,7 +188,7 @@ public class RoomInfoActivity extends Activity {
                                         }
                                     }
                                 });
-                                Picasso.with(RoomInfoActivity.this)
+                                Picasso.with(RoomInfoEditActivity.this)
                                         .load(a.getJSONObject(2).getString("photo"))
                                         .transform(new RoundSquareTransform()).into(photo1);
                                 photo1.setOnClickListener(new View.OnClickListener() {
@@ -200,7 +198,7 @@ public class RoomInfoActivity extends Activity {
                                         try {
                                             Log.v("onClick", a.getJSONObject(2).getString("Unum"));
                                             JSONObject o_o = a.getJSONObject(2);
-                                            gotoMemberActivity2(o_o.getString("Unum"),
+                                            choose_Action(o_o.getString("Unum"),
                                                     o_o.getString("Uname"),
                                                     o_o.getString("age"),
                                                     o_o.getString("gender"),
@@ -214,7 +212,7 @@ public class RoomInfoActivity extends Activity {
                                 });
                             }
                             else if(a.length()==2){
-                                Picasso.with(RoomInfoActivity.this)
+                                Picasso.with(RoomInfoEditActivity.this)
                                         .load(a.getJSONObject(0).getString("photo"))
                                         .transform(new RoundSquareTransform()).into(photo2);
                                 photo2.setOnClickListener(new View.OnClickListener() {
@@ -224,7 +222,7 @@ public class RoomInfoActivity extends Activity {
                                         try {
                                             Log.v("onClick", a.getJSONObject(0).getString("Unum"));
                                             JSONObject o_o = a.getJSONObject(0);
-                                            gotoMemberActivity2(o_o.getString("Unum"),
+                                            choose_Action(o_o.getString("Unum"),
                                                     o_o.getString("Uname"),
                                                     o_o.getString("age"),
                                                     o_o.getString("gender"),
@@ -236,7 +234,7 @@ public class RoomInfoActivity extends Activity {
                                         }
                                     }
                                 });
-                                Picasso.with(RoomInfoActivity.this)
+                                Picasso.with(RoomInfoEditActivity.this)
                                         .load(a.getJSONObject(1).getString("photo"))
                                         .transform(new RoundSquareTransform()).into(photo1);
                                 photo1.setOnClickListener(new View.OnClickListener() {
@@ -246,7 +244,7 @@ public class RoomInfoActivity extends Activity {
                                         try {
                                             Log.v("onClick", a.getJSONObject(1).getString("Unum"));
                                             JSONObject o_o = a.getJSONObject(1);
-                                            gotoMemberActivity2(o_o.getString("Unum"),
+                                            choose_Action(o_o.getString("Unum"),
                                                     o_o.getString("Uname"),
                                                     o_o.getString("age"),
                                                     o_o.getString("gender"),
@@ -260,7 +258,7 @@ public class RoomInfoActivity extends Activity {
                                 });
                                 photo3.setVisibility(View.GONE);
                             }else{
-                                Picasso.with(RoomInfoActivity.this)
+                                Picasso.with(RoomInfoEditActivity.this)
                                         .load(a.getJSONObject(0).getString("photo"))
                                         .transform(new RoundSquareTransform()).into(photo1);
                                 photo1.setOnClickListener(new View.OnClickListener() {
@@ -270,7 +268,7 @@ public class RoomInfoActivity extends Activity {
                                         try {
                                             Log.v("onClick", a.getJSONObject(0).getString("Unum"));
                                             JSONObject o_o = a.getJSONObject(0);
-                                            gotoMemberActivity2(o_o.getString("Unum"),
+                                            choose_Action(o_o.getString("Unum"),
                                                     o_o.getString("Uname"),
                                                     o_o.getString("age"),
                                                     o_o.getString("gender"),
@@ -288,7 +286,7 @@ public class RoomInfoActivity extends Activity {
                         }
                         if (vacant==2) {
                             if(a.length()==2){
-                                Picasso.with(RoomInfoActivity.this)
+                                Picasso.with(RoomInfoEditActivity.this)
                                         .load(a.getJSONObject(0).getString("photo"))
                                         .transform(new RoundSquareTransform()).into(photo3);
                                 photo3.setOnClickListener(new View.OnClickListener() {
@@ -298,7 +296,7 @@ public class RoomInfoActivity extends Activity {
                                         try {
                                             Log.v("onClick", a.getJSONObject(0).getString("Unum"));
                                             JSONObject o_o = a.getJSONObject(0);
-                                            gotoMemberActivity2(o_o.getString("Unum"),
+                                            choose_Action(o_o.getString("Unum"),
                                                     o_o.getString("Uname"),
                                                     o_o.getString("age"),
                                                     o_o.getString("gender"),
@@ -310,7 +308,7 @@ public class RoomInfoActivity extends Activity {
                                         }
                                     }
                                 });
-                                Picasso.with(RoomInfoActivity.this)
+                                Picasso.with(RoomInfoEditActivity.this)
                                         .load(a.getJSONObject(1).getString("photo"))
                                         .transform(new RoundSquareTransform()).into(photo2);
                                 photo2.setOnClickListener(new View.OnClickListener() {
@@ -320,7 +318,7 @@ public class RoomInfoActivity extends Activity {
                                         try {
                                             Log.v("onClick", a.getJSONObject(1).getString("Unum"));
                                             JSONObject o_o = a.getJSONObject(1);
-                                            gotoMemberActivity2(o_o.getString("Unum"),
+                                            choose_Action(o_o.getString("Unum"),
                                                     o_o.getString("Uname"),
                                                     o_o.getString("age"),
                                                     o_o.getString("gender"),
@@ -334,7 +332,7 @@ public class RoomInfoActivity extends Activity {
                                 });
                             }else{
                                 photo3.setVisibility(View.GONE);
-                                Picasso.with(RoomInfoActivity.this)
+                                Picasso.with(RoomInfoEditActivity.this)
                                         .load(a.getJSONObject(0).getString("photo"))
                                         .transform(new RoundSquareTransform()).into(photo2);
                                 photo2.setOnClickListener(new View.OnClickListener() {
@@ -344,7 +342,7 @@ public class RoomInfoActivity extends Activity {
                                         try {
                                             Log.v("onClick", a.getJSONObject(0).getString("Unum"));
                                             JSONObject o_o = a.getJSONObject(0);
-                                            gotoMemberActivity2(o_o.getString("Unum"),
+                                            choose_Action(o_o.getString("Unum"),
                                                     o_o.getString("Uname"),
                                                     o_o.getString("age"),
                                                     o_o.getString("gender"),
@@ -358,7 +356,7 @@ public class RoomInfoActivity extends Activity {
                                 });
                             }
                         }else{
-                            Picasso.with(RoomInfoActivity.this)
+                            Picasso.with(RoomInfoEditActivity.this)
                                     .load(a.getJSONObject(0).getString("photo"))
                                     .transform(new RoundSquareTransform()).into(photo3);
                             photo3.setOnClickListener(new View.OnClickListener() {
@@ -368,7 +366,7 @@ public class RoomInfoActivity extends Activity {
                                     try {
                                         Log.v("onClick", a.getJSONObject(0).getString("Unum"));
                                         JSONObject o_o = a.getJSONObject(0);
-                                        gotoMemberActivity2(o_o.getString("Unum"),
+                                        choose_Action(o_o.getString("Unum"),
                                                             o_o.getString("Uname"),
                                                             o_o.getString("age"),
                                                             o_o.getString("gender"),
@@ -391,7 +389,8 @@ public class RoomInfoActivity extends Activity {
         });
 
     }
-    private void gotoMemberActivity2(String Unum, String Uname, String age, String gender, String rate, String photo, String level){
+    private void choose_Action(String Unum, String Uname, String age, String gender, String rate, String photo, String level){
+
         Intent i = new Intent(this , MemberActivity3.class);
         Bundle b = new Bundle();
         b.putString("Unum",Unum);
@@ -411,7 +410,7 @@ public class RoomInfoActivity extends Activity {
             List<NameValuePair> params = new ArrayList<NameValuePair>();
             params.add(new BasicNameValuePair("user_ID", pref.getString("num", "")));
             params.add(new BasicNameValuePair("room_ID", bundle.getString("RoomNum")));
-            String result = myapi.postMethod_getCode(RoomInfoActivity.this, App.waitChat, params);
+            String result = myapi.postMethod_getCode(RoomInfoEditActivity.this, App.waitChat, params);
             Log.v("waitChat", result);
             try {
                 JSONObject o = new JSONObject(result);
@@ -423,7 +422,7 @@ public class RoomInfoActivity extends Activity {
 
                 }else if(o.getString("status").equals("1")){
                     handler.removeCallbacks(runnable);
-                    if(!RoomInfoActivity.this.isFinishing() && dialog.alertd.isShowing())
+                    if(!RoomInfoEditActivity.this.isFinishing() && dialog.alertd.isShowing())
                         enterRongChatRoom(); //進入Rong
                 }else if(o.getString("status").equals("2")){
                     handler.removeCallbacks(runnable);
@@ -432,8 +431,8 @@ public class RoomInfoActivity extends Activity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                dialog = myapi.new LoadingDialog(RoomInfoActivity.this, "請求被拒", true);
-                                if (!RoomInfoActivity.this.isFinishing())
+                                dialog = myapi.new LoadingDialog(RoomInfoEditActivity.this, "請求被拒", true);
+                                if (!RoomInfoEditActivity.this.isFinishing())
                                     dialog.execute();
                             }
                         });
@@ -458,14 +457,14 @@ public class RoomInfoActivity extends Activity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        dialog = myapi.new LoadingDialog(RoomInfoActivity.this, "送出請求", false);
+                        dialog = myapi.new LoadingDialog(RoomInfoEditActivity.this, "送出請求", false);
                         dialog.execute();
                     }
                 });
                 List<NameValuePair> params = new ArrayList<NameValuePair>();
                 params.add(new BasicNameValuePair("user_ID", pref.getString("num", "")));
                 params.add(new BasicNameValuePair("room_ID", bundle.getString("RoomNum")));
-                String result = myapi.postMethod_getCode(RoomInfoActivity.this, App.applyChat, params);
+                String result = myapi.postMethod_getCode(RoomInfoEditActivity.this, App.applyChat, params);
                 Log.v("applyChat", result);
                 try {
                     final JSONObject o = new JSONObject(result);
@@ -475,7 +474,7 @@ public class RoomInfoActivity extends Activity {
                             public void run() {
                                 dialog.close();
                                 try {
-                                    dialog = myapi.new LoadingDialog(RoomInfoActivity.this, o.getString("message"), true);
+                                    dialog = myapi.new LoadingDialog(RoomInfoEditActivity.this, o.getString("message"), true);
                                     dialog.execute();
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -488,8 +487,8 @@ public class RoomInfoActivity extends Activity {
                             @Override
                             public void run() {
                                 dialog.close();
-                                dialog = myapi.new LoadingDialog(RoomInfoActivity.this, "等待回復", true);
-                                if (!RoomInfoActivity.this.isFinishing())
+                                dialog = myapi.new LoadingDialog(RoomInfoEditActivity.this, "等待回復", true);
+                                if (!RoomInfoEditActivity.this.isFinishing())
                                     dialog.execute();
                             }
                         });
@@ -515,7 +514,7 @@ public class RoomInfoActivity extends Activity {
             public void onSuccess() {
                 ConversationActivity.isGuest = true;
                 RongIM.getInstance().refreshUserInfoCache(new UserInfo(pref.getString("num","0"), pref.getString("name",""), Uri.parse(pref.getString("photo",""))));
-                RongIM.getInstance().startGroupChat(RoomInfoActivity.this, bundle.getString("RoomNum"), bundle.getString("location"));
+                RongIM.getInstance().startGroupChat(RoomInfoEditActivity.this, bundle.getString("RoomNum"), bundle.getString("location"));
                 finish();
             }
 

@@ -51,6 +51,11 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+                <!-- 定義該Activity支援瀏覽模式 -->
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <!-- 定義要處理的URL Schema -->
+                <data android:scheme="nineka"/>
             </intent-filter>
         </activity>
         <activity
@@ -153,6 +158,11 @@
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
                 <action android:name="com.baidu.android.pushservice.action.notification.SHOW" />
                 <action android:name="com.baidu.android.pushservice.action.media.CLICK" />
+                <!-- 以下四项为可选的action声明，可大大提高service存活率和消息到达速度 -->
+                <action android:name="android.intent.action.MEDIA_MOUNTED" />
+                <action android:name="android.intent.action.USER_PRESENT" />
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
             </intent-filter>
         </receiver>
         <!-- Push服务接收客户端发送的各种请求 -->
@@ -194,7 +204,10 @@
         <service
             android:name="com.baidu.android.pushservice.CommandService"
             android:exported="true" />
-
+        <!-- 4.6版本新增的Activity声明，提升Push后台存活率 -->
+        <activity
+            android:name="com.baidu.android.pushservice.PushKeepAlive"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
         <!-- 在百度开发者中心查询应用的API Key -->
         <meta-data
             android:name="api_key"

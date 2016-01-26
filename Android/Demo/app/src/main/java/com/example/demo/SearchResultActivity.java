@@ -73,6 +73,7 @@ public class SearchResultActivity extends Activity {
                 intent.putExtras(bundle);
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 startActivity(intent);
+                finish();
             }
         });
     }

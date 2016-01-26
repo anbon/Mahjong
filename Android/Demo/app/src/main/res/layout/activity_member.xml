@@ -33,6 +33,30 @@
                 android:textSize="16sp"
                 android:text="更換頭像"
                 />
+            <RelativeLayout
+                android:id="@+id/member_follow_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="24dp"
+                android:background="@drawable/btn_blue_round_bg4"
+                android:visibility="gone"
+                android:clickable="true">
+                <TextView
+                    android:id="@+id/member_follow"
+                    android:paddingLeft="14dp"
+                    android:paddingRight="14dp"
+                    android:paddingTop="3dp"
+                    android:paddingBottom="2dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#ffffff"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:text="Follow"
+                    android:textSize="14sp"/>
+            </RelativeLayout>
 
         </RelativeLayout>
         <View
@@ -127,7 +151,6 @@
             android:layout_height="80dp"
             android:background="#f7f7f7"
             >
-
             <RatingBar
                 android:layout_width="wrap_content"
                 android:layout_height="66dp"
@@ -163,7 +186,28 @@
                     android:text="評 論"
                     android:textSize="14sp"/>
             </RelativeLayout>
+
         </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/join_btn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:background="@drawable/btn_blue_round_bg2"
+                android:paddingLeft="60dp"
+                android:paddingRight="60dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:textColor="#fff"
+                android:textSize="25sp"
+                android:text="加入房間"/>
+        </RelativeLayout>
+
 
     </LinearLayout>
     <RelativeLayout

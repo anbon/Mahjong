@@ -104,7 +104,7 @@ public class ConversationActivity extends FragmentActivity  {
         * 会话类型
         */
     private Conversation.ConversationType mConversationType;
-    TextView titletextView;
+    TextView titletextView, detail;
     View customView;
     @TargetApi(Build.VERSION_CODES.KITKAT)
     @Override
@@ -130,7 +130,7 @@ public class ConversationActivity extends FragmentActivity  {
         ((View) homeIcon.getParent()).setVisibility(View.GONE);
 
         LayoutInflater li = LayoutInflater.from(this);
-        customView = li.inflate(R.layout.drawerlayout, null);
+        customView = li.inflate(R.layout.drawerlayout_member, null);
 
         titletextView = (TextView) customView.findViewById(R.id.titletextView);
         TextView back = (TextView) customView.findViewById(R.id.back);
@@ -139,6 +139,13 @@ public class ConversationActivity extends FragmentActivity  {
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+        detail = (TextView) customView.findViewById(R.id.ban);
+        detail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gotoRoomInfo();
             }
         });
         ab.setCustomView(customView);
@@ -183,16 +190,45 @@ public class ConversationActivity extends FragmentActivity  {
 
         fragment.setUri(uri);
     }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        //getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    private void gotoRoomInfo() {
+        mythread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        dialog = myapi.new LoadingDialog(ConversationActivity.this, "請稍後...", false);
+                        dialog.execute();
+                    }
+                });
+                List<NameValuePair> params = new ArrayList<NameValuePair>();
+                params.add(new BasicNameValuePair("room_id", mTargetId));
+                String result = myapi.postMethod_getCode(ConversationActivity.this, App.getChatroom, params);
+                Log.v(TAG, result);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        dialog.close();
+                    }
+                });
+                try {
+                    final JSONObject o = new JSONObject(result);
 
-        return super.onOptionsItemSelected(item);
+                    if(o.getString("status").equals("1")){
+                        Intent intent = new Intent(ConversationActivity.this, RoomInfoActivity.class);
+                        Bundle b = makeBundle(o.getString("message"));
+                        intent.putExtras(b);
+                        startActivity(intent);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    dialog = myapi.new LoadingDialog(ConversationActivity.this, "伺服器發生錯誤！", true);
+                    dialog.execute();
+                }
+
+            }
+        });
+        mythread.start();
     }
 
     private Handler handler = new Handler( );
@@ -413,6 +449,30 @@ public class ConversationActivity extends FragmentActivity  {
             }
         });
         mythread.start();
+    }
+    private Bundle makeBundle(String roomMessage) {
+        Bundle b = new Bundle();
+        try {
+            JSONObject o = new JSONObject(roomMessage);
+            b.putString("num", o.getJSONArray("users").getJSONObject(0).getString("Unum"));
+            b.putString("name", o.getJSONArray("users").getJSONObject(0).getString("Uname"));
+            b.putString("RoomNum", o.getString("RoomNum"));
+            b.putString("base", o.getString("base"));
+            b.putString("unit", o.getString("unit"));
+            b.putString("circle", o.getString("circle"));
+            b.putString("time", o.getString("time"));
+            b.putString("location", o.getString("RoomName"));
+            b.putString("people", o.getString("people"));
+            b.putString("type", o.getString("type"));
+            b.putString("cigarette", o.getString("cigarette"));
+            b.putString("users", o.getJSONArray("users").toString());
+            b.putString("rule", o.getString("rule"));
+            
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return b;
     }
     /**
      * 设置 actionbar 事件

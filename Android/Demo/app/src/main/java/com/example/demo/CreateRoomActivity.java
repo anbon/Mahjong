@@ -198,8 +198,6 @@ public class CreateRoomActivity extends Activity {
 
     public void PeopleListAlertDialog(View v) {
 
-
-
         AlertDialog.Builder TimeListAlertDialog = new AlertDialog.Builder(this);
         TimeListAlertDialog.setTitle("請選擇人數");
         DialogInterface.OnClickListener ListItemClick = new DialogInterface.OnClickListener() {

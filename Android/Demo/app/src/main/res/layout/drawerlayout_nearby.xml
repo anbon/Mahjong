@@ -18,14 +18,17 @@
         android:textSize="24sp"
         android:textColor="#ffffff"/>
 
-    <ImageView
-        android:src="@drawable/addnew"
-        android:layout_width="50dp"
+    <TextView
+        android:text="篩選"
+        android:gravity="center"
+        android:textColor="#ffffff"
+        android:textSize="20sp"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"
         android:scaleType="centerInside"
-        android:padding="10dp"
+        android:padding="5dp"
         android:id="@+id/filter"
         android:layout_alignParentLeft="true"
         />

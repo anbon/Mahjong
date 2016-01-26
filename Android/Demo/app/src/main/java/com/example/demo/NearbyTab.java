@@ -26,10 +26,13 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -84,7 +87,7 @@ public class NearbyTab extends Fragment implements LocationListener,IXListViewLi
     public static boolean isAlive = false;
     // TODO: Rename and change types of parameters
     private MyAdapter mAdapter;
-    TextView current_no_room;
+    TextView current_no_room, filter;
     XListView list1;
     private List<ChatRoomList> mList;
     MyHolder mViewHolder;
@@ -105,7 +108,7 @@ public class NearbyTab extends Fragment implements LocationListener,IXListViewLi
     ActionBar ab;
     View customView;
     TextView titletextView;
-    ImageView create, filter;
+    ImageView create;
     //private OnFragmentInteractionListener mListener;
     /**
      * Use this factory method to create a new instance of
@@ -198,8 +201,8 @@ public class NearbyTab extends Fragment implements LocationListener,IXListViewLi
                 gotoCreateRoom();
             }
         });
-        filter = (ImageView) customView.findViewById(R.id.filter);
-        create.setOnClickListener(new View.OnClickListener() {
+        filter = (TextView) customView.findViewById(R.id.filter);
+        filter.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -224,11 +227,12 @@ public class NearbyTab extends Fragment implements LocationListener,IXListViewLi
 
     }
     Dialog alertd;
-    TextView people_limit;
+    TextView filter_people_txt, filter_confirm, filter_default;
+    EditText filter_limit_lower, filter_limit_upper;
     public void FilterDialog(Activity act) {
         alertd = new Dialog(act);
         alertd.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        alertd.setContentView(R.layout.request_dialog);
+        alertd.setContentView(R.layout.filter_dialog);
         alertd.setCanceledOnTouchOutside(true);
         alertd.setCancelable(true);
         Window dialogWindow = alertd.getWindow();
@@ -238,21 +242,119 @@ public class NearbyTab extends Fragment implements LocationListener,IXListViewLi
         v.setBackgroundResource(android.R.color.transparent);
         lp.dimAmount = 0.5f;
 
-        lp.y = -150; // 新位置Y坐标
+        lp.y = -224; // 新位置Y坐标
         lp.alpha = 1f;
+
+        RelativeLayout filter_people_btn = (RelativeLayout) alertd.findViewById(R.id.filter_people_btn);
+        filter_people_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PeopleListAlertDialog(v);
+            }
+        });
+
+        filter_people_txt = (TextView) alertd.findViewById(R.id.filter_people_txt);
+        filter_people_txt.setText(PeopleListStr[pref2.getInt("people_limit",3)-1]);
+        filter_limit_lower = (EditText) alertd.findViewById(R.id.filter_limit_lower);
+        filter_limit_lower.setText(pref2.getInt("lower_limit",0)+"");
+        filter_limit_upper = (EditText) alertd.findViewById(R.id.filter_limit_upper);
+        filter_limit_upper.setText(pref2.getInt("upper_limit",999999)+"");
+
+        filter_default = (TextView) alertd.findViewById(R.id.filter_default);
+        filter_default.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //設為預設
+                filter_limit_lower.setText("0");
+                filter_limit_upper.setText("999999");
+                filter_people_txt.setText(PeopleListStr[2]);
+                pref2.edit().remove("lower_limit")
+                            .remove("upper_limit")
+                            .remove("people_limit")
+                            .apply();
+            }
+        });
+
+        filter_confirm = (TextView) alertd.findViewById(R.id.filter_confirm);
+        filter_confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isLimitValid()){
+
+                    pref2.edit()
+                            .putInt("lower_limit", L)
+                            .putInt("upper_limit", H)
+                            .putInt("people_limit", people+1)
+                            .apply();
+                    alertd.cancel();
+                    alertd.dismiss();
+                }else{
+                    if(!isEmpty)
+                        Toast.makeText(mActivity, "金額之下限不得大於上限！", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+        alertd.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                InputMethodManager imm = (InputMethodManager) mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(mActivity.getCurrentFocus().getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
+                pb.setVisibility(View.VISIBLE);
+                list1.setVisibility(View.INVISIBLE);
+                current_no_room.setVisibility(View.INVISIBLE);
+                if(timer!=null)
+                    timer.cancel();
+
+
+                new AsyncTaskGetMessage().execute(true);
+                TimerTask t= new TimerTask() {
+                    public void run() {
+                        mActivity.runOnUiThread(new Runnable() {
+                            public void run() {
+                                parseJSON(pref.getString("nearby", ""));
+                            }
+
+                        });
+
+                    }
+                };
+                timer = new Timer();
+                timer.schedule(t, 5000, 5000);
+            }
+        });
+        alertd.show();
+
+    }
+
+    int L, H;
+    boolean isEmpty;
+    private boolean isLimitValid(){
+        if(!filter_limit_lower.getText().toString().isEmpty() &&
+                !filter_limit_upper.getText().toString().isEmpty()) {
+            L = Integer.parseInt(filter_limit_lower.getText().toString());
+            H = Integer.parseInt(filter_limit_upper.getText().toString());
+
+            return L <= H;
+        }else
+        {
+            Toast.makeText(mActivity, "金額不得為空！", Toast.LENGTH_SHORT).show();
+            return false;
+        }
     }
     String[] PeopleListStr = {"1人", "2人以內", "3人以內"};
-    int people=3;
+    int people=2;
     public void PeopleListAlertDialog(View v) {
 
         AlertDialog.Builder TimeListAlertDialog = new AlertDialog.Builder(mActivity);
         TimeListAlertDialog.setTitle("請選擇人數");
         DialogInterface.OnClickListener ListItemClick = new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                people_limit.setText(PeopleListStr[which]);
+                filter_people_txt.setText(PeopleListStr[which]);
+                people = which;
             }
         };
-        people_limit.setText(PeopleListStr[pref2.getInt("people_limit",3)]);
+
         DialogInterface.OnClickListener OkClick = new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 //Nothing
@@ -298,6 +400,9 @@ public class NearbyTab extends Fragment implements LocationListener,IXListViewLi
         }else{
             current_no_room.setVisibility(View.INVISIBLE);
         }
+
+        pb.setVisibility(View.INVISIBLE);
+        list1.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -399,9 +504,9 @@ public class NearbyTab extends Fragment implements LocationListener,IXListViewLi
             params.add(new BasicNameValuePair("user_ID", pref.getString("num", "")));
             params.add(new BasicNameValuePair("location_x", pref.getString("location_x", "")));
             params.add(new BasicNameValuePair("location_y", pref.getString("location_y", "")));
-            params.add(new BasicNameValuePair("upper_limit", pref2.getString("upper_limit", "99999")));
-            params.add(new BasicNameValuePair("lower_limit", pref2.getString("lower_limit", "0")));
-            params.add(new BasicNameValuePair("people_limit", pref2.getString("people_limit", "3")));
+            params.add(new BasicNameValuePair("upper_limit", pref2.getInt("upper_limit", 999999)+""));
+            params.add(new BasicNameValuePair("lower_limit", pref2.getInt("lower_limit", 0)+""));
+            params.add(new BasicNameValuePair("people_limit", pref2.getInt("people_limit", 3)+""));
             //Log.v("params",params.toString());
 
             return postMethod_getCode(App.seed, params);

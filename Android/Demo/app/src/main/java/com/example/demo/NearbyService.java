@@ -75,9 +75,9 @@ public class NearbyService extends IntentService {
                         params.add(new BasicNameValuePair("user_ID", pref.getString("num", "")));
                         params.add(new BasicNameValuePair("location_x", pref.getString("location_x", "")));
                         params.add(new BasicNameValuePair("location_y", pref.getString("location_y", "")));
-                        params.add(new BasicNameValuePair("upper_limit", pref2.getString("upper_limit", "99999")));
-                        params.add(new BasicNameValuePair("lower_limit", pref2.getString("lower_limit", "0")));
-                        params.add(new BasicNameValuePair("people_limit", pref2.getString("people_limit", "3")));
+                        params.add(new BasicNameValuePair("upper_limit", pref2.getInt("upper_limit", 999999)+""));
+                        params.add(new BasicNameValuePair("lower_limit", pref2.getInt("lower_limit", 0)+""));
+                        params.add(new BasicNameValuePair("people_limit", pref2.getInt("people_limit", 3)+""));
                         //Log.v("params",params.toString());
                         String temp="";
                         temp = postMethod_getCode(App.seed, params);
@@ -93,11 +93,14 @@ public class NearbyService extends IntentService {
                     }
 
                 });
+                handler.postDelayed(this, 5000);
                 if (MainActivity.isAlive)
                     mythread.start();
+                else
+                    handler.removeCallbacks(this);
 
 
-                handler.postDelayed(this, 5000);
+
             }
         };
     }

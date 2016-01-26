@@ -98,6 +98,7 @@ public class App extends Application {
     public static final String seed = Domain + "seed";
     public static final String blockadd = Domain + "blockadd";
     public static final String chatamount = Domain + "chatamount";
+    public static final String follow = Domain + "follow";
 
     public int timeoutConnection = 5000;
     public int timeoutSocket = 4000;

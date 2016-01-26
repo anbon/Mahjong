@@ -334,7 +334,7 @@ public class MainActivity extends FragmentActivity {
                 (NearbyTab.isAlive||
                     SearchTab.isAlive||
                     AboutTab.isAlive)) {
-            isAlive = false;
+            //isAlive = false;
             moveTaskToBack(true);
 
         }

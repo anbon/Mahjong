@@ -10,6 +10,7 @@ import org.json.JSONObject;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -68,7 +69,8 @@ public class MyPushMessageReceiver extends PushMessageReceiver {
                 + appid + " userId=" + userId + " channelId=" + channelId
                 + " requestId=" + requestId;
         Log.e(TAG, responseString);
-
+        SharedPreferences pref = context.getSharedPreferences("Setting", 0);
+        pref.edit().putString("channel_Id", channelId).apply();
         // 绑定成功，设置已绑定flag，可以有效的减少不必要的绑定请求
         if (errorCode == 0) {
             Log.e(TAG, "onBind Success!");

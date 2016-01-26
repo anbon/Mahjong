@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -39,7 +40,7 @@ public class SearchTab extends Fragment {
     View customView;
     TextView titletextView, search_confirm;
     EditText search_input;
-
+    SharedPreferences pref;
     App myapi;
     App.LoadingDialog dialog;
     Thread mythread;
@@ -104,7 +105,7 @@ public class SearchTab extends Fragment {
         myapi = (App) mActivity.getApplicationContext();
         View homeIcon = mActivity.findViewById(android.R.id.home);
         ((View) homeIcon.getParent()).setVisibility(View.GONE);
-
+        pref = mActivity.getSharedPreferences("Account", 0);
         LayoutInflater li = LayoutInflater.from(mActivity);
         customView = li.inflate(R.layout.drawerlayout, null);
 
@@ -133,6 +134,7 @@ public class SearchTab extends Fragment {
                         });
 
                         List<NameValuePair> params = new ArrayList<NameValuePair>();
+                        params.add(new BasicNameValuePair("user_ID", pref.getString("num","")));
                         params.add(new BasicNameValuePair("username", search_input.getText().toString()));
                         String result = myapi.postMethod_getCode(mActivity, App.Search_User, params);
                         Log.i("SearchTab", result);
@@ -173,9 +175,12 @@ public class SearchTab extends Fragment {
                 b.putString("photo", o_o.getString("photo"));
                 b.putString("rate", o_o.getString("rate"));
                 b.putString("level", o_o.getString("level"));
+                b.putString("follow", o_o.getString("follow"));
+                b.putString("Rooming", o_o.getString("Rooming"));
+                b.putString("RoomMessage", o.getString("RoomMessage"));
                 Intent intent = new Intent();
                 intent.putExtras(b);
-                intent.setClass(mActivity, MemberActivity.class);
+                intent.setClass(mActivity, SearchResultActivity.class);
                 //mActivity.overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
                 startActivity(intent);
             }else if(o.getString("status").equals("0")){

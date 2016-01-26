@@ -11,6 +11,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.baidu.android.pushservice.PushConstants;
+import com.baidu.android.pushservice.PushManager;
+
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
@@ -34,7 +37,6 @@ public class SignInActivity extends Activity {
         if (mythread != null) {
             mythread.interrupt();
             mythread = null;
-
         }
 
     }
@@ -85,8 +87,10 @@ public class SignInActivity extends Activity {
                 });
 
                 List<NameValuePair> params = new ArrayList<NameValuePair>();
+                SharedPreferences pref = getSharedPreferences("Setting", 0);
                 params.add(new BasicNameValuePair("username", username.getText().toString()));
                 params.add(new BasicNameValuePair("password", password.getText().toString()));
+                params.add(new BasicNameValuePair("channel_Id", pref.getString("channel_Id", "")));
                 String result = myapi.postMethod_getCode(SignInActivity.this, App.Verify, params);
 
                 parseResult(result);
