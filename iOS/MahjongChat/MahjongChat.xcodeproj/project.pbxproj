@@ -38,6 +38,11 @@
 		AB15A0E21C2E8AE4009C2501 /* UIImageView+HighlightedWebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = AB15A0D21C2E8AE4009C2501 /* UIImageView+HighlightedWebCache.m */; };
 		AB15A0E31C2E8AE4009C2501 /* UIImageView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = AB15A0D41C2E8AE4009C2501 /* UIImageView+WebCache.m */; };
 		AB15A0E41C2E8AE4009C2501 /* UIView+WebCacheOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = AB15A0D61C2E8AE4009C2501 /* UIView+WebCacheOperation.m */; };
+		AB430B201C58078E006F3A39 /* libBPush.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AB430B1E1C58078E006F3A39 /* libBPush.a */; };
+		AB430B211C58078F006F3A39 /* test.caf in Resources */ = {isa = PBXBuildFile; fileRef = AB430B1F1C58078E006F3A39 /* test.caf */; };
+		AB430B231C5807CB006F3A39 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB430B221C5807CB006F3A39 /* Foundation.framework */; };
+		AB52F3491C58741F006416EE /* RoonCheckViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB52F3471C58741F006416EE /* RoonCheckViewController.m */; };
+		AB52F34A1C58741F006416EE /* RoonCheckViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB52F3481C58741F006416EE /* RoonCheckViewController.xib */; };
 		AB68E72A1C39520B00D50613 /* star_filled.png in Resources */ = {isa = PBXBuildFile; fileRef = AB68E7281C39520B00D50613 /* star_filled.png */; };
 		AB68E72B1C39520B00D50613 /* star.png in Resources */ = {isa = PBXBuildFile; fileRef = AB68E7291C39520B00D50613 /* star.png */; };
 		AB68E72F1C3A69DC00D50613 /* RoomMemberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB68E72D1C3A69DC00D50613 /* RoomMemberViewController.m */; };
@@ -229,6 +234,13 @@
 		AB15A0D41C2E8AE4009C2501 /* UIImageView+WebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+WebCache.m"; sourceTree = "<group>"; };
 		AB15A0D51C2E8AE4009C2501 /* UIView+WebCacheOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+WebCacheOperation.h"; sourceTree = "<group>"; };
 		AB15A0D61C2E8AE4009C2501 /* UIView+WebCacheOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+WebCacheOperation.m"; sourceTree = "<group>"; };
+		AB430B1D1C58078E006F3A39 /* BPush.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPush.h; sourceTree = "<group>"; };
+		AB430B1E1C58078E006F3A39 /* libBPush.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libBPush.a; sourceTree = "<group>"; };
+		AB430B1F1C58078E006F3A39 /* test.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = test.caf; sourceTree = "<group>"; };
+		AB430B221C5807CB006F3A39 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		AB52F3461C58741F006416EE /* RoonCheckViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoonCheckViewController.h; sourceTree = "<group>"; };
+		AB52F3471C58741F006416EE /* RoonCheckViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoonCheckViewController.m; sourceTree = "<group>"; };
+		AB52F3481C58741F006416EE /* RoonCheckViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoonCheckViewController.xib; sourceTree = "<group>"; };
 		AB68E7281C39520B00D50613 /* star_filled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = star_filled.png; sourceTree = "<group>"; };
 		AB68E7291C39520B00D50613 /* star.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = star.png; sourceTree = "<group>"; };
 		AB68E72C1C3A69DC00D50613 /* RoomMemberViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomMemberViewController.h; sourceTree = "<group>"; };
@@ -385,13 +397,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ABC20B041C0315E50025AFD5 /* SystemConfiguration.framework in Frameworks */,
+				AB430B231C5807CB006F3A39 /* Foundation.framework in Frameworks */,
+				ABC20AFC1C0315BF0025AFD5 /* libz.tbd in Frameworks */,
 				ABC20AE61C0315360025AFD5 /* CoreLocation.framework in Frameworks */,
 				ABC20B061C0315F00025AFD5 /* UIKit.framework in Frameworks */,
-				ABC20B041C0315E50025AFD5 /* SystemConfiguration.framework in Frameworks */,
 				ABC20B021C0315D90025AFD5 /* QuartzCore.framework in Frameworks */,
 				ABC20B001C0315D20025AFD5 /* OpenGLES.framework in Frameworks */,
 				ABC20AFE1C0315C80025AFD5 /* MapKit.framework in Frameworks */,
-				ABC20AFC1C0315BF0025AFD5 /* libz.tbd in Frameworks */,
 				ABC20AFA1C0315B40025AFD5 /* libxml2.tbd in Frameworks */,
 				ABC20AF81C0315A20025AFD5 /* libstdc++.tbd in Frameworks */,
 				ABC20AF61C0315930025AFD5 /* libsqlite3.tbd in Frameworks */,
@@ -409,6 +422,7 @@
 				ABC20ADC1C0310CB0025AFD5 /* AssetsLibrary.framework in Frameworks */,
 				ABC20AD11C03004B0025AFD5 /* libopencore-amrnb.a in Frameworks */,
 				ABC20AD51C03004B0025AFD5 /* RongIMLib.framework in Frameworks */,
+				AB430B201C58078E006F3A39 /* libBPush.a in Frameworks */,
 				ABC20AD41C03004B0025AFD5 /* RongIMKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -513,6 +527,9 @@
 				AB68E72C1C3A69DC00D50613 /* RoomMemberViewController.h */,
 				AB68E72D1C3A69DC00D50613 /* RoomMemberViewController.m */,
 				AB68E72E1C3A69DC00D50613 /* RoomMemberViewController.xib */,
+				AB52F3461C58741F006416EE /* RoonCheckViewController.h */,
+				AB52F3471C58741F006416EE /* RoonCheckViewController.m */,
+				AB52F3481C58741F006416EE /* RoonCheckViewController.xib */,
 			);
 			name = newRoom;
 			sourceTree = "<group>";
@@ -561,6 +578,16 @@
 				AB15A0D61C2E8AE4009C2501 /* UIView+WebCacheOperation.m */,
 			);
 			path = SDWebImage;
+			sourceTree = "<group>";
+		};
+		AB430B1C1C58078E006F3A39 /* LibBPush */ = {
+			isa = PBXGroup;
+			children = (
+				AB430B1D1C58078E006F3A39 /* BPush.h */,
+				AB430B1E1C58078E006F3A39 /* libBPush.a */,
+				AB430B1F1C58078E006F3A39 /* test.caf */,
+			);
+			path = LibBPush;
 			sourceTree = "<group>";
 		};
 		AB68E7351C426DE300D50613 /* RongCloud */ = {
@@ -625,6 +652,7 @@
 				ABC20AC11C02F5750025AFD5 /* EMAsyncImage */,
 				ABC20AAD1C01DA730025AFD5 /* AnimateTabbar */,
 				AB15A0B91C2E8AE4009C2501 /* SDWebImage */,
+				AB430B1C1C58078E006F3A39 /* LibBPush */,
 				ABC20A771BFCCF840025AFD5 /* JSON */,
 				AB0A97EC1C0C639100309A0A /* PassView */,
 				AB0A97E61C0C355800309A0A /* ProgressHUD */,
@@ -779,6 +807,7 @@
 		ABEF50981BCF96C3001512F6 = {
 			isa = PBXGroup;
 			children = (
+				AB430B221C5807CB006F3A39 /* Foundation.framework */,
 				ABEF50A31BCF96C3001512F6 /* MahjongChat */,
 				ABEF50BD1BCF96C3001512F6 /* MahjongChatTests */,
 				ABEF50C81BCF96C3001512F6 /* MahjongChatUITests */,
@@ -953,6 +982,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AB430B211C58078F006F3A39 /* test.caf in Resources */,
 				ABC20A4D1BFCCB8D0025AFD5 /* logo.psd in Resources */,
 				ABC20A3B1BFCCB8D0025AFD5 /* 登入.psd in Resources */,
 				AB09F95D1C32B2D600495723 /* WaitForEmpowerViewController.xib in Resources */,
@@ -987,6 +1017,7 @@
 				ABC20A6B1BFCCB950025AFD5 /* addnew.png in Resources */,
 				ABC20A441BFCCB8D0025AFD5 /* edit@3x.png in Resources */,
 				ABC20A521BFCCB8D0025AFD5 /* photo.png in Resources */,
+				AB52F34A1C58741F006416EE /* RoonCheckViewController.xib in Resources */,
 				ABC20A3D1BFCCB8D0025AFD5 /* back.png in Resources */,
 				ABC20A591BFCCB8D0025AFD5 /* smoke.psd in Resources */,
 				ABC20A551BFCCB8D0025AFD5 /* search_tmp23702 in Resources */,
@@ -1095,6 +1126,7 @@
 				AB15A0DF1C2E8AE4009C2501 /* UIButton+WebCache.m in Sources */,
 				AB15A0E21C2E8AE4009C2501 /* UIImageView+HighlightedWebCache.m in Sources */,
 				AB09F9551C30423B00495723 /* CropImageViewController.m in Sources */,
+				AB52F3491C58741F006416EE /* RoonCheckViewController.m in Sources */,
 				ABC20AD91C0308390025AFD5 /* ChatRoomViewController.m in Sources */,
 				AB0A98061C0EC90E00309A0A /* ZHPickView.m in Sources */,
 			);
@@ -1245,6 +1277,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Jerry Wang (C93DLCKMZY)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/MahjongChat/Rong_Cloud_iOS_SDK_v2_3_7_stable",
@@ -1255,9 +1288,11 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/MahjongChat/Rong_Cloud_iOS_SDK_v2_3_7_stable",
+					"$(PROJECT_DIR)/MahjongChat/LibBPush",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.Duke.MahjongChat;
+				PRODUCT_BUNDLE_IDENTIFIER = co.nineka;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "bfcf12db-2c6b-41d4-8744-c6da537d3700";
 			};
 			name = Debug;
 		};
@@ -1266,6 +1301,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Jerry Wang (WA7RGYG938)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/MahjongChat/Rong_Cloud_iOS_SDK_v2_3_7_stable",
@@ -1276,9 +1312,11 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/MahjongChat/Rong_Cloud_iOS_SDK_v2_3_7_stable",
+					"$(PROJECT_DIR)/MahjongChat/LibBPush",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.Duke.MahjongChat;
+				PRODUCT_BUNDLE_IDENTIFIER = co.nineka;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "381fb86b-efcf-4c45-be93-060c862d71d4";
 			};
 			name = Release;
 		};

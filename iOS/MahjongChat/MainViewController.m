@@ -152,6 +152,9 @@ int g_flags=1;
 
 -(void)locationViewFilter{
     [locationVC filterRoom];
+    NSURL *url = [NSURL URLWithString:@"http://www.jackercleaning.com/"];
+    UIActivityViewController *avc = [[UIActivityViewController alloc] initWithActivityItems:[NSArray arrayWithObjects:@"潔客幫 - 給您便利居家清潔打掃服務", url, nil] applicationActivities:nil];
+    [self presentViewController:avc animated:YES completion:nil];
 }
 
 @end

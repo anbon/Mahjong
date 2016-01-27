@@ -94,7 +94,7 @@
     }else{
         APIConn *conn=[[APIConn alloc] init];
         conn.apiDelegate=self;
-        [conn verify:@{@"username":account.text,@"password":pwd.text}];
+        [conn verify:@{@"username":account.text,@"password":pwd.text,@"channel":[[NSUserDefaults standardUserDefaults] objectForKey:@"channel_ID"]}];
     }
     
     NSLog(@"viewtest");

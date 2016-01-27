@@ -47,7 +47,20 @@
         [defaults setObject:[[dic objectForKey:@"message"]objectForKey:@"photo"] forKey:@"searchResultPhoto"];
         [defaults setObject:[[dic objectForKey:@"message"]objectForKey:@"level"] forKey:@"searchResultLevel"];
         [defaults setObject:[[dic objectForKey:@"message"]objectForKey:@"rate"] forKey:@"searchResultRate"];
+        [defaults setObject:[dic objectForKey:@"message"] forKey:@"searchResult"];
+        if ([[[dic objectForKey:@"message"] objectForKey:@"follow"]isEqualToString:@"1"]) {//追隨
+            [defaults setObject:@"1" forKey:@"followOrNot"];
+        }else{
+            [defaults setObject:@"0" forKey:@"followOrNot"];
+        }
+        if ([[[dic objectForKey:@"message"] objectForKey:@"Rooming"]isEqualToString:@"1"]) {//有開房
+            [defaults setObject:@"1" forKey:@"RoomingOrNot"];
+        }else{
+            [defaults setObject:@"0" forKey:@"RoomingOrNot"];
+        }
+        [defaults setObject:[dic objectForKey:@"RoomMessage"] forKey:@"selectChatRoom"];
         [defaults synchronize];
+        
         
         SearchReslutViewController *result = [SearchReslutViewController new];
         [self.navigationController pushViewController:result animated:YES];
@@ -70,7 +83,7 @@
         [appDelegate initPauseView:@"查詢中..請稍候.."];
         APIConn *conn = [APIConn new];
         conn.apiDelegate = self;
-        [conn searchUser:@{@"username":search.text}];
+        [conn searchUser:@{@"username":search.text,@"accountID":[[NSUserDefaults standardUserDefaults] objectForKey:@"accountID"]}];
    
     }
     //需修正

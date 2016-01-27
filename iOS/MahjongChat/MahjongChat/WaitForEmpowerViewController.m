@@ -489,7 +489,7 @@
     NSString *roomName = locationSet;//[[defaults objectForKey:@"selectChatRoom"]objectForKey:@"RoomName"];
     NSString *roomNum =  roooomNum;//[[defaults objectForKey:@"selectChatRoom"]objectForKey:@"RoonNum"];
     NSString *roomSum =  [defaults objectForKey:@"selectChatRoom"];
-    NSLog(@"selectROom%=@",roomSum);
+    NSLog(@"selectROom=%@",roomSum);
     NSLog(@"roomNum=%@,roomNumByNsuser=%@",roomNum,[[[NSUserDefaults standardUserDefaults]objectForKey:@"selectChatRoom"] objectForKey:@"RoomNum"]);
     [[RCIMClient sharedRCIMClient] joinGroup:[NSString stringWithFormat:@"%@",roomNum] groupName:roomName success:^(void){
         

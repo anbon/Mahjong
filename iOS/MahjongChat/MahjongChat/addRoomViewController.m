@@ -18,10 +18,10 @@
 @implementation addRoomViewController
 {
     ZHPickView *pplPicker, *timePicker;
-    UIButton *cigaretteBtn,*tableBtn,*pplBtn,*timeBtn;
+    UIButton *cigaretteBtn,*tableBtn,*pplBtn;
     BOOL tableedit,smokeedit;
     int pplresult,tableresult,smokeresult;
-    UITextField *location,*base,*unit,*circle,*rule;
+    UITextField *location,*base,*unit,*circle,*rule,*time;
     AppDelegate *appDelegate;
     NSString *timeresult;
 }
@@ -154,8 +154,6 @@
 -(void)toobarDonBtnHaveClick:(ZHPickView *)pickView resultString:(NSString *)resultString{
     if (pickView == pplPicker) {
         [self pplSelectFinished:resultString];
-    }else if(pickView == timePicker){
-        [self timeSelectFinished:resultString];
     }
 }
 
@@ -169,10 +167,6 @@
     
 }
 
--(void)timeSelectFinished:(NSString*)time{
-    [timeBtn setTitle:time forState:UIControlStateNormal];
-    
-}
 
 #pragma mark - TextField Delegate
 - (void)textFieldDidBeginEditing:(UITextField *)textField
@@ -277,17 +271,11 @@
     UILabel *timebg = [[UILabel alloc]initWithFrame:CGRectMake(0, y, WIDTH, 40*RATIO)];
     timebg.backgroundColor = LIGHT_BLUE;
     
-    UILabel *timeTitle = [[UILabel alloc]initWithFrame:CGRectMake(15*RATIO, y+10*RATIO, 80*RATIO, 20*RATIO)];
-    timeTitle.backgroundColor = [UIColor clearColor];
-    timeTitle.text = @"時間";
-    timeTitle.textAlignment = NSTextAlignmentLeft;
     
-    timeBtn = [[UIButton alloc]initWithFrame:CGRectMake(WIDTH-90*RATIO, y+10*RATIO, 70*RATIO, 20*RATIO)];
-    [timeBtn.layer setCornerRadius:20*RATIO/2];
-    timeBtn.backgroundColor = MAIN_COLOR;
-    [timeBtn setTitle:@"0AM" forState:UIControlStateNormal];
-    timeBtn.titleLabel.textColor = [UIColor whiteColor];
-    [timeBtn addTarget:self action:@selector(timeset) forControlEvents:UIControlEventTouchUpInside];
+    time = [[UITextField alloc]initWithFrame:CGRectMake(15*RATIO, y, WIDTH, 35*RATIO)];
+    time.placeholder = @"請輸入時間";
+    time.delegate = self;
+    time.keyboardType = UIKeyboardTypeNumberPad;
     
     y = y+40*RATIO;
     
@@ -364,8 +352,8 @@
     [backGroud addSubview:basebg];
     [backGroud addSubview:unitbg];
     [backGroud addSubview:timebg];
-    [backGroud addSubview:timeTitle];
-    [backGroud addSubview:timeBtn];
+    [backGroud addSubview:time];
+
     [backGroud addSubview:circlebg];
     [backGroud addSubview:tablebg];
     [backGroud addSubview:tableTitle];

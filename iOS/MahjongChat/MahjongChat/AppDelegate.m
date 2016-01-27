@@ -11,6 +11,7 @@
 #import "SingInViewController.h"
 #import <RongIMKit/RongIMKit.h>
 #import "APIConn.h"
+#import "BPush.h"
 @interface AppDelegate ()
 @property (strong, nonatomic) LoginViewController *loginViewController;
 @property (strong, nonatomic) SingInViewController *SingInViewController;
@@ -54,15 +55,7 @@
     [[RCIM sharedRCIM] setGroupInfoDataSource:self];
     
     
-//---------------------------------------------------------------------------
-//自動登入
-    if (([[NSUserDefaults standardUserDefaults] valueForKey:@"account_login"] && [[NSUserDefaults standardUserDefaults] valueForKey:@"pwd_login"]) && ![[[NSUserDefaults standardUserDefaults] valueForKey:@"pwd_login"]isEqualToString:@""]) {
-        APIConn *conn=[[APIConn alloc] init];
-        conn.apiDelegate=self;
-        [conn verify:@{@"username":[[NSUserDefaults standardUserDefaults] valueForKey:@"account_login"],@"password":[[NSUserDefaults standardUserDefaults] valueForKey:@"pwd_login"]}];
-    }
-//---------------------------------------------------------------------------
-    
+  
     /**
      * 推送处理1
      */
@@ -83,10 +76,74 @@
         [application registerForRemoteNotificationTypes:myTypes];
     }
 
+//百度推播
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0) {
+        UIUserNotificationType myTypes = UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
+        
+        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:myTypes categories:nil];
+        [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+    }else {
+        UIRemoteNotificationType myTypes = UIRemoteNotificationTypeBadge|UIRemoteNotificationTypeAlert|UIRemoteNotificationTypeSound;
+        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:myTypes];
+    }
+    [BPush registerChannel:launchOptions apiKey:@"TuEclAqQLeIYezkC5ejSGnee" pushMode:BPushModeDevelopment withFirstAction:nil withSecondAction:nil withCategory:nil isDebug:YES];
+    // App 是用户点击推送消息启动
+    NSDictionary *userInfo = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+    NSLog(@"useinfo=%@",userInfo);
+    if (userInfo) {
+        NSLog(@"从消息启动:%@",userInfo);
+        [BPush handleNotification:userInfo];
+    }
+    //角标清0
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
+    
+    
+    [BPush bindChannelWithCompleteHandler:^(id result,NSError *error){
+        NSLog(@"bphander=%@",result);
+        NSString *channel = [result objectForKey:@"channel_id"];
+        NSLog(@"chanl=%@",channel);
+        NSLog(@"RRRRRRRRRRRRRRRRRRRRRRRTTTTTTTTTTTTTT");
+        [[NSUserDefaults standardUserDefaults]setObject:channel forKey:@"channel_ID"];
+        [[NSUserDefaults standardUserDefaults]synchronize];
+        //---------------------------------------------------------------------------
+        //自動登入
+        NSLog(@"RRRRRRRRRRRRRRRRRRRRRRR");
+        if (([[NSUserDefaults standardUserDefaults] valueForKey:@"account_login"] && [[NSUserDefaults standardUserDefaults] valueForKey:@"pwd_login"]) && ![[[NSUserDefaults standardUserDefaults] valueForKey:@"pwd_login"]isEqualToString:@""]) {
+            APIConn *conn=[[APIConn alloc] init];
+            conn.apiDelegate=self;
+            [conn verify:@{@"username":[[NSUserDefaults standardUserDefaults] valueForKey:@"account_login"],@"password":[[NSUserDefaults standardUserDefaults] valueForKey:@"pwd_login"],@"channel":[[NSUserDefaults standardUserDefaults] objectForKey:@"channel_ID"]}];
+        }
+        
+        //---------------------------------------------------------------------------
+        if (error) {
+            [[NSUserDefaults standardUserDefaults]setObject:@"" forKey:@"channel_ID"];
+            [[NSUserDefaults standardUserDefaults]synchronize];
+        }
+    }];
 
+    
+    
+    
     return YES;
 
 }
+
+#pragma mark - Push Notification
+
+#ifdef __IPHONE_8_0
+
+- (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)userInfo completionHandler:(void(^)())completionHandler
+{
+    //handle the actions
+    if ([identifier isEqualToString:@"declineAction"]){
+        NSLog(@"decline");
+    }
+    else if ([identifier isEqualToString:@"answerAction"]){
+        NSLog(@"answer");
+    }
+}
+#endif
+
 - (void)application:(UIApplication *)application
 didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     NSString *token =
@@ -96,6 +153,40 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
       withString:@""]
      stringByReplacingOccurrencesOfString:@" "
      withString:@""];
+    
+    NSLog(@"test:%@",deviceToken);
+    [BPush registerDeviceToken:deviceToken];
+    [BPush bindChannelWithCompleteHandler:^(id result, NSError *error) {
+        // 需要在绑定成功后进行 settag listtag deletetag unbind 操作否则会失败
+        if (result) {
+            [BPush setTag:@"DukeLiu" withCompleteHandler:^(id result, NSError *error) {
+                if (result) {
+//                    [BPush bindChannelWithCompleteHandler:^(id result,NSError *error){
+//                        NSLog(@"bphander=%@",result);
+//                        NSString *channel = [result objectForKey:@"channel_id"];
+//                        NSLog(@"chanl=%@",channel);
+//                        NSLog(@"RRRRRRRRRRRRRRRRRRRRRRRTTTTTTTTTTTTTT");
+//                        [[NSUserDefaults standardUserDefaults]setObject:channel forKey:@"channel_ID"];
+//                        [[NSUserDefaults standardUserDefaults]synchronize];
+//                        //---------------------------------------------------------------------------
+//                        //自動登入
+//                        NSLog(@"RRRRRRRRRRRRRRRRRRRRRRR");
+//                        if (([[NSUserDefaults standardUserDefaults] valueForKey:@"account_login"] && [[NSUserDefaults standardUserDefaults] valueForKey:@"pwd_login"]) && ![[[NSUserDefaults standardUserDefaults] valueForKey:@"pwd_login"]isEqualToString:@""]) {
+//                            APIConn *conn=[[APIConn alloc] init];
+//                            conn.apiDelegate=self;
+//                            [conn verify:@{@"username":[[NSUserDefaults standardUserDefaults] valueForKey:@"account_login"],@"password":[[NSUserDefaults standardUserDefaults] valueForKey:@"pwd_login"],@"channel":[[NSUserDefaults standardUserDefaults] objectForKey:@"channel_ID"]}];
+//                        }
+//                        //---------------------------------------------------------------------------
+//                    }];
+                    NSLog(@"设置tag成功");
+                }
+                if (error) {
+                    [[NSUserDefaults standardUserDefaults]setObject:@"" forKey:@"channel_ID"];
+                    [[NSUserDefaults standardUserDefaults]synchronize];
+                }
+            }];
+        }
+    }];
     
     [[RCIMClient sharedRCIMClient] setDeviceToken:token];
 }
@@ -116,7 +207,76 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
         self.window.rootViewController=_loginViewController;
     }
 }
+//
 
+//===================
+-(void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
+{
+    NSLog(@"********** iOS7.0之后 background **********");
+    // 应用在前台 或者后台开启状态下，不跳转页面，让用户选择。
+    if (application.applicationState == UIApplicationStateActive || application.applicationState == UIApplicationStateBackground) {
+        NSLog(@"acitve or background");
+        UIAlertView *alertView =[[UIAlertView alloc]initWithTitle:@"收到一条消息" message:userInfo[@"aps"][@"alert"] delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+        [alertView show];
+    }
+    else//杀死状态下，直接跳转到跳转页面。
+    {
+        CATransition *transition=[CATransition animation];
+        [transition setDelegate:self];
+        [transition setDuration:0.5f];
+        [transition setType:kCATransitionFade];
+        [self.window removeFromSuperview];
+        [self.window.layer addAnimation:transition forKey:@"MAIN"];
+        self.window.rootViewController=_mainNavi;
+    }
+    
+//    [self.viewController addLogString:[NSString stringWithFormat:@"backgroud : %@",userInfo]];
+    completionHandler(UIBackgroundFetchResultNewData);
+    NSLog(@"backgroud : %@",userInfo);
+
+}
+// 在 iOS8 系统中，还需要添加这个方法。通过新的 API 注册推送服务
+- (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings
+{
+    
+    [application registerForRemoteNotifications];
+    
+    
+}
+// 当 DeviceToken 获取失败时，系统会回调此方法
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
+{
+    NSLog(@"DeviceToken 获取失败，原因：%@",error);
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
+{
+    // App 收到推送的通知
+    [BPush handleNotification:userInfo];
+    
+    NSLog(@"%@", userInfo);
+    
+    NSLog(@"********** ios7.0之前 **********");
+    // 应用在前台 或者后台开启状态下，不跳转页面，让用户选择。
+    if (application.applicationState == UIApplicationStateActive || application.applicationState == UIApplicationStateBackground) {
+        NSLog(@"acitve or background");
+        UIAlertView *alertView =[[UIAlertView alloc]initWithTitle:@"收到一条消息" message:userInfo[@"aps"][@"alert"] delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+        [alertView show];
+    }
+    else//杀死状态下，直接跳转到跳转页面。
+    {
+        NSLog(@"background gogogogo");
+    }
+    
+    
+    NSLog(@"%@",userInfo);
+    
+}
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
+{
+    NSLog(@"接收本地通知啦！！！");
+    [BPush showLocalNotificationAtFront:notification identifierKey:nil];
+}
 
 //======================================================================================================================================================
 - (void)applicationWillResignActive:(UIApplication *)application {
@@ -310,9 +470,9 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     [defaults setObject:@"0" forKey:@"locationX"];
     [defaults setObject:@"0" forKey:@"locationY"];
     [defaults synchronize];
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"獲取您的位置失敗!" message:@"請開啟定位,開啟前無法使用本app" delegate:nil cancelButtonTitle:@"確定" otherButtonTitles:nil];
-    
-    [alert show];
+//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"獲取您的位置失敗!" message:@"請開啟定位,開啟前無法使用本app" delegate:nil cancelButtonTitle:@"確定" otherButtonTitles:nil];
+//    
+//    [alert show];
 }
 
 @end

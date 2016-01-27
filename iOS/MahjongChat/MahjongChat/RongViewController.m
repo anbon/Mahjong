@@ -12,6 +12,7 @@
 #import <RongIMKit/RCChatSessionInputBarControl.h>
 #import <RongIMKit/RCConversationViewController.h>
 
+
 //#import "RCConversationViewController.h"
 //#import "RCRealTimeLocationManager.h"
 @interface RongViewController ()
@@ -25,7 +26,7 @@
     AppDelegate *appdelegate;
     RongViewController *rong;
     NSString *Uname,*Unum,*age,*gender,*level,*photo,*rate;
-    UIBarButtonItem *backBtn;
+    UIBarButtonItem *backBtn,*menuBtn;
 }
 #pragma mark - life Cycle
 - (void)viewDidLoad {
@@ -36,6 +37,13 @@
     
 //    rong = (RongViewController*)[UIApplication sharedApplication].delegate;
     backBtn = [[UIBarButtonItem alloc]initWithTitle:@" 退出房間" style:UIBarButtonItemStylePlain target:self action:@selector(backToMain)];
+    
+    UIButton *imageButton = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 22, 22)];
+    [imageButton setBackgroundImage:[UIImage imageNamed:@"more.png"] forState:UIControlStateNormal];
+    [imageButton addTarget:self action:@selector(menuAction) forControlEvents:UIControlEventTouchUpInside];
+    menuBtn = [[UIBarButtonItem alloc] initWithCustomView:imageButton];
+    
+    
     self.navigationController.navigationItem.hidesBackButton = YES;
     appdelegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
     [appdelegate dismissPauseView];
@@ -43,10 +51,13 @@
         //timer
         [self initializeTimer];
         [self initializeTimer2];
+        self.navigationItem.rightBarButtonItem = menuBtn;
         NSLog(@"room onwer");
     }else{
         //yoyoyoyoyoyo i'm roomMember
         NSLog(@"room member");
+        self.navigationItem.leftBarButtonItem = backBtn;
+        self.navigationItem.rightBarButtonItem = menuBtn;
         [self initializeTimer2];
     }
     
@@ -71,13 +82,14 @@
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    self.navigationItem.leftBarButtonItem = backBtn;
+    
 }
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
     [timer invalidate];
     [timer2 invalidate];
     self.navigationItem.leftBarButtonItem = nil;
+    self.navigationItem.rightBarButtonItem = nil;
 }
 - (void)willDisplayMessageCell:(RCMessageBaseCell *)cell
                    atIndexPath:(NSIndexPath *)indexPath
@@ -166,8 +178,17 @@
     
 }
 #pragma mark - event response
+-(void)shareAction{
+    //    UIImage *happyImage = [UIImage imageNamed:@"HappyMan.jpg"];
+    NSURL *url = [NSURL URLWithString:@"http://www.jackercleaning.com/"];
+    UIActivityViewController *avc = [[UIActivityViewController alloc] initWithActivityItems:[NSArray arrayWithObjects:@"潔客幫 - 給您便利居家清潔打掃服務", url, nil] applicationActivities:nil];
+    [self presentViewController:avc animated:YES completion:nil];
+}
 -(void)backToMain{
     [self.navigationController popToViewController:[[appdelegate.mainNavi viewControllers]objectAtIndex:0] animated:NO];
+}
+-(void)menuAction{
+    
 }
 -(void)tapIcon:(UITapGestureRecognizer*)sender{
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];

@@ -44,9 +44,9 @@
     self.view.translatesAutoresizingMaskIntoConstraints = NO;
     
     [self.view setBackgroundColor:[UIColor clearColor]];
-    [self initByDuke];
+//    [self initByDuke];
 
-    [self pullToRefresh];
+    
     
     UIRefreshControl *refresh = [[UIRefreshControl alloc] init];
     refresh.attributedTitle = [[NSAttributedString alloc] initWithString:@"往下拉更新資料"];
@@ -63,6 +63,7 @@
     pplset = @"3";
     lower = @"";
     higher =@"";
+    [self pullToRefresh];
 //設定filterView
     filterView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, WIDTH, HEIGHT)];
     UIColor *line_grayColor = [UIColor colorWithWhite:0.6 alpha:0.4f];
@@ -140,7 +141,7 @@
     [confirmBtn.layer setBorderWidth:0.8f];
     [confirmBtn.layer setCornerRadius:20*RATIO];
     [confirmBtn.layer setBorderColor:[MAIN_COLOR CGColor]];
-    [confirmBtn addTarget:self action:@selector(nextAction) forControlEvents:UIControlEventTouchUpInside];
+    [confirmBtn addTarget:self action:@selector(filterConfirm) forControlEvents:UIControlEventTouchUpInside];
     
     UIButton *PresetBtn = [[UIButton alloc]initWithFrame:CGRectMake(55*RATIO, 350*RATIO-55*RATIO, 100*RATIO, 40*RATIO)];
     [PresetBtn setTitle:@"預設" forState:UIControlStateNormal];
@@ -213,21 +214,21 @@
 }
 -(void)seedFinished:(NSDictionary *)dic{
     [appDelegate dismissPauseView];
-    NSLog(@"seedfinished dic = %@",dic);
-//    NSString *statusTemp = [NSString stringWithFormat:@"%@",[dic objectForKey:@"status"]];
-//    if ([statusTemp isEqualToString:@"1"]) {
-//        [roomsum removeAllObjects];
-//        NSMutableArray *temp = [dic objectForKey:@"message"];
-//        for (int i = 0; i < temp.count; i++) {
-//            [roomsum addObject:[temp objectAtIndex:i]];
-//        }
-//    }else{
-//        
-//    }
-//    
-//    [self.refreshControl endRefreshing];
-//    self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"下拉刷新"];
-//    [self initByDuke];
+//    NSLog(@"seedfinished dic = %@",dic);
+    NSString *statusTemp = [NSString stringWithFormat:@"%@",[dic objectForKey:@"status"]];
+    if ([statusTemp isEqualToString:@"1"]) {
+        [roomsum removeAllObjects];
+        NSMutableArray *temp = [dic objectForKey:@"message"];
+        for (int i = 0; i < temp.count; i++) {
+            [roomsum addObject:[temp objectAtIndex:i]];
+        }
+    }else{
+        
+    }
+    
+    [self.refreshControl endRefreshing];
+    self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"下拉刷新"];
+    [self initByDuke];
     
 }
 #pragma mark - event response
@@ -244,7 +245,7 @@
     NSString *locationY = [defaults objectForKey:@"locationY"];
     APIConn *conn=[[APIConn alloc] init];
     conn.apiDelegate=self;
-    [conn seed:@{@"user_ID":userID,@"locationX":locationX,@"locationY":locationY}];
+    [conn seed:@{@"user_ID":userID,@"locationX":locationX,@"locationY":locationY,@"upper":higher,@"lower":lower,@"people":pplset}];
     
     self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"更新中"];
     [timer invalidate];
@@ -267,7 +268,7 @@
     NSString *locationY = [defaults objectForKey:@"locationY"];
     APIConn *conn=[[APIConn alloc] init];
     conn.apiDelegate=self;
-    [conn seed:@{@"user_ID":userID,@"locationX":locationX,@"locationY":locationY}];
+    [conn seed:@{@"user_ID":userID,@"locationX":locationX,@"locationY":locationY,@"upper":higher,@"lower":lower,@"people":pplset}];
 //    [appDelegate initPauseView:@"更新中..請稍候.."];
 }
 
@@ -452,7 +453,16 @@
     [moneyMax resignFirstResponder];
 }
 -(void)filterConfirm{
+    if (([moneyMax.text intValue]-[moneyMin.text intValue]) >= 0) {
+        lower = moneyMin.text;
+        higher = moneyMax.text;
+        [self pullToRefresh];
     
+        [filterView removeFromSuperview];
+    }else{
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"警告!!" message:@"金額之下限不得大於上限!" delegate:self cancelButtonTitle:@"返回" otherButtonTitles:nil, nil];
+        [alert show];
+    }
 }
 -(void)filterPreset{
     [segment setSelectedSegmentIndex:0];

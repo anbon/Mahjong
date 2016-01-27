@@ -28,6 +28,7 @@
 #define SEARCH_CHAT 18
 #define VERIFY_CHAT 19
 #define DESTINY 20
+#define FOLLOW 21
 #define DOMAIN_MAIN @"http://www.anbon.tw/mj/index.php"
 #define TOKEN [[[UIDevice currentDevice] identifierForVendor] UUIDString]
 
@@ -52,7 +53,7 @@
 
 -(void)verify:(NSDictionary*)data{
     action_type = VERIFY;
-    NSString *post = [NSString stringWithFormat:@"username=%@&password=%@",data[@"username"],data[@"password"]];
+    NSString *post = [NSString stringWithFormat:@"username=%@&password=%@&channel_Id=%@&DeviceType=4",data[@"username"],data[@"password"],data[@"channel"]];
     NSString *url=[NSString stringWithFormat:@"%@/verify", DOMAIN_MAIN];
     [self openConnect:post andURL:url andMethod:@"POST"];
 }
@@ -64,7 +65,7 @@
 }
 -(void)searchUser:(NSDictionary*)data{
     action_type = SEARCH_USER;
-    NSString *post = [NSString stringWithFormat:@"username=%@",data[@"username"]];
+    NSString *post = [NSString stringWithFormat:@"username=%@&user_ID=%@",data[@"username"],data[@"accountID"]];
     NSString *url=[NSString stringWithFormat:@"%@/Search_User", DOMAIN_MAIN];
     [self openConnect:post andURL:url andMethod:@"POST"];
 }
@@ -129,7 +130,7 @@
 }
 -(void)seed:(NSDictionary*)data{
     action_type = SEED;
-    NSString *post = [NSString stringWithFormat:@"user_ID=%@&location_x=%@&location_y=%@",data[@"user_ID"],data[@"locationX"],data[@"locationY"]];
+    NSString *post = [NSString stringWithFormat:@"user_ID=%@&location_x=%@&location_y=%@&upper_limit=%@&lower_limit=%@peoplelimit=%@",data[@"user_ID"],data[@"locationX"],data[@"locationY"],data[@"upper"],data[@"lower"],data[@"people"]];
     NSString *url=[NSString stringWithFormat:@"%@/seed", DOMAIN_MAIN];
     [self openConnect:post andURL:url andMethod:@"POST"];
 }
@@ -206,6 +207,13 @@
     [self openConnect:post andURL:url andMethod:@"POST"];
 }
 
+
+-(void)follow:(NSDictionary*)data{
+    action_type = FOLLOW;
+    NSString *post = [NSString stringWithFormat:@"user_ID=%@&Follow_ID=%@",data[@"user_ID"],data[@"Follow_ID"]];
+    NSString *url = [NSString stringWithFormat:@"%@/follow", DOMAIN_MAIN];
+    [self openConnect:post andURL:url andMethod:@"POST"];
+}
 #pragma mark - Image Connection URL
 
 -(void)openPhotoConnect:(NSString*)urlString andImage:(UIImage*)image{
@@ -334,6 +342,9 @@
             break;
         case DESTINY:
             [self.apiDelegate DestinyFinished:[loadData JSONValueFromString]];
+            break;
+        case FOLLOW:
+            [self.apiDelegate followFinished:[loadData JSONValueFromString]];
             break;
     }
 }

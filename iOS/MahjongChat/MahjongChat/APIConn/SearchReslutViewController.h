@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "UIImageView+WebCache.h"
-
-@interface SearchReslutViewController : UIViewController
+#import "APIConn.h"
+@interface SearchReslutViewController : UIViewController<APIConnDelegate>
 
 @end

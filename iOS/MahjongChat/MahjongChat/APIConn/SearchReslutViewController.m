@@ -9,12 +9,14 @@
 #import "SearchReslutViewController.h"
 #import "MainViewController.h"
 #import "AppDelegate.h"
+#import "WaitForEmpowerViewController.h"
 @interface SearchReslutViewController ()
 
 @end
 
 @implementation SearchReslutViewController{
     float  rating;
+    UIButton *follow;
 }
 
 #pragma mark - life Cycle
@@ -29,9 +31,38 @@
     // Dispose of any resources that can be recreated.
 }
 #pragma mark - API Delegate
+-(void)networkError:(NSString *)err{
+    
+}
+-(void)followFinished:(NSDictionary *)dic{
+    NSLog(@"follow dic=%@",dic);
+    if([[dic objectForKey:@"status"]isEqualToString:@"1"]){
+        NSString *msg = [dic objectForKey:@"message"];
+        if ([msg isEqualToString:@"1"]) {//n->Y
+            [follow setTitle:@"UnFollow" forState:UIControlStateNormal];
+            [follow setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [follow.layer setBackgroundColor:[[UIColor redColor] CGColor]];
+        }else{
+            [follow.layer setBackgroundColor:[MAIN_COLOR CGColor]];
+            [follow setTitle:@"Follow" forState:UIControlStateNormal];
+            [follow setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        }
+    }
+}
 #pragma mark - event response
 -(void)followAction{
 #warning  api follow/unfollow
+    APIConn *conn = [APIConn new];
+    conn.apiDelegate = self;
+    [conn follow:@{@"user_ID":[[NSUserDefaults standardUserDefaults] objectForKey:@"accountID"],
+                   @"Follow_ID":[[NSUserDefaults standardUserDefaults] objectForKey:@"searchResultNum"]}];
+
+}
+-(void)goToRoom{
+    [[NSUserDefaults standardUserDefaults]setObject:[[NSUserDefaults standardUserDefaults] objectForKey:@"searchResult"] forKey:@"selectChatRoom" ];
+    [[NSUserDefaults standardUserDefaults] synchronize];//selectChatRoom
+    WaitForEmpowerViewController *emp = [WaitForEmpowerViewController new];
+    [self.navigationController pushViewController:emp animated:YES];
 }
 #pragma mark - getters & setters
 -(void)initByDuke{
@@ -63,17 +94,17 @@
         }];
     }];
     
-    UIButton *follow = [[UIButton alloc]initWithFrame:CGRectMake(WIDTH-110*RATIO, y+30*RATIO, 90*RATIO, 30*RATIO)];
-    if (rating == 2) {
-        [follow setTitle:@"Follow" forState:UIControlStateNormal];
-        [follow setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [follow.layer setBackgroundColor:[MAIN_COLOR CGColor]];
-    }else if(rating == 1){
+    follow = [[UIButton alloc]initWithFrame:CGRectMake(WIDTH-110*RATIO, y+30*RATIO, 90*RATIO, 30*RATIO)];
+    if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"followOrNot"]isEqualToString:@"1"]) {
         [follow setTitle:@"UnFollow" forState:UIControlStateNormal];
         [follow setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [follow.layer setBackgroundColor:[[UIColor redColor] CGColor]];
+    }else{
+        [follow.layer setBackgroundColor:[MAIN_COLOR CGColor]];
+        [follow setTitle:@"Follow" forState:UIControlStateNormal];
+        [follow setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     }
-    [follow.layer setBorderWidth:15*RATIO];
+    [follow.layer setCornerRadius:15*RATIO];
     [follow addTarget:self action:@selector(followAction) forControlEvents:UIControlEventTouchUpInside];
     
     y += 90*RATIO;
@@ -149,8 +180,21 @@
         xforStar = xforStar + 50*RATIO;
     }
 
+    y = y+120*RATIO;
     
-    
+    if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"RoomingOrNot"]isEqualToString:@"1"]) {
+        UIButton *gotoRoomBtn = [[UIButton alloc]initWithFrame:CGRectMake(WIDTH/2-60*RATIO, y , 120*RATIO, 50*RATIO)];
+        [gotoRoomBtn setTitle:@"加入房間" forState:UIControlStateNormal];
+        [gotoRoomBtn setTitleColor:MAIN_COLOR forState:UIControlStateNormal];
+        [gotoRoomBtn.titleLabel setFont:[UIFont systemFontOfSize:20*RATIO]];
+        [gotoRoomBtn.layer setBorderWidth:0.8f];
+        [gotoRoomBtn.layer setCornerRadius:25*RATIO];
+        [gotoRoomBtn.layer setBorderColor:[MAIN_COLOR CGColor]];
+        [gotoRoomBtn addTarget:self action:@selector(goToRoom) forControlEvents:UIControlEventTouchUpInside];
+        
+        [scrollView addSubview:gotoRoomBtn];
+
+    }
     
     y += 70*RATIO;
     

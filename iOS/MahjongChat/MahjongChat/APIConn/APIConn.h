@@ -37,6 +37,7 @@
 -(void)Search_ChatFinished:(NSDictionary*)dic;
 -(void)VerifyChatFinished:(NSDictionary*)dic;
 -(void)DestinyFinished:(NSDictionary*)dic;
+-(void)followFinished:(NSDictionary*)dic;
 @end
 
 @interface APIConn : NSObject{
@@ -70,4 +71,5 @@
 -(void)VerifyChat:(NSDictionary*)data;
 -(void)Search_Chat:(NSDictionary*)data;
 -(void)Destiny:(NSDictionary*)data;
+-(void)follow:(NSDictionary*)data;
 @end
