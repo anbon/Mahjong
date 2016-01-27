@@ -374,7 +374,7 @@
 		ABC20B011C0315D90025AFD5 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		ABC20B031C0315E50025AFD5 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		ABC20B051C0315F00025AFD5 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		ABEF50A11BCF96C3001512F6 /* MahjongChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MahjongChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		ABEF50A11BCF96C3001512F6 /* NineKa.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NineKa.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ABEF50A51BCF96C3001512F6 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		ABEF50A71BCF96C3001512F6 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		ABEF50A81BCF96C3001512F6 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -384,10 +384,10 @@
 		ABEF50B01BCF96C3001512F6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		ABEF50B31BCF96C3001512F6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		ABEF50B51BCF96C3001512F6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		ABEF50BA1BCF96C3001512F6 /* MahjongChatTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MahjongChatTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		ABEF50BA1BCF96C3001512F6 /* NineKa.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NineKa.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		ABEF50BE1BCF96C3001512F6 /* MahjongChatTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MahjongChatTests.m; sourceTree = "<group>"; };
 		ABEF50C01BCF96C3001512F6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		ABEF50C51BCF96C3001512F6 /* MahjongChatUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MahjongChatUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		ABEF50C51BCF96C3001512F6 /* NineKa.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NineKa.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		ABEF50C91BCF96C3001512F6 /* MahjongChatUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MahjongChatUITests.m; sourceTree = "<group>"; };
 		ABEF50CB1BCF96C3001512F6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -818,9 +818,9 @@
 		ABEF50A21BCF96C3001512F6 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				ABEF50A11BCF96C3001512F6 /* MahjongChat.app */,
-				ABEF50BA1BCF96C3001512F6 /* MahjongChatTests.xctest */,
-				ABEF50C51BCF96C3001512F6 /* MahjongChatUITests.xctest */,
+				ABEF50A11BCF96C3001512F6 /* NineKa.app */,
+				ABEF50BA1BCF96C3001512F6 /* NineKa.xctest */,
+				ABEF50C51BCF96C3001512F6 /* NineKa.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -873,9 +873,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		ABEF50A01BCF96C3001512F6 /* MahjongChat */ = {
+		ABEF50A01BCF96C3001512F6 /* NineKa */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = ABEF50CE1BCF96C3001512F6 /* Build configuration list for PBXNativeTarget "MahjongChat" */;
+			buildConfigurationList = ABEF50CE1BCF96C3001512F6 /* Build configuration list for PBXNativeTarget "NineKa" */;
 			buildPhases = (
 				ABEF509D1BCF96C3001512F6 /* Sources */,
 				ABEF509E1BCF96C3001512F6 /* Frameworks */,
@@ -885,14 +885,14 @@
 			);
 			dependencies = (
 			);
-			name = MahjongChat;
+			name = NineKa;
 			productName = MahjongChat;
-			productReference = ABEF50A11BCF96C3001512F6 /* MahjongChat.app */;
+			productReference = ABEF50A11BCF96C3001512F6 /* NineKa.app */;
 			productType = "com.apple.product-type.application";
 		};
-		ABEF50B91BCF96C3001512F6 /* MahjongChatTests */ = {
+		ABEF50B91BCF96C3001512F6 /* NineKaTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = ABEF50D11BCF96C3001512F6 /* Build configuration list for PBXNativeTarget "MahjongChatTests" */;
+			buildConfigurationList = ABEF50D11BCF96C3001512F6 /* Build configuration list for PBXNativeTarget "NineKaTests" */;
 			buildPhases = (
 				ABEF50B61BCF96C3001512F6 /* Sources */,
 				ABEF50B71BCF96C3001512F6 /* Frameworks */,
@@ -903,14 +903,14 @@
 			dependencies = (
 				ABEF50BC1BCF96C3001512F6 /* PBXTargetDependency */,
 			);
-			name = MahjongChatTests;
+			name = NineKaTests;
 			productName = MahjongChatTests;
-			productReference = ABEF50BA1BCF96C3001512F6 /* MahjongChatTests.xctest */;
+			productReference = ABEF50BA1BCF96C3001512F6 /* NineKa.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		ABEF50C41BCF96C3001512F6 /* MahjongChatUITests */ = {
+		ABEF50C41BCF96C3001512F6 /* NineKaUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = ABEF50D41BCF96C3001512F6 /* Build configuration list for PBXNativeTarget "MahjongChatUITests" */;
+			buildConfigurationList = ABEF50D41BCF96C3001512F6 /* Build configuration list for PBXNativeTarget "NineKaUITests" */;
 			buildPhases = (
 				ABEF50C11BCF96C3001512F6 /* Sources */,
 				ABEF50C21BCF96C3001512F6 /* Frameworks */,
@@ -921,9 +921,9 @@
 			dependencies = (
 				ABEF50C71BCF96C3001512F6 /* PBXTargetDependency */,
 			);
-			name = MahjongChatUITests;
+			name = NineKaUITests;
 			productName = MahjongChatUITests;
-			productReference = ABEF50C51BCF96C3001512F6 /* MahjongChatUITests.xctest */;
+			productReference = ABEF50C51BCF96C3001512F6 /* NineKa.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -937,7 +937,7 @@
 				TargetAttributes = {
 					ABEF50A01BCF96C3001512F6 = {
 						CreatedOnToolsVersion = 7.0.1;
-						DevelopmentTeam = 3KSR4CQDWE;
+						DevelopmentTeam = WA7RGYG938;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -956,7 +956,7 @@
 					};
 				};
 			};
-			buildConfigurationList = ABEF509C1BCF96C3001512F6 /* Build configuration list for PBXProject "MahjongChat" */;
+			buildConfigurationList = ABEF509C1BCF96C3001512F6 /* Build configuration list for PBXProject "NineKa" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -970,9 +970,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				ABEF50A01BCF96C3001512F6 /* MahjongChat */,
-				ABEF50B91BCF96C3001512F6 /* MahjongChatTests */,
-				ABEF50C41BCF96C3001512F6 /* MahjongChatUITests */,
+				ABEF50A01BCF96C3001512F6 /* NineKa */,
+				ABEF50B91BCF96C3001512F6 /* NineKaTests */,
+				ABEF50C41BCF96C3001512F6 /* NineKaUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -1153,12 +1153,12 @@
 /* Begin PBXTargetDependency section */
 		ABEF50BC1BCF96C3001512F6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = ABEF50A01BCF96C3001512F6 /* MahjongChat */;
+			target = ABEF50A01BCF96C3001512F6 /* NineKa */;
 			targetProxy = ABEF50BB1BCF96C3001512F6 /* PBXContainerItemProxy */;
 		};
 		ABEF50C71BCF96C3001512F6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = ABEF50A01BCF96C3001512F6 /* MahjongChat */;
+			target = ABEF50A01BCF96C3001512F6 /* NineKa */;
 			targetProxy = ABEF50C61BCF96C3001512F6 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -1228,7 +1228,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -1265,7 +1265,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -1277,7 +1277,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Jerry Wang (C93DLCKMZY)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/MahjongChat/Rong_Cloud_iOS_SDK_v2_3_7_stable",
@@ -1290,9 +1290,9 @@
 					"$(PROJECT_DIR)/MahjongChat/Rong_Cloud_iOS_SDK_v2_3_7_stable",
 					"$(PROJECT_DIR)/MahjongChat/LibBPush",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = co.nineka;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "bfcf12db-2c6b-41d4-8744-c6da537d3700";
+				PRODUCT_BUNDLE_IDENTIFIER = co.nineka.NineKa;
+				PRODUCT_NAME = NineKa;
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -1301,7 +1301,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Jerry Wang (WA7RGYG938)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/MahjongChat/Rong_Cloud_iOS_SDK_v2_3_7_stable",
@@ -1314,9 +1314,9 @@
 					"$(PROJECT_DIR)/MahjongChat/Rong_Cloud_iOS_SDK_v2_3_7_stable",
 					"$(PROJECT_DIR)/MahjongChat/LibBPush",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = co.nineka;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "381fb86b-efcf-4c45-be93-060c862d71d4";
+				PRODUCT_BUNDLE_IDENTIFIER = co.nineka.NineKa;
+				PRODUCT_NAME = NineKa;
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};
@@ -1327,8 +1327,8 @@
 				INFOPLIST_FILE = MahjongChatTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Duke.MahjongChatTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MahjongChat.app/MahjongChat";
+				PRODUCT_NAME = NineKa;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NineKa.app/NineKa";
 			};
 			name = Debug;
 		};
@@ -1339,8 +1339,8 @@
 				INFOPLIST_FILE = MahjongChatTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Duke.MahjongChatTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MahjongChat.app/MahjongChat";
+				PRODUCT_NAME = NineKa;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NineKa.app/NineKa";
 			};
 			name = Release;
 		};
@@ -1350,7 +1350,7 @@
 				INFOPLIST_FILE = MahjongChatUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Duke.MahjongChatUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = NineKa;
 				TEST_TARGET_NAME = MahjongChat;
 				USES_XCTRUNNER = YES;
 			};
@@ -1362,7 +1362,7 @@
 				INFOPLIST_FILE = MahjongChatUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Duke.MahjongChatUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = NineKa;
 				TEST_TARGET_NAME = MahjongChat;
 				USES_XCTRUNNER = YES;
 			};
@@ -1371,7 +1371,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		ABEF509C1BCF96C3001512F6 /* Build configuration list for PBXProject "MahjongChat" */ = {
+		ABEF509C1BCF96C3001512F6 /* Build configuration list for PBXProject "NineKa" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				ABEF50CC1BCF96C3001512F6 /* Debug */,
@@ -1380,7 +1380,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		ABEF50CE1BCF96C3001512F6 /* Build configuration list for PBXNativeTarget "MahjongChat" */ = {
+		ABEF50CE1BCF96C3001512F6 /* Build configuration list for PBXNativeTarget "NineKa" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				ABEF50CF1BCF96C3001512F6 /* Debug */,
@@ -1389,7 +1389,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		ABEF50D11BCF96C3001512F6 /* Build configuration list for PBXNativeTarget "MahjongChatTests" */ = {
+		ABEF50D11BCF96C3001512F6 /* Build configuration list for PBXNativeTarget "NineKaTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				ABEF50D21BCF96C3001512F6 /* Debug */,
@@ -1398,7 +1398,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		ABEF50D41BCF96C3001512F6 /* Build configuration list for PBXNativeTarget "MahjongChatUITests" */ = {
+		ABEF50D41BCF96C3001512F6 /* Build configuration list for PBXNativeTarget "NineKaUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				ABEF50D51BCF96C3001512F6 /* Debug */,

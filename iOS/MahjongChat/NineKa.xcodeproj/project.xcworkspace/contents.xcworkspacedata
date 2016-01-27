@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:MahjongChat.xcodeproj">
+      location = "self:/Users/apple/Programming/git/Mahjong/iOS/MahjongChat/NineKa.xcodeproj">
    </FileRef>
 </Workspace>
