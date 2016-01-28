@@ -70,4 +70,4 @@
         android:text="已讀"
         android:visibility="gone"/>
 
-</RelativeLayout><!-- From: file:/C:/Users/x51811danny/Desktop/Github/Mahjong/Android/Demo/IMKit/src/main/res/layout/rc_item_base_conversation.xml --><!-- From: file:/C:/Users/x51811danny/Desktop/Github/Mahjong/Android/Demo/IMKit/build/intermediates/bundles/debug/res/layout/rc_item_base_conversation.xml -->
+</RelativeLayout>

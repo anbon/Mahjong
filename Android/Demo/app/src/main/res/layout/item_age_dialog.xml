@@ -44,11 +44,11 @@
         android:background="#FFFFFF"
         android:gravity="center" >
 		
-        <com.example.demo.util.CycleWheelView
+        <co.nineka.util.CycleWheelView
 	        android:id="@+id/cycleWheelView1"
 	        android:layout_width="match_parent"
 	        android:layout_height="100dp">
-   		</com.example.demo.util.CycleWheelView>
+   		</co.nineka.util.CycleWheelView>
     
 
     <!--<com.common.view.CycleWheelView

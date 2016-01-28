@@ -18,13 +18,13 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-                <com.example.demo.util.NonSwipeableViewPager
+                <co.nineka.util.NonSwipeableViewPager
                     android:id="@+id/ViewPager"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_above="@+id/tab_viewpager"
                     >
-                </com.example.demo.util.NonSwipeableViewPager>
+                </co.nineka.util.NonSwipeableViewPager>
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"

@@ -120,7 +120,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@+id/nearby_base"
-                    android:layout_marginLeft="45dp"
+                    android:layout_marginLeft="40dp"
                     android:textColor="#646464"
                     android:textSize = "15sp"
                     android:text="$20"/>

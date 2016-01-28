@@ -5,4 +5,4 @@
     <item android:drawable="@drawable/rc_precheckbox_normal" android:state_checked="false"></item>
     <item android:drawable="@drawable/rc_precheckbox_normal"></item>
 
-</selector><!-- From: file:/C:/Users/x51811danny/Desktop/Github/Mahjong/Android/Demo/IMKit/src/main/res/drawable/rc_preview_checkbox.xml -->
+</selector>
