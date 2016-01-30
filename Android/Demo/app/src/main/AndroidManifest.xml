@@ -158,6 +158,13 @@
             android:windowSoftInputMode="adjustResize" >
         </activity>
         <activity
+            android:name=".VerifyActivity"
+            android:label="@string/title_activity_verify"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden">
+        </activity>
+
+        <activity
             android:name=".FillInActivity"
             android:label="@string/title_activity_fill_in"
             android:screenOrientation="portrait"

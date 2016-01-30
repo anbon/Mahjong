@@ -1,11 +1,11 @@
 [
     {
-        "merged": "C:\\Users\\x51811danny\\Desktop\\Github\\Mahjong\\Android\\Demo\\IMKit\\build\\intermediates\\res\\merged\\release\\layout\\rc_item_message.xml",
-        "source": "C:\\Users\\x51811danny\\Desktop\\Github\\Mahjong\\Android\\Demo\\IMKit\\src\\main\\res\\layout\\rc_item_message.xml"
-    },
-    {
         "merged": "C:\\Users\\x51811danny\\Desktop\\Github\\Mahjong\\Android\\Demo\\IMKit\\build\\intermediates\\res\\merged\\release\\layout\\rc_item_location_message.xml",
         "source": "C:\\Users\\x51811danny\\Desktop\\Github\\Mahjong\\Android\\Demo\\IMKit\\src\\main\\res\\layout\\rc_item_location_message.xml"
+    },
+    {
+        "merged": "C:\\Users\\x51811danny\\Desktop\\Github\\Mahjong\\Android\\Demo\\IMKit\\build\\intermediates\\res\\merged\\release\\layout\\rc_item_message.xml",
+        "source": "C:\\Users\\x51811danny\\Desktop\\Github\\Mahjong\\Android\\Demo\\IMKit\\src\\main\\res\\layout\\rc_item_message.xml"
     },
     {
         "merged": "C:\\Users\\x51811danny\\Desktop\\Github\\Mahjong\\Android\\Demo\\IMKit\\build\\intermediates\\res\\merged\\release\\layout\\rc_ac_camera.xml",
@@ -16,20 +16,20 @@
         "source": "C:\\Users\\x51811danny\\Desktop\\Github\\Mahjong\\Android\\Demo\\IMKit\\src\\main\\res\\layout\\rc_item_text_message.xml"
     },
     {
-        "merged": "C:\\Users\\x51811danny\\Desktop\\Github\\Mahjong\\Android\\Demo\\IMKit\\build\\intermediates\\res\\merged\\release\\layout\\rc_item_rich_content_message.xml",
-        "source": "C:\\Users\\x51811danny\\Desktop\\Github\\Mahjong\\Android\\Demo\\IMKit\\src\\main\\res\\layout\\rc_item_rich_content_message.xml"
-    },
-    {
-        "merged": "C:\\Users\\x51811danny\\Desktop\\Github\\Mahjong\\Android\\Demo\\IMKit\\build\\intermediates\\res\\merged\\release\\layout\\rc_fr_photo2.xml",
-        "source": "C:\\Users\\x51811danny\\Desktop\\Github\\Mahjong\\Android\\Demo\\IMKit\\src\\main\\res\\layout\\rc_fr_photo2.xml"
+        "merged": "C:\\Users\\x51811danny\\Desktop\\Github\\Mahjong\\Android\\Demo\\IMKit\\build\\intermediates\\res\\merged\\release\\layout\\rc_wi_text_btn.xml",
+        "source": "C:\\Users\\x51811danny\\Desktop\\Github\\Mahjong\\Android\\Demo\\IMKit\\src\\main\\res\\layout\\rc_wi_text_btn.xml"
     },
     {
         "merged": "C:\\Users\\x51811danny\\Desktop\\Github\\Mahjong\\Android\\Demo\\IMKit\\build\\intermediates\\res\\merged\\release\\layout\\rc_item_image_message.xml",
         "source": "C:\\Users\\x51811danny\\Desktop\\Github\\Mahjong\\Android\\Demo\\IMKit\\src\\main\\res\\layout\\rc_item_image_message.xml"
     },
     {
-        "merged": "C:\\Users\\x51811danny\\Desktop\\Github\\Mahjong\\Android\\Demo\\IMKit\\build\\intermediates\\res\\merged\\release\\layout\\rc_wi_text_btn.xml",
-        "source": "C:\\Users\\x51811danny\\Desktop\\Github\\Mahjong\\Android\\Demo\\IMKit\\src\\main\\res\\layout\\rc_wi_text_btn.xml"
+        "merged": "C:\\Users\\x51811danny\\Desktop\\Github\\Mahjong\\Android\\Demo\\IMKit\\build\\intermediates\\res\\merged\\release\\layout\\rc_fr_photo2.xml",
+        "source": "C:\\Users\\x51811danny\\Desktop\\Github\\Mahjong\\Android\\Demo\\IMKit\\src\\main\\res\\layout\\rc_fr_photo2.xml"
+    },
+    {
+        "merged": "C:\\Users\\x51811danny\\Desktop\\Github\\Mahjong\\Android\\Demo\\IMKit\\build\\intermediates\\res\\merged\\release\\layout\\rc_item_rich_content_message.xml",
+        "source": "C:\\Users\\x51811danny\\Desktop\\Github\\Mahjong\\Android\\Demo\\IMKit\\src\\main\\res\\layout\\rc_item_rich_content_message.xml"
     },
     {
         "merged": "C:\\Users\\x51811danny\\Desktop\\Github\\Mahjong\\Android\\Demo\\IMKit\\build\\intermediates\\res\\merged\\release\\layout\\rc_item_public_service_search.xml",

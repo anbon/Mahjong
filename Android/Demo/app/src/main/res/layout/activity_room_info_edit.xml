@@ -78,13 +78,13 @@
                 android:textSize="17sp"
                 android:text="人缺"/>
             <RelativeLayout
+                android:id="@+id/create_ppl_in_need_btn"
                 android:layout_width="64dp"
                 android:layout_height="24dp"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="24dp"
-                android:background="@drawable/btn_blue_round_bg"
-                android:clickable="false">
+                android:background="@drawable/btn_blue_round_bg">
                 <TextView
                     android:id="@+id/create_ppl_in_need"
                     android:layout_width="wrap_content"
@@ -120,7 +120,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="24dp"
+                android:layout_marginRight="45dp"
 
                 android:textColor="#3f3f3f"
                 android:maxLength="5"
@@ -137,10 +137,10 @@
                 android:textStyle="bold"
                 android:textSize="18sp"
                 android:textColor="#3f3f3f"
-                android:layout_toLeftOf="@+id/create_base"
+                android:layout_toRightOf="@+id/create_base"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="4dp"
-                android:text="$"/>
+                android:layout_marginLeft="-42dp"
+                android:text="分"/>
 
         </RelativeLayout>
 
@@ -164,7 +164,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="24dp"
+                android:layout_marginRight="45dp"
                 android:textColor="#3f3f3f"
                 android:maxLength="5"
                 android:singleLine="true"
@@ -181,9 +181,9 @@
                 android:textSize="18sp"
                 android:textColor="#3f3f3f"
                 android:layout_centerVertical="true"
-                android:layout_toLeftOf="@+id/create_unit"
-                android:layout_marginRight="4dp"
-                android:text="$"/>
+                android:layout_toRightOf="@+id/create_unit"
+                android:layout_marginLeft="-42dp"
+                android:text="分"/>
         </RelativeLayout>
         <RelativeLayout
             android:layout_width="match_parent"
@@ -198,24 +198,17 @@
                 android:textColor="#3f3f3f"
                 android:textSize="17sp"
                 android:text="時間"/>
-            <RelativeLayout
-                android:layout_width="64dp"
-                android:layout_height="24dp"
+            <TextView
+                android:id="@+id/create_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#3f3f3f"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="24dp"
-                android:background="@drawable/btn_blue_round_bg"
-                android:clickable="false">
-                <TextView
-                    android:id="@+id/create_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="#ffffff"
-                    android:layout_centerInParent="true"
-                    android:gravity="center"
-                    android:text="4pm"
-                    android:textSize="13sp"/>
-            </RelativeLayout>
+                android:textStyle="bold"
+                android:text="4pm"
+                android:textSize="17sp"/>
         </RelativeLayout>
 
 
@@ -419,6 +412,7 @@
                 android:clickable="true"
                 android:layout_toRightOf="@+id/create_center"
                 android:gravity="center"
+                android:onClick="Share"
                 android:textSize="24sp"
                 android:textColor="#35acc5"
                 android:text="分 享"/>
@@ -432,12 +426,15 @@
             android:layout_height="wrap_content">
 
             <TextView
+                android:id="@+id/delete_room_btn"
                 android:layout_width="250dp"
                 android:layout_height="55dp"
                 android:background="@drawable/btn_delete_bg"
                 android:layout_centerInParent="true"
                 android:clickable="true"
                 android:layout_toRightOf="@+id/create_center"
+                android:visibility="invisible"
+                android:onClick="DeleteRoom"
                 android:gravity="center"
                 android:textSize="24sp"
                 android:textColor="#FF3B30"

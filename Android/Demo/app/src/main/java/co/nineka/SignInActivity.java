@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -69,7 +70,74 @@ public class SignInActivity extends Activity {
 
 
     public void forgetPassword(View v){
+        mythread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        dialog = myapi.new LoadingDialog(SignInActivity.this, "請稍後...", false);
+                        dialog.execute();
+                    }
+                });
+                List<NameValuePair> params = new ArrayList<NameValuePair>();
+                params.add(new BasicNameValuePair("Email", username.getText().toString()));
 
+                String result = myapi.postMethod_getCode(SignInActivity.this, App.forget_pass, params);
+                Log.v("forget_pass", result);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        dialog.close();
+                    }
+                });
+                try {
+                    final JSONObject o = new JSONObject(result);
+
+                    if(o.getString("status").equals("1")){
+                        final String user_ID = o.getString("message");
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    dialog = myapi.new LoadingDialog(SignInActivity.this, o.getString("message"), true);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                dialog.execute();
+                            }
+                        });
+                    }else{
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    dialog = myapi.new LoadingDialog(SignInActivity.this, o.getString("message"), true);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                dialog.execute();
+                            }
+                        });
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            dialog = myapi.new LoadingDialog(SignInActivity.this, "伺服器發生錯誤！", true);
+                            dialog.execute();
+                        }
+                    });
+
+                }
+
+            }
+        });
+        if(!Linkify.addLinks(username.getText(), Linkify.EMAIL_ADDRESSES)){
+            Toast.makeText(SignInActivity.this, "請檢查您的信箱格式是否正確", Toast.LENGTH_SHORT).show();
+        }else
+            mythread.start();
     }
     @SuppressWarnings("deprecation")
     public void login(View v){
@@ -110,7 +178,7 @@ public class SignInActivity extends Activity {
         Log.v("Verify", result);
 
         try {
-            JSONObject o = new JSONObject(result);
+            final JSONObject o = new JSONObject(result);
 
 
             if(o.getString("status").equals("1")) {
@@ -143,6 +211,23 @@ public class SignInActivity extends Activity {
                 startActivity(intent);
                 finish();
 
+            }else if(o.getString("status").equals("2")){
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(SignInActivity.this,"請先完成手機認證",Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent();
+                        intent.setClass(SignInActivity.this, VerifyActivity.class);
+                        Bundle b = new Bundle();
+                        b.putString("username",username.getText().toString());
+                        b.putString("password",password.getText().toString());
+                        b.putString("user_ID",o.optString("user_ID","50"));
+                        intent.putExtras(b);
+                        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                        startActivity(intent);
+                        finish();
+                    }
+                });
             }
             else if(o.getString("status").equals("999")){
                 runOnUiThread(new Runnable() {

@@ -299,7 +299,7 @@ public class NearbyTab extends Fragment implements LocationListener,XListView.IX
             @Override
             public void onDismiss(DialogInterface dialog) {
                 InputMethodManager imm = (InputMethodManager) mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(mActivity.getCurrentFocus().getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
+                imm.hideSoftInputFromWindow(current_no_room.getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
                 pb.setVisibility(View.VISIBLE);
                 list1.setVisibility(View.INVISIBLE);
                 current_no_room.setVisibility(View.INVISIBLE);
@@ -618,8 +618,8 @@ public class NearbyTab extends Fragment implements LocationListener,XListView.IX
                     mViewHolder.nearby_ic_vacant.setImageResource(R.drawable.need3);
                 mViewHolder.nearby_name.setText(mList.get(position).getUname());
                 mViewHolder.nearby_title.setText(mList.get(position).getRoomName());
-                mViewHolder.nearby_base.setText("$"+mList.get(position).getbase());
-                mViewHolder.nearby_unit.setText("$"+mList.get(position).getunit());
+                mViewHolder.nearby_base.setText(mList.get(position).getbase());
+                mViewHolder.nearby_unit.setText(mList.get(position).getunit());
                 mViewHolder.nearby_time.setText(mList.get(position).gettime());
                 mViewHolder.nearby_distance.setText(mList.get(position).getdistance()+"km");
 

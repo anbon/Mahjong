@@ -82,7 +82,11 @@ public class App extends Application {
     public static final String Photo_Repository = "http:/www.anbon.tw/mj/assets/photo/";
     public static final String Domain = "http://www.anbon.tw/mj/index.php/";
     public static final String register = Domain + "register";
+    public static final String register_verify = Domain + "register_verify";
     public static final String Verify = Domain + "verify";
+    public static final String forget_pass = Domain + "forget_pass";
+
+    public static final String ReMessage = Domain + "ReMessage";
     public static final String Search_User = Domain + "Search_User";
     public static final String Search_ID = Domain + "Search_ID";
     public static final String Getmember = Domain + "getmember";
@@ -101,7 +105,12 @@ public class App extends Application {
     public static final String chatamount = Domain + "chatamount";
     public static final String follow = Domain + "follow";
     public static final String kickMember = Domain + "kickMember";
-
+    public static final String changeTitle = Domain + "changeTitle";
+    public static final String DeleteRoom = Domain + "DeleteRoom";
+    public static final String memberLeave = Domain + "memberLeave";
+    public static final String changePeople = Domain + "changePeople";
+    public static final String Buster = Domain + "Buster";
+    public static final String Share = Domain + "share";
 
     public int timeoutConnection = 5000;
     public int timeoutSocket = 4000;

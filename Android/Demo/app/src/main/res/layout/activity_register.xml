@@ -26,6 +26,7 @@
             android:layout_toRightOf="@+id/dot1"
             android:layout_marginTop="-13dp"
             android:layout_marginLeft="13dp"
+            android:inputType="textEmailAddress"
             android:singleLine="true"
             android:padding="10dp"
             android:background="@null"
@@ -92,12 +93,55 @@
 
     </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/signin_number_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/signin_password_panel"
+        android:layout_marginTop="16dp">
+        <ImageView
+            android:id="@+id/dot3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/white_dot"
+            android:layout_marginLeft="15dp"
+            />
+        <EditText
+            android:id="@+id/signin_number"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_toRightOf="@+id/dot3"
+            android:layout_marginTop="-13dp"
+            android:layout_marginLeft="13dp"
+            android:singleLine="true"
+            android:inputType="phone"
+            android:padding="10dp"
+            android:background="@null"
+            android:gravity="center_vertical"
+            android:textSize="22sp"
+            android:textColorHint="#FFFFFF"
+            android:textColor="#FFFFFF"
+            android:hint="請輸入手機"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#FFFFFF"
+            android:layout_alignLeft="@id/dot3"
+            android:layout_below="@id/dot3"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="2dp"
+            >
+
+        </View>
+
+    </RelativeLayout>
+
 
     <TextView
         android:id="@+id/signin_confirm"
         android:layout_width="130dp"
         android:layout_height="56dp"
-        android:layout_below="@id/signin_password_panel"
+        android:layout_below="@id/signin_number_panel"
         android:layout_marginTop="60dp"
         android:layout_centerHorizontal="true"
         android:background="@drawable/white_confirm"

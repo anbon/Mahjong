@@ -6,6 +6,7 @@ import android.app.Notification;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.Image;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -37,6 +38,7 @@ public class StartActivity extends Activity {
     ProgressBar pb;
     SharedPreferences pref;
     ImageView start_register, start_signin;
+    String room_ID="",json ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +56,7 @@ public class StartActivity extends Activity {
 
         BasicPushNotificationBuilder n = new BasicPushNotificationBuilder();
         n.setNotificationDefaults(Notification.DEFAULT_ALL);
-        n.setNotificationVibrate(new long[]{200, 500, 800, 300,300,300});
+        n.setNotificationVibrate(new long[]{200, 500, 800, 300, 300, 300});
         n.setNotificationFlags(Notification.FLAG_AUTO_CANCEL);
         n.setStatusbarIcon(R.drawable.majong_logo);
         n.setNotificationSound(PreferenceManager.getDefaultSharedPreferences(this).
@@ -62,14 +64,36 @@ public class StartActivity extends Activity {
 
         PushManager.setDefaultNotificationBuilder(getApplicationContext(), n);
 
-        /*if(pref.getString("num","").isEmpty()){
+        if(getIntent().getExtras()!=null)
+        {
+            //Log.v("getIntent()", getIntent().getStringExtra("room_ID"));
+            json = getIntent().getStringExtra("json");
+
+            //Log.v("json", json);
+        }else{
+
+        }
+        if(getIntent().getScheme()!=null)
+            onNewIntent(getIntent());
+
+
+        if(pref.getString("password","").isEmpty()){
             pb.setVisibility(View.INVISIBLE);
         }else{
             start_register.setVisibility(View.GONE);
             start_signin.setVisibility(View.GONE);
             new AsyncTaskLogin().execute();
-        }*/
+        }
         //dialog.execute();
+    }
+    protected void onNewIntent(Intent intent) {
+        Log.v("onNewIntent", "onNewIntent");
+        String action = intent.getAction();
+        String data = intent.getDataString();
+        if (Intent.ACTION_VIEW.equals(action) && data != null) {
+            room_ID = data.substring(data.lastIndexOf("/") + 1);
+            Log.v("onNewIntent", room_ID);
+        }
     }
 
     public void goRegisterActivity(View v){
@@ -88,6 +112,7 @@ public class StartActivity extends Activity {
 
     public class AsyncTaskLogin extends AsyncTask<Boolean, Integer, String>
     {
+        JSONObject o_o;
 
         protected void onPreExecute()
         {
@@ -98,10 +123,13 @@ public class StartActivity extends Activity {
 
         protected String doInBackground(Boolean... state)
         {
+            SharedPreferences pref2 = getSharedPreferences("Setting", 0);
             List<NameValuePair> params;
             params = new ArrayList<NameValuePair>();
             params.add(new BasicNameValuePair("username", pref.getString("username", "")));
             params.add(new BasicNameValuePair("password", pref.getString("password", "")));
+            params.add(new BasicNameValuePair("channel_Id", pref2.getString("channel_Id", "")));
+            params.add(new BasicNameValuePair("DeviceType", "3"));
 
             //Log.v("params",params.toString());
 
@@ -135,6 +163,21 @@ public class StartActivity extends Activity {
                     Intent intent = new Intent();
                     intent.setClass(StartActivity.this, MainActivity.class);
                     overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
+                    if(!room_ID.isEmpty() || json!=null) {
+                        intent.putExtra("room_ID", room_ID);
+                        Bundle b = new Bundle();
+                        if(json!=null) {
+
+                            o_o = new JSONObject(json);
+                            b.putString("type", o_o.getInt("type")+"");
+                            b.putString("room_ID", o_o.getString("message"));
+                            Log.v("AsyncTaskLogin", "type = " + o_o.getString("type"));
+
+                        }
+                        intent.putExtras(b);
+                        //Log.v("AsyncTaskLogin", "type = "+ intent.getStringExtra("type"));
+                    }
                     startActivity(intent);
                     finish();
 

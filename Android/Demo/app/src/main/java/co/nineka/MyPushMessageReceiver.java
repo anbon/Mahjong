@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -42,6 +43,7 @@ public class MyPushMessageReceiver extends PushMessageReceiver {
     /** TAG to Log */
     public static final String TAG = MyPushMessageReceiver.class
             .getSimpleName();
+    private Intent intent = new Intent("co.nineka.RECEIVER");
 
     /**
      * 调用PushManager.startWork后，sdk将对push
@@ -106,7 +108,7 @@ public class MyPushMessageReceiver extends PushMessageReceiver {
                     myvalue = customJson.getString("mykey");
                 }
             } catch (JSONException e) {
-                // TODO Auto-generated catch block
+
                 e.printStackTrace();
             }
         }
@@ -118,6 +120,9 @@ public class MyPushMessageReceiver extends PushMessageReceiver {
     @Override
     public void onNotificationArrived(Context context, String title, String description, String customContentString) {
         Log.e(TAG, "onNotificationArrived : " + title + "\n"+ description + "\n" + customContentString);
+        intent.putExtra("json", customContentString);
+        intent.putExtra("title", title);
+        context.sendBroadcast(intent);
     }
 
     /**
@@ -146,12 +151,25 @@ public class MyPushMessageReceiver extends PushMessageReceiver {
             JSONObject customJson = null;
             try {
                 customJson = new JSONObject(customContentString);
-                String myvalue = null;
-                if (customJson.isNull("mykey")) {
-                    myvalue = customJson.getString("mykey");
+                String room_ID = null;
+                if (!customJson.isNull("type")) {
+
+                    if(customJson.getInt("type")==3 || customJson.getInt("type") == 4) {
+                        //TODO
+                        Intent intent = new Intent(context.getApplicationContext(), StartActivity.class);
+                        intent.putExtra("json", customJson.toString());
+                        /*Bundle b = new Bundle();
+                        b.putString("type", customJson.getInt("type")+"");
+                        b.putString("room_ID", customJson.getString("message"));
+                        intent.putExtras(b);*/
+                        Log.v("onNotificationClicked", customJson.getString("message"));
+
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.getApplicationContext().startActivity(intent);
+                    }
                 }
             } catch (JSONException e) {
-                // TODO Auto-generated catch block
+
                 e.printStackTrace();
             }
         }

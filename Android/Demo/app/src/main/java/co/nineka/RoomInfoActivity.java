@@ -1,6 +1,8 @@
 package co.nineka;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
@@ -15,6 +17,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.squareup.picasso.Picasso;
@@ -145,7 +148,216 @@ public class RoomInfoActivity extends Activity {
                     Picasso.with(RoomInfoActivity.this)
                             .load(a.getJSONObject(0).getString("photo"))
                             .transform(new CircleImageTransform()).into(info_photo);
-                        if (vacant==1) {
+                        if (vacant == 0) {
+                            if (a.length() == 4) {
+                                Picasso.with(RoomInfoActivity.this)
+                                        .load(a.getJSONObject(0).getString("photo"))
+                                        .transform(new RoundSquareTransform()).into(photo3);
+                                photo3.setOnClickListener(new View.OnClickListener() {
+
+                                    @Override
+                                    public void onClick(View v) {
+                                        try {
+                                            Log.v("onClick", a.getJSONObject(0).getString("Unum"));
+                                            JSONObject o_o = a.getJSONObject(0);
+                                            gotoMemberActivity2(o_o.getString("Unum"),
+                                                    o_o.getString("Uname"),
+                                                    o_o.getString("age"),
+                                                    o_o.getString("gender"),
+                                                    o_o.getString("rate"),
+                                                    o_o.getString("photo"),
+                                                    o_o.getString("level"));
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                });
+                                Picasso.with(RoomInfoActivity.this)
+                                        .load(a.getJSONObject(1).getString("photo"))
+                                        .transform(new RoundSquareTransform()).into(photo2);
+                                photo2.setOnClickListener(new View.OnClickListener() {
+
+                                    @Override
+                                    public void onClick(View v) {
+                                        try {
+                                            Log.v("onClick", a.getJSONObject(1).getString("Unum"));
+                                            JSONObject o_o = a.getJSONObject(1);
+                                            gotoMemberActivity2(o_o.getString("Unum"),
+                                                    o_o.getString("Uname"),
+                                                    o_o.getString("age"),
+                                                    o_o.getString("gender"),
+                                                    o_o.getString("rate"),
+                                                    o_o.getString("photo"),
+                                                    o_o.getString("level"));
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                });
+                                Picasso.with(RoomInfoActivity.this)
+                                        .load(a.getJSONObject(2).getString("photo"))
+                                        .transform(new RoundSquareTransform()).into(photo1);
+                                photo1.setOnClickListener(new View.OnClickListener() {
+
+                                    @Override
+                                    public void onClick(View v) {
+                                        try {
+                                            Log.v("onClick", a.getJSONObject(2).getString("Unum"));
+                                            JSONObject o_o = a.getJSONObject(2);
+                                            gotoMemberActivity2(o_o.getString("Unum"),
+                                                    o_o.getString("Uname"),
+                                                    o_o.getString("age"),
+                                                    o_o.getString("gender"),
+                                                    o_o.getString("rate"),
+                                                    o_o.getString("photo"),
+                                                    o_o.getString("level"));
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                });
+                                Picasso.with(RoomInfoActivity.this)
+                                        .load(a.getJSONObject(3).getString("photo"))
+                                        .transform(new RoundSquareTransform()).into(photo0);
+                                photo0.setOnClickListener(new View.OnClickListener() {
+
+                                    @Override
+                                    public void onClick(View v) {
+                                        try {
+                                            Log.v("onClick", a.getJSONObject(3).getString("Unum"));
+                                            JSONObject o_o = a.getJSONObject(3);
+                                            gotoMemberActivity2(o_o.getString("Unum"),
+                                                    o_o.getString("Uname"),
+                                                    o_o.getString("age"),
+                                                    o_o.getString("gender"),
+                                                    o_o.getString("rate"),
+                                                    o_o.getString("photo"),
+                                                    o_o.getString("level"));
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                });
+                            } else if (a.length() == 3) {
+                                Picasso.with(RoomInfoActivity.this)
+                                        .load(a.getJSONObject(0).getString("photo"))
+                                        .transform(new RoundSquareTransform()).into(photo2);
+                                photo2.setOnClickListener(new View.OnClickListener() {
+
+                                    @Override
+                                    public void onClick(View v) {
+                                        try {
+                                            Log.v("onClick", a.getJSONObject(0).getString("Unum"));
+                                            JSONObject o_o = a.getJSONObject(0);
+                                            gotoMemberActivity2(o_o.getString("Unum"),
+                                                    o_o.getString("Uname"),
+                                                    o_o.getString("age"),
+                                                    o_o.getString("gender"),
+                                                    o_o.getString("rate"),
+                                                    o_o.getString("photo"),
+                                                    o_o.getString("level"));
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                });
+                                Picasso.with(RoomInfoActivity.this)
+                                        .load(a.getJSONObject(1).getString("photo"))
+                                        .transform(new RoundSquareTransform()).into(photo1);
+                                photo1.setOnClickListener(new View.OnClickListener() {
+
+                                    @Override
+                                    public void onClick(View v) {
+                                        try {
+                                            Log.v("onClick", a.getJSONObject(1).getString("Unum"));
+                                            JSONObject o_o = a.getJSONObject(1);
+                                            gotoMemberActivity2(o_o.getString("Unum"),
+                                                    o_o.getString("Uname"),
+                                                    o_o.getString("age"),
+                                                    o_o.getString("gender"),
+                                                    o_o.getString("rate"),
+                                                    o_o.getString("photo"),
+                                                    o_o.getString("level"));
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                });
+                                Picasso.with(RoomInfoActivity.this)
+                                        .load(a.getJSONObject(2).getString("photo"))
+                                        .transform(new RoundSquareTransform()).into(photo0);
+                                photo0.setOnClickListener(new View.OnClickListener() {
+
+                                    @Override
+                                    public void onClick(View v) {
+                                        try {
+                                            Log.v("onClick", a.getJSONObject(2).getString("Unum"));
+                                            JSONObject o_o = a.getJSONObject(2);
+                                            gotoMemberActivity2(o_o.getString("Unum"),
+                                                    o_o.getString("Uname"),
+                                                    o_o.getString("age"),
+                                                    o_o.getString("gender"),
+                                                    o_o.getString("rate"),
+                                                    o_o.getString("photo"),
+                                                    o_o.getString("level"));
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                });
+                                photo3.setVisibility(View.GONE);
+                            } else if (a.length() == 2) {
+                                Picasso.with(RoomInfoActivity.this)
+                                        .load(a.getJSONObject(0).getString("photo"))
+                                        .transform(new RoundSquareTransform()).into(photo1);
+                                photo1.setOnClickListener(new View.OnClickListener() {
+
+                                    @Override
+                                    public void onClick(View v) {
+                                        try {
+                                            Log.v("onClick", a.getJSONObject(0).getString("Unum"));
+                                            JSONObject o_o = a.getJSONObject(0);
+                                            gotoMemberActivity2(o_o.getString("Unum"),
+                                                    o_o.getString("Uname"),
+                                                    o_o.getString("age"),
+                                                    o_o.getString("gender"),
+                                                    o_o.getString("rate"),
+                                                    o_o.getString("photo"),
+                                                    o_o.getString("level"));
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                });
+                                Picasso.with(RoomInfoActivity.this)
+                                        .load(a.getJSONObject(1).getString("photo"))
+                                        .transform(new RoundSquareTransform()).into(photo0);
+                                photo0.setOnClickListener(new View.OnClickListener() {
+
+                                    @Override
+                                    public void onClick(View v) {
+                                        try {
+                                            Log.v("onClick", a.getJSONObject(1).getString("Unum"));
+                                            JSONObject o_o = a.getJSONObject(1);
+                                            gotoMemberActivity2(o_o.getString("Unum"),
+                                                    o_o.getString("Uname"),
+                                                    o_o.getString("age"),
+                                                    o_o.getString("gender"),
+                                                    o_o.getString("rate"),
+                                                    o_o.getString("photo"),
+                                                    o_o.getString("level"));
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                });
+                                photo3.setVisibility(View.GONE);
+                                photo2.setVisibility(View.GONE);
+                            } else {
+
+                            }
+                        }
+                        else if (vacant==1) {
                             if(a.length()==3) {
                                 Picasso.with(RoomInfoActivity.this)
                                         .load(a.getJSONObject(0).getString("photo"))
@@ -505,9 +717,8 @@ public class RoomInfoActivity extends Activity {
         });
         mythread.start();
 
-
-
     }
+
     private void enterRongChatRoom(){
         //TODO 進入Rong聊天室
         RongIM.getInstance().getRongIMClient().joinGroup(bundle.getString("RoomNum"), bundle.getString("location"), new RongIMClient.OperationCallback() {
@@ -515,17 +726,64 @@ public class RoomInfoActivity extends Activity {
             @Override
             public void onSuccess() {
                 ConversationActivity.isGuest = true;
-                RongIM.getInstance().refreshUserInfoCache(new UserInfo(pref.getString("num","0"), pref.getString("name",""), Uri.parse(pref.getString("photo",""))));
+
+                RongIM.getInstance().refreshUserInfoCache(new UserInfo(pref.getString("num", "0"), pref.getString("name", ""), Uri.parse(pref.getString("photo", ""))));
                 RongIM.getInstance().startGroupChat(RoomInfoActivity.this, bundle.getString("RoomNum"), bundle.getString("location"));
                 finish();
             }
 
             @Override
             public void onError(RongIMClient.ErrorCode errorCode) {
+                dialog.close();
+                dialog = myapi.new LoadingDialog(RoomInfoActivity.this, "很抱歉，連接房間之過程中出錯！\n" +
+                        "請稍後再試一次。", true);
+                dialog.execute();
+                /*mythread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                dialog = myapi.new LoadingDialog(RoomInfoActivity.this, "很抱歉，連接房間之過程中出錯！\n" +
+                                        "請稍後再試一次。", false);
+                                dialog.execute();
+                            }
+                        });
+                        List<NameValuePair> params = new ArrayList<NameValuePair>();
+                        params.add(new BasicNameValuePair("room_ID", bundle.getString("RoomNum")));
+                        params.add(new BasicNameValuePair("user_ID", pref.getString("num", "")));
+                        params.add(new BasicNameValuePair("Push_Status", "0"));
 
+                        String result = myapi.postMethod_getCode(RoomInfoActivity.this, App.memberLeave, params);
+                        Log.v("memberLeave", result);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                dialog.close();
+                            }
+                        });
+                        try {
+                            final JSONObject o = new JSONObject(result);
+                            if (o.getString("status").equals("1")) {
+
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    dialog = myapi.new LoadingDialog(RoomInfoActivity.this, "伺服器發生錯誤！", true);
+                                    dialog.execute();
+                                }
+                            });
+                        }
+                    }
+                });*/
             }
         });
     }
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

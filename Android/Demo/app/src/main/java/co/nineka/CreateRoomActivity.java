@@ -17,7 +17,7 @@ import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
-
+import android.widget.Toast;
 
 
 import org.apache.http.NameValuePair;
@@ -41,7 +41,7 @@ public class CreateRoomActivity extends Activity {
     App myapi;
     App.LoadingDialog dialog;
     Thread mythread;
-    EditText base, unit, circle, rule, location;
+    EditText base, unit, circle, rule, location, time;
     TextView create_time, create_ppl_in_need, create_category, create_cigarette;
     SharedPreferences pref;
     @Override
@@ -53,8 +53,31 @@ public class CreateRoomActivity extends Activity {
             mythread.interrupt();
             mythread = null;
         }
+        storeInfo();
 
     }
+
+    private void storeInfo() {
+        /*params.add(new BasicNameValuePair("base", Integer.parseInt(base.getText().toString())+""));
+                    params.add(new BasicNameValuePair("unit", Integer.parseInt(unit.getText().toString())+""));
+                    params.add(new BasicNameValuePair("circle", Integer.parseInt(circle.getText().toString())+""));
+                    params.add(new BasicNameValuePair("time", time.getText().toString()));
+                    params.add(new BasicNameValuePair("name", location.getText().toString()));
+                    params.add(new BasicNameValuePair("people", create_ppl_in_need.getText().toString()));
+                    params.add(new BasicNameValuePair("type", type));
+                    params.add(new BasicNameValuePair("cigarette", cigarette));
+                    params.add(new BasicNameValuePair("rule", rule.getText().toString()));*/
+        pref.edit().putString("base", base.getText().toString())
+                .putString("unit", unit.getText().toString())
+                .putString("circle", circle.getText().toString())
+                .putString("time", time.getText().toString())
+                .putString("location", location.getText().toString())
+                .putString("people", create_ppl_in_need.getText().toString())
+                .putString("type", type)
+                .putString("cigarette", cigarette)
+                .putString("rule", rule.getText().toString()).apply();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,11 +91,12 @@ public class CreateRoomActivity extends Activity {
         unit = (EditText) findViewById(R.id.create_unit);
         circle = (EditText) findViewById(R.id.create_circle);
         rule = (EditText) findViewById(R.id.create_rule);
-        create_time = (TextView) findViewById(R.id.create_time);
+        time = (EditText) findViewById(R.id.create_time);
         create_ppl_in_need = (TextView) findViewById(R.id.create_ppl_in_need);
         create_category = (TextView) findViewById(R.id.create_category);
         create_cigarette = (TextView) findViewById(R.id.create_cigarette);
         myapi = (App) this.getApplicationContext();
+
 
         rule.addTextChangedListener(new TextWatcher() {
             String lastdata = "";// record last time edittext
@@ -109,22 +133,16 @@ public class CreateRoomActivity extends Activity {
 
             }
         });
+        base.setText(pref.getString("base", ""));
+        unit.setText(pref.getString("unit", ""));
+        circle.setText(pref.getString("circle", ""));
+        location.setText(pref.getString("location", ""));
+        time.setText(pref.getString("time",""));
+        create_cigarette.setText(CigaretteListStr[Integer.parseInt(pref.getString("cigarette","0"))]);
+        create_category.setText(CategoryListStr[Integer.parseInt(pref.getString("type","0"))]);
+        create_ppl_in_need.setText(pref.getString("people","3"));
+        rule.setText(pref.getString("rule",""));
 
-        TimeListStr = new String[24];
-        for(int i=0 ; i<24; i++){
-            if(i<12){
-                if(i!=0)
-                    TimeListStr[i] = i+"pm";
-                else
-                    TimeListStr[i] = "12pm";
-            }
-            else{
-                if(i!=12)
-                    TimeListStr[i] = (i-12)+"am";
-                else
-                    TimeListStr[i] = "12am";
-            }
-        }
     }
 
     @Override
@@ -160,6 +178,11 @@ public class CreateRoomActivity extends Activity {
         InputMethodManager imm = (InputMethodManager) unit.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(0, InputMethodManager.SHOW_FORCED);
     }
+    public void focus_time(View v) {
+        time.requestFocus();
+        InputMethodManager imm = (InputMethodManager) time.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(0, InputMethodManager.SHOW_FORCED);
+    }
     public void focus_circle(View v) {
         //circle.setText("");
         circle.requestFocus();
@@ -172,30 +195,7 @@ public class CreateRoomActivity extends Activity {
         imm.toggleSoftInput(0, InputMethodManager.SHOW_FORCED);
     }
 
-    String[] TimeListStr = {};
-    public void TimeListAlertDialog(View v) {
 
-
-
-        AlertDialog.Builder TimeListAlertDialog = new AlertDialog.Builder(this);
-        TimeListAlertDialog.setTitle("請選擇時間");
-        DialogInterface.OnClickListener ListItemClick = new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                create_time.setText(TimeListStr[which]);
-            }
-        };
-
-        DialogInterface.OnClickListener OkClick = new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                //Nothing
-            }
-        };
-
-        TimeListAlertDialog.setItems(TimeListStr, ListItemClick);
-        TimeListAlertDialog.setNeutralButton("取消", OkClick);
-        TimeListAlertDialog.show();
-
-    }
     String[] PeopleListStr = {"1", "2", "3"};
 
     public void PeopleListAlertDialog(View v) {
@@ -298,7 +298,7 @@ public class CreateRoomActivity extends Activity {
                     params.add(new BasicNameValuePair("base", Integer.parseInt(base.getText().toString())+""));
                     params.add(new BasicNameValuePair("unit", Integer.parseInt(unit.getText().toString())+""));
                     params.add(new BasicNameValuePair("circle", Integer.parseInt(circle.getText().toString())+""));
-                    params.add(new BasicNameValuePair("time", create_time.getText().toString()));
+                    params.add(new BasicNameValuePair("time", time.getText().toString()));
                     params.add(new BasicNameValuePair("name", location.getText().toString()));
                     params.add(new BasicNameValuePair("people", create_ppl_in_need.getText().toString()));
                     params.add(new BasicNameValuePair("type", type));
@@ -331,7 +331,10 @@ public class CreateRoomActivity extends Activity {
 
                                     @Override
                                     public void onError(RongIMClient.ErrorCode errorCode) {
-
+                                        //Toast.makeText(CreateRoomActivity.this, "onError : " + errorCode.getMessage(), Toast.LENGTH_SHORT).show();
+                                        dialog = myapi.new LoadingDialog(CreateRoomActivity.this, "創建房間之過程中出現未預期錯物！\n" +
+                                                "請稍後再試一次。", true);
+                                        dialog.execute();
                                     }
                                 });
                             }
@@ -358,10 +361,10 @@ public class CreateRoomActivity extends Activity {
     private boolean CheckIsComplete() {
         if(base.getText().toString().isEmpty() ||
                 unit.getText().toString().isEmpty() ||
+                time.getText().toString().isEmpty() ||
                 circle.getText().toString().isEmpty() ||
                 location.getText().toString().isEmpty() ||
                 create_ppl_in_need.getText().toString().equals("人 數"))
-
         {
 
             runOnUiThread(new Runnable() {
@@ -378,7 +381,7 @@ public class CreateRoomActivity extends Activity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    dialog = myapi.new LoadingDialog(CreateRoomActivity.this, "金額不得為0！", true);
+                    dialog = myapi.new LoadingDialog(CreateRoomActivity.this, "分數和將數部分不得為0！", true);
                     dialog.execute();
                 }
             });

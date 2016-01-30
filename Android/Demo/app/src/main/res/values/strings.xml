@@ -22,6 +22,8 @@
     <string name="title_activity_member">MemberActivity</string>
     <string name="title_activity_search_result">SearchResultActivity</string>
     <string name="title_activity_room_info">RoomInfoActivity</string>
+    <string name="title_activity_verify">VerifyActivity</string>
+
     <string name="age">年齡</string>
     <string name="xlistview_header_hint_normal">下拉螢幕更新</string>
     <string name="xlistview_header_hint_ready">鬆開開始更新</string>

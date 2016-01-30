@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/loadingpanel"
+    android:layout_width="@dimen/loadingpanel_width"
+    android:layout_height="220dp"
+    android:gravity="center|top"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
+    android:orientation="vertical"
+    android:background="@drawable/window_border">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <!--     <ImageView -->
+    <!--         android:id="@+id/loading_book" -->
+    <!--         android:layout_width="150dp" -->
+    <!--         android:layout_height="150dp" -->
+
+    <!--         android:src="@drawable/loading_book" /> -->
+        <RelativeLayout
+            android:id="@+id/loading_title_bar"
+            android:layout_width="match_parent"
+            android:layout_margin="1.2dp"
+            android:layout_height="64dp"
+            android:background="@drawable/window_border2"
+
+            >
+            <TextView
+                android:id="@+id/request_photo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="更改房名"
+                android:textSize="24dp"
+                android:textColor="#fff"
+                 />
+        </RelativeLayout>
+
+
+
+        <EditText
+            android:id="@+id/change_title_edit"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/loading_title_bar"
+            android:layout_marginTop="30dp"
+            android:inputType="text"
+            android:singleLine="true"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:textColor="#3f3f3f"
+            android:textSize="22dp"
+            android:text=""/>
+
+
+
+        <TextView
+            android:id="@+id/change_title_confirm"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="20dp"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:textColor="#35acc5"
+            android:textSize="22dp"
+            android:text="確認"
+            android:background="@drawable/btn_confirm_bg"/>
+
+    </RelativeLayout>
+
+
+</LinearLayout>

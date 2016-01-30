@@ -129,6 +129,28 @@
                 android:text="地區"/>
         </RelativeLayout>
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#ffffff"
+            >
+            <TextView
+                android:id="@+id/about_logout"
+                android:layout_width="250dp"
+                android:layout_height="55dp"
+                android:background="@drawable/btn_confirm_bg2"
+                android:gravity="center"
+                android:clickable="true"
+                android:onClick="LogOut"
+                android:layout_toRightOf="@+id/create_center"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:textColor="#35acc5"
+                android:layout_centerInParent="true"
+                android:textSize="24sp"
+                android:text="登 出"/>
+        </RelativeLayout>
+
 
     </LinearLayout>
 

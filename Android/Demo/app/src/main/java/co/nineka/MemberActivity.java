@@ -32,8 +32,8 @@ import java.util.List;
 import co.nineka.util.RoundSquareTransform;
 
 public class MemberActivity extends Activity {
-    TextView titletextView, member_gender, member_nickname, member_age, member_follow;
-    RelativeLayout member_comment_btn, join_btn, member_follow_btn;
+    TextView titletextView, member_gender, member_nickname, member_age, member_follow, join_btn;
+    RelativeLayout member_comment_btn, join, member_follow_btn;
     View customView;
     Bundle bundle;
     ImageView member_photo;
@@ -85,9 +85,10 @@ public class MemberActivity extends Activity {
         customView = li.inflate(R.layout.drawerlayout, null);
         member_comment_btn = (RelativeLayout) findViewById(R.id.member_comment_btn);
         member_comment_btn.setVisibility(View.GONE);
-        join_btn = (RelativeLayout) findViewById(R.id.join_btn);
+        join = (RelativeLayout) findViewById(R.id.join);
+        join_btn = (TextView) findViewById(R.id.join_btn);
         if(isRooming){
-            join_btn.setVisibility(View.VISIBLE);
+            join.setVisibility(View.VISIBLE);
             join_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

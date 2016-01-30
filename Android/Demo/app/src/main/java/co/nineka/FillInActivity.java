@@ -6,11 +6,13 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,8 +23,13 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -63,7 +70,7 @@ public class FillInActivity extends Activity {
     public void onDestroy() {
         super.onDestroy();
         InputMethodManager imm = (InputMethodManager) relative_age.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
+        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +82,10 @@ public class FillInActivity extends Activity {
         ab.setDisplayShowCustomEnabled(true);
         View homeIcon = findViewById(android.R.id.home);
         ((View) homeIcon.getParent()).setVisibility(View.GONE);
-
+        pref = getSharedPreferences("Account",0);
+        pref.edit().putString("username", getIntent().getExtras().getString("username"))
+                .putString("password", getIntent().getExtras().getString("password"))
+                .putString("num", getIntent().getExtras().getString("user_ID")).apply();
         LayoutInflater li = LayoutInflater.from(this);
         customView = li.inflate(R.layout.drawerlayout, null);
 
@@ -177,7 +187,86 @@ public class FillInActivity extends Activity {
 
 
     }
+    public void Confirm(View v){
+        relative_nickname.clearFocus();
+        InputMethodManager imm = (InputMethodManager) relative_age.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        //if(imm.isActive())
+        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
 
+        if(about_nickname.getText().toString().isEmpty()){
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    dialog = myapi.new LoadingDialog(FillInActivity.this, "暱稱不得為空！", true);
+                    dialog.execute();
+                }
+            });
+            return;
+        }
+
+        mythread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            dialog = myapi.new LoadingDialog(FillInActivity.this, "請稍後...", false);
+                            dialog.execute();
+                        }
+                    });
+
+                    List<NameValuePair> params = new ArrayList<NameValuePair>();
+                    //params.add(new BasicNameValuePair("filename", f.getName()));
+                    params.add(new BasicNameValuePair("user_ID", pref.getString("num","")));
+                    params.add(new BasicNameValuePair("gender", gender));
+                    params.add(new BasicNameValuePair("name", about_nickname.getText().toString()));
+                    params.add(new BasicNameValuePair("age", about_age.getText().toString()));
+                    //TODO 串 上傳帳戶資訊API
+                    final String result = myapi.postMethod_getCode(FillInActivity.this, App.User_Info, params);
+                    dialog.close();
+                    try {
+                        JSONObject o = new JSONObject(result);
+                        if(o.getString("status").equals("1")){
+
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(FillInActivity.this, "更改個人資料成功！", Toast.LENGTH_LONG).show();
+                                    Intent intent = new Intent(FillInActivity.this, StartActivity.class);
+                                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            });
+                        }else{
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    dialog = myapi.new LoadingDialog(FillInActivity.this, "更改個人資料失敗！", true);
+                                    dialog.execute();
+                                }
+                            });
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            //Toast.makeText(mActivity, result, Toast.LENGTH_LONG).show();
+                        }
+                    });
+
+                }catch (NullPointerException ne){
+                    ne.printStackTrace();
+                }
+
+            }
+        });
+        mythread.start();
+
+    }
     String gender ;
     String[] GenderListStr = {"女", "男"};
     public void GenderListAlertDialog(View v) {
@@ -217,5 +306,12 @@ public class FillInActivity extends Activity {
         return metrics.density;
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK ) {
+
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 
 }

@@ -172,9 +172,6 @@ public class MemberActivity2 extends Activity {
                     finish();
                 }
 
-
-
-
             }
         });
         mythread.start();

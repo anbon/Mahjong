@@ -76,7 +76,7 @@ public class AboutTab extends Fragment {
     View customView;
     RelativeLayout relative_gender, relative_nickname, relative_age;
     EditText about_nickname;
-    TextView back, titletextView, txt_change_photo, about_gender, about_age;
+    TextView back, titletextView, txt_change_photo, about_gender, about_age, about_logout;
     ImageView about_photo, edit;
     SharedPreferences pref;
     static boolean isEdit;
@@ -201,7 +201,7 @@ public class AboutTab extends Fragment {
         about_nickname = (EditText) mActivity.findViewById(R.id.about_nickname);
         about_gender = (TextView) mActivity.findViewById(R.id.about_gender);
         about_age = (TextView) mActivity.findViewById(R.id.about_age);
-
+        about_logout = (TextView) mActivity.findViewById(R.id.about_logout);
         Picasso.with(AboutTab.this.getActivity())
                 .load(pref.getString("photo",""))
                 .placeholder(R.drawable.about_photo_default)
@@ -413,7 +413,7 @@ public class AboutTab extends Fragment {
         intent.putExtra("outputX", 600);
         intent.putExtra("outputY", 600);
         intent.putExtra("scale", true);
-        uritempFile = Uri.parse("file://" + "/" + Environment.getExternalStorageDirectory().getPath() + "/Android/data/com.example.demo" + getPhotoFileName());
+        uritempFile = Uri.parse("file://" + "/" + Environment.getExternalStorageDirectory().getPath() + "/Android/data/co.nineka" + getPhotoFileName());
         intent.putExtra(MediaStore.EXTRA_OUTPUT, uritempFile);
         //intent.putExtra("return-data", true);
         return intent;
@@ -642,6 +642,7 @@ public class AboutTab extends Fragment {
         TimeListAlertDialog.show();
 
     }
+
     //圓角轉換函式，帶入Bitmap圖片及圓角數值則回傳圓角圖，回傳Bitmap再置入ImageView
     public static Bitmap getRoundedCornerBitmap(Bitmap bitmap,float roundPx)
     {

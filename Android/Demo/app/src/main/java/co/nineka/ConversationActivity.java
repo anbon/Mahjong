@@ -6,8 +6,13 @@ package co.nineka;
 import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
@@ -18,6 +23,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,6 +33,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.squareup.picasso.Picasso;
@@ -55,10 +62,12 @@ public class ConversationActivity extends FragmentActivity  {
 
     private static final String TAG = ConversationActivity.class.getSimpleName();
     public static boolean isAlive, isGuest;
+    public static String title;
     App myapi;
     App.LoadingDialog dialog;
     Thread mythread;
     SharedPreferences pref, pref_member;
+    private MsgReceiver msgReceiver;
 
     /**
      * 目标 Id
@@ -74,6 +83,7 @@ public class ConversationActivity extends FragmentActivity  {
         isAlive = false;
         handler.removeCallbacks(runnable);
         dhandler.removeCallbacks(drunnable);
+        unregisterReceiver(msgReceiver);
         super.onDestroy();
     }
     @Override
@@ -91,8 +101,8 @@ public class ConversationActivity extends FragmentActivity  {
     public void onResume() {
         super.onResume();
         Log.v(TAG, "onResume");
-        dhandler.removeCallbacks(drunnable);
-        dhandler.postDelayed(drunnable, 1000);
+        /*dhandler.removeCallbacks(drunnable);
+        dhandler.postDelayed(drunnable, 1000);*/
         if(!isGuest) {
             handler.removeCallbacks(runnable);
             handler.postDelayed(runnable, 2500);
@@ -138,9 +148,12 @@ public class ConversationActivity extends FragmentActivity  {
 
             @Override
             public void onClick(View v) {
-                finish();
+                finishDialog();
             }
         });
+        if(!isGuest){
+            back.setVisibility(View.INVISIBLE);
+        }
         detail = (TextView) customView.findViewById(R.id.ban);
         detail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -153,10 +166,142 @@ public class ConversationActivity extends FragmentActivity  {
         pref = getSharedPreferences("Account", 0);
         pref_member = getSharedPreferences("Info", 0);
         Intent intent = getIntent();
-
         getIntentDate(intent);
 
+        //註冊廣播接收器from MsgService
+        msgReceiver = new MsgReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("co.nineka.RECEIVER");
+        registerReceiver(msgReceiver, intentFilter);
 
+    }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK ){
+            //isAlive = false;
+            //moveTaskToBack(true);
+            if(isGuest)
+                finishDialog();
+            else
+                closeDialog();
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    private void closeDialog() {
+
+        new AlertDialog.Builder(ConversationActivity.this)
+                .setTitle("警告")
+                .setMessage("確定要刪除本房間？")
+                .setPositiveButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //Toast.makeText(getApplicationContext(), "000", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setNegativeButton("確認", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface mdialog, int which) {
+                        mythread = new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        dialog = myapi.new LoadingDialog(ConversationActivity.this, "請稍後...", false);
+                                        dialog.execute();
+                                    }
+                                });
+                                List<NameValuePair> params = new ArrayList<NameValuePair>();
+                                params.add(new BasicNameValuePair("room_ID", mTargetId));
+
+                                String result = myapi.postMethod_getCode(ConversationActivity.this, App.DeleteRoom, params);
+                                Log.v("DeleteRoom", result);
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        dialog.close();
+                                    }
+                                });
+                                try {
+                                    final JSONObject o = new JSONObject(result);
+                                    if (o.getString("status").equals("1")) {
+                                        ConversationActivity.this.finish();
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            dialog = myapi.new LoadingDialog(ConversationActivity.this, "伺服器發生錯誤！", true);
+                                            dialog.execute();
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                        mythread.start();
+                    }
+                })
+                .show();
+    }
+
+    private void finishDialog() {
+        new AlertDialog.Builder(ConversationActivity.this)
+                .setTitle("警告")
+                .setMessage("確定要退出本房間？")
+                .setPositiveButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //Toast.makeText(getApplicationContext(), "000", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setNegativeButton("確認", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface mdialog, int which) {
+                        mythread = new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        dialog = myapi.new LoadingDialog(ConversationActivity.this, "請稍後...", false);
+                                        dialog.execute();
+                                    }
+                                });
+                                List<NameValuePair> params = new ArrayList<NameValuePair>();
+                                params.add(new BasicNameValuePair("room_ID", mTargetId));
+                                params.add(new BasicNameValuePair("user_ID", pref.getString("num", "")));
+
+                                String result = myapi.postMethod_getCode(ConversationActivity.this, App.memberLeave, params);
+                                Log.v("memberLeave", result);
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        dialog.close();
+                                    }
+                                });
+                                try {
+                                    final JSONObject o = new JSONObject(result);
+                                    if (o.getString("status").equals("1")) {
+                                        ConversationActivity.this.finish();
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            dialog = myapi.new LoadingDialog(ConversationActivity.this, "伺服器發生錯誤！", true);
+                                            dialog.execute();
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                        mythread.start();
+                    }
+                })
+                .show();
     }
 
     private void getIntentDate(Intent intent) {
@@ -473,6 +618,86 @@ public class ConversationActivity extends FragmentActivity  {
         }
 
         return b;
+    }
+    /**
+     *
+     * 廣播接收器
+     *
+     */
+
+    public class MsgReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            String json = intent.getStringExtra("json");
+            Log.v("onReceive", json+"");
+            try {
+                JSONObject o = new JSONObject(json);
+                switch (Integer.parseInt(o.getString("type"))){
+                    case 0:
+                        dialog = myapi.new LoadingDialog(ConversationActivity.this, "您已被剔除！" , false);
+                        if(!ConversationActivity.this.isFinishing())
+                            dialog.execute();
+                        TimerTask t= new TimerTask() {
+                            public void run() {
+                                if(!ConversationActivity.this.isFinishing())
+                                    finish();
+                                cancel();
+                            }
+                        };
+                        Timer timer = new Timer();
+                        timer.schedule(t, 5000); //5秒後關閉
+                        break;
+                    case 1:
+                        titletextView.setText(o.getString("title"));
+                        Toast.makeText(context, "房名已變更為 \""+o.getString("title") +" \"", Toast.LENGTH_SHORT).show();
+                        break;
+                    case 11:
+                        titletextView.setText(o.getString("title"));
+                        break;
+                    case 2:
+                        dialog = myapi.new LoadingDialog(ConversationActivity.this, "房主已離開！" , false);
+                        if(!ConversationActivity.this.isFinishing())
+                            dialog.execute();
+                        TimerTask t2= new TimerTask() {
+                            public void run() {
+                                if(!ConversationActivity.this.isFinishing())
+                                    finish();
+                                cancel();
+                            }
+                        };
+                        Timer timer2 = new Timer();
+                        timer2.schedule(t2, 5000); //5秒後關閉
+                        break;
+                    case 22:
+                        ConversationActivity.this.finish();
+                        break;
+                    case 4:
+                        dialog = myapi.new LoadingDialog(ConversationActivity.this, "現在房間已滿！" , true);
+                        if(!ConversationActivity.this.isFinishing())
+                            dialog.execute();
+                        TimerTask t4= new TimerTask() {
+                            public void run() {
+                                if(!ConversationActivity.this.isFinishing())
+                                    dialog.close();
+                                cancel();
+                            }
+                        };
+                        Timer timer4 = new Timer();
+                        timer4.schedule(t4, 5000); //5秒後關閉
+                        break;
+                    case 5:
+                        Toast.makeText(context, intent.getStringExtra("title"), Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            //TODO
+
+        }
+
     }
     /**
      * 设置 actionbar 事件

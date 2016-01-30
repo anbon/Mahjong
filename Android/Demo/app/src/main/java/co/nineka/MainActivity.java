@@ -1,10 +1,14 @@
 package co.nineka;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Matrix;
+import android.net.Uri;
 import android.os.HandlerThread;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -25,12 +29,19 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Handler;
 
 import co.nineka.util.TabAdapter;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.UserInfo;
 
 
 public class MainActivity extends FragmentActivity {
@@ -50,11 +61,15 @@ public class MainActivity extends FragmentActivity {
     TextView titletextView;
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
-    HandlerThread mythread;
+    HandlerThread myHandlethread;
     View.OnClickListener listener;
     NearbyTab tab1;
     SearchTab tab2;
     AboutTab tab3;
+    Thread mythread;
+    App myapi;
+    App.LoadingDialog dialog;
+    SharedPreferences pref ;
     public static Boolean isAlive = true;
     int preposition = 0;
     private int[] tabs_title = { R.string.title_nearby,
@@ -63,6 +78,7 @@ public class MainActivity extends FragmentActivity {
     private ImageView[] tab_imgs;
     private int[] tabs_img_blue = {R.drawable.tab_nearby_blue,
             R.drawable.tab_search_blue,R.drawable.tab_about_blue};
+
     private int[] tabs_img_white = {R.drawable.tab_nearby_white,
             R.drawable.tab_search_white,R.drawable.tab_about_white};
     private int[] tabs_layout = { R.layout.fragment_nearby_tab,
@@ -86,6 +102,8 @@ public class MainActivity extends FragmentActivity {
         setContentView(R.layout.activity_main);
         fragmentManager = getSupportFragmentManager();
         mViewPager = (ViewPager) findViewById(R.id.ViewPager);
+        myapi = (App) this.getApplicationContext();
+        pref = getSharedPreferences("Account", 0);
         isAlive = true;
         //mHandler = new Handler();
 
@@ -121,7 +139,7 @@ public class MainActivity extends FragmentActivity {
         startService(intent);
 
 
-        mythread = new HandlerThread("MyHandlerThread") {
+        myHandlethread = new HandlerThread("MyHandlerThread") {
             public void run() {
                 runOnUiThread(new Runnable() {
                     public void run() {
@@ -202,7 +220,7 @@ public class MainActivity extends FragmentActivity {
 
             }
         };
-        mythread.start();
+        myHandlethread.start();
 
         /*
 		 * View  Initialize
@@ -218,7 +236,216 @@ public class MainActivity extends FragmentActivity {
 
         titletextView = (TextView) customView.findViewById(R.id.titletextView);
         ab.setCustomView(customView);
+
+
+        mythread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        dialog = myapi.new LoadingDialog(MainActivity.this, "請稍後...", false);
+                        dialog.execute();
+                    }
+                });
+                List<NameValuePair> params = new ArrayList<NameValuePair>();
+                params.add(new BasicNameValuePair("user_ID", pref.getString("num", "")));
+
+                String result = myapi.postMethod_getCode(MainActivity.this, App.Buster, params);
+                Log.v("Buster", result);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        dialog.close();
+                    }
+                });
+                try {
+                    final JSONObject o = new JSONObject(result);
+                    if (o.getString("status").equals("1")) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    BusterDialog(o.getJSONObject("message").getString("chatID"),
+                                            o.getJSONObject("message").getString("level"),
+                                            o.getJSONObject("message").getString("name"));
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+
+                    } else {
+
+                        if(getIntent().getExtras()!=null)
+                            if (getIntent().getExtras().containsKey("room_ID"))
+                                gotoRoomInfo(getIntent().getExtras().getString("room_ID"));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            dialog = myapi.new LoadingDialog(MainActivity.this, "伺服器發生錯誤！", true);
+                            dialog.execute();
+                        }
+                    });
+                }
+            }
+        });
+        if(getIntent().getExtras()!=null)
+            if(getIntent().getExtras().getString("type","").equals("4")){
+                mythread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                dialog = myapi.new LoadingDialog(MainActivity.this, "請稍後...", false);
+                                dialog.execute();
+                            }
+                        });
+                        List<NameValuePair> params = new ArrayList<NameValuePair>();
+                        params.add(new BasicNameValuePair("user_ID", pref.getString("num", "")));
+
+                        String result = myapi.postMethod_getCode(MainActivity.this, App.Buster, params);
+                        Log.v("Buster", result);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                dialog.close();
+                            }
+                        });
+                        try {
+                            final JSONObject o = new JSONObject(result);
+                            if (o.getString("status").equals("1")) {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        try {
+                                            enterRongChatRoom(o.getJSONObject("message").getString("chatID"),
+                                                    o.getJSONObject("message").getString("level"),
+                                                    o.getJSONObject("message").getString("name"));
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                });
+
+                            } else {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        dialog = myapi.new LoadingDialog(MainActivity.this, "您不在此房間內", true);
+                                        dialog.execute();
+                                    }
+                                });
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    dialog = myapi.new LoadingDialog(MainActivity.this, "伺服器發生錯誤！", true);
+                                    dialog.execute();
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+
+
+        //if(getIntent().hasExtra("Direct"))
+        mythread.start();
+
 }
+
+
+    private void gotoRoomInfo(final String room_id) {
+        mythread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        dialog = myapi.new LoadingDialog(MainActivity.this, "請稍後...", false);
+                        dialog.execute();
+                    }
+                });
+                List<NameValuePair> params = new ArrayList<NameValuePair>();
+                params.add(new BasicNameValuePair("room_id", room_id));
+                String result = myapi.postMethod_getCode(MainActivity.this, App.getChatroom, params);
+                Log.v("gotoRoomInfo", result);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        dialog.close();
+                    }
+                });
+                try {
+                    final JSONObject o = new JSONObject(result);
+
+                    if(o.getString("status").equals("1")){
+                        Intent intent = new Intent(MainActivity.this, RoomInfoActivity.class);
+                        Bundle b = makeBundle(o.getString("message"));
+                        intent.putExtras(b);
+                        startActivity(intent);
+                    }else{
+                        //若房已關
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    dialog = myapi.new LoadingDialog(MainActivity.this, o.getString("message"), true);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                dialog.execute();
+                            }
+                        });
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            dialog = myapi.new LoadingDialog(MainActivity.this, "伺服器發生錯誤！", true);
+                            dialog.execute();
+                        }
+                    });
+
+                }
+
+            }
+        });
+        mythread.start();
+    }
+    private Bundle makeBundle(String roomMessage) {
+        Bundle b = new Bundle();
+        try {
+            JSONObject o = new JSONObject(roomMessage);
+            b.putString("num", o.getJSONArray("users").getJSONObject(0).getString("Unum"));
+            b.putString("name", o.getJSONArray("users").getJSONObject(0).getString("Uname"));
+            b.putString("RoomNum", o.getString("RoomNum"));
+            b.putString("base", o.getString("base"));
+            b.putString("unit", o.getString("unit"));
+            b.putString("circle", o.getString("circle"));
+            b.putString("time", o.getString("time"));
+            b.putString("location", o.getString("RoomName"));
+            b.putString("people", o.getString("people"));
+            b.putString("type", o.getString("type"));
+            b.putString("cigarette", o.getString("cigarette"));
+            b.putString("users", o.getJSONArray("users").toString());
+            b.putString("rule", o.getString("rule"));
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return b;
+    }
     /**
      *  initial tab and its cursor
      */
@@ -309,30 +536,381 @@ public class MainActivity extends FragmentActivity {
 
     }
 
-    /*
-    if (RongIM.getInstance() != null) {
+    private void BusterDialog(final String room_ID, final String level, final String name) {
+        new AlertDialog.Builder(MainActivity.this)
+                .setCancelable(false)
+                .setTitle("警告")
+                .setMessage("是否回到先前已" + (level.equals("1") ? "加入" : "創建") + "之房間？")
+                .setNegativeButton("確定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface mdialog, int which) {
+                        mythread = new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        dialog = myapi.new LoadingDialog(MainActivity.this, "請稍後...", false);
+                                        dialog.execute();
+                                    }
+                                });
+                                List<NameValuePair> params = new ArrayList<NameValuePair>();
+                                params.add(new BasicNameValuePair("user_ID", pref.getString("num", "")));
 
-        /**
-         * 刷新用户缓存数据。
-         *
-         * @param userInfo 需要更新的用户缓存数据。
-         */
-            /*RongIM.getInstance().refreshUserInfoCache(new UserInfo("777", "立人", Uri.parse("http://rongcloud-web.qiniudn.com/docs_demo_rongcloud_logo.png")));
-            ArrayList<String> userIds = new ArrayList<String>();
-            userIds.add("777");//增加 userId。
+                                String result = myapi.postMethod_getCode(MainActivity.this, App.Buster, params);
+                                Log.v("Buster", result);
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        dialog.close();
+                                    }
+                                });
+                                try {
+                                    final JSONObject o = new JSONObject(result);
+                                    if (o.getString("status").equals("1")) {
+                                        runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                //確定嘗試加回房間
+                                                enterRongChatRoom(room_ID, level, name);
+                                            }
+                                        });
 
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            dialog = myapi.new LoadingDialog(MainActivity.this, "伺服器發生錯誤！", true);
+                                            dialog.execute();
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                        //if(getIntent().hasExtra("Direct"))
+                        mythread.start();
 
+                    }
+                })
+                .setPositiveButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface mdialog, int which) {
+                        if (level.equals("1")) {
+                            mythread = new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    //取消時，(這裡應當不可能為點擊房間已滿之意圖
+                                    //前往follow通知 或 sharelink 之夾帶房間
+                                    if(getIntent().getExtras()!=null)
+                                        if (getIntent().getExtras().containsKey("room_ID"))
+                                            gotoRoomInfo(getIntent().getExtras().getString("room_ID"));
 
-            RongIM.getInstance().createDiscussionChat(MainActivity.this, userIds, "讨论组名称");
+                                    /*runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            dialog = myapi.new LoadingDialog(MainActivity.this, "請稍後...", false);
+                                            dialog.execute();
+                                        }
+                                    });
+                                    List<NameValuePair> params = new ArrayList<NameValuePair>();
+                                    params.add(new BasicNameValuePair("room_ID", room_ID));
+                                    params.add(new BasicNameValuePair("user_ID", pref.getString("num", "")));
+
+                                    String result = myapi.postMethod_getCode(MainActivity.this, App.memberLeave, params);
+                                    Log.v("memberLeave", result);
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            dialog.close();
+                                        }
+                                    });
+                                    try {
+                                        final JSONObject o = new JSONObject(result);
+                                        if (o.getString("status").equals("1")) {
+
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                dialog = myapi.new LoadingDialog(MainActivity.this, "伺服器發生錯誤！", true);
+                                                dialog.execute();
+                                            }
+                                        });
+                                    }*/
+                                }
+                            });
+                        } else {
+                            //若是房主，按下取消:
+                            mythread = new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            dialog = myapi.new LoadingDialog(MainActivity.this, "請稍後...", false);
+                                            dialog.execute();
+                                        }
+                                    });
+                                    List<NameValuePair> params = new ArrayList<NameValuePair>();
+                                    params.add(new BasicNameValuePair("room_ID", room_ID));
+
+                                    String result = myapi.postMethod_getCode(MainActivity.this, App.DeleteRoom, params);
+                                    Log.v("DeleteRoom", result);
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            dialog.close();
+                                        }
+                                    });
+                                    try {
+                                        final JSONObject o = new JSONObject(result);
+                                        if (o.getString("status").equals("1")) {
+                                            if (getIntent().getExtras()!=null)
+                                                gotoRoomInfo(getIntent().getExtras().getString("room_ID"));
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+
+                                                dialog = myapi.new LoadingDialog(MainActivity.this, "伺服器發生錯誤！", true);
+                                                dialog.execute();
+                                                RetryDialog(room_ID, level, name);
+                                            }
+                                        });
+                                    }
+                                }
+                            });
+
+                        }
+                        mythread.start();
+                    }
+                })
+                .show();
     }
-    */
+    private void RetryDialog(final String room_ID, final String level, final String name) {
+        new AlertDialog.Builder(MainActivity.this)
+                .setCancelable(false)
+                .setTitle("警告")
+                .setMessage("連接聊天室頁面失敗 ，是否再重試一次？")
+                .setNegativeButton("確定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface mdialog, int which) {
+                        mythread = new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        dialog = myapi.new LoadingDialog(MainActivity.this, "請稍後...", false);
+                                        dialog.execute();
+                                    }
+                                });
+                                List<NameValuePair> params = new ArrayList<NameValuePair>();
+                                params.add(new BasicNameValuePair("user_ID", pref.getString("num", "")));
+
+                                String result = myapi.postMethod_getCode(MainActivity.this, App.Buster, params);
+                                Log.v("Buster", result);
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        dialog.close();
+                                    }
+                                });
+                                try {
+                                    final JSONObject o = new JSONObject(result);
+                                    if (o.getString("status").equals("1")) {
+                                        runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                enterRongChatRoom(room_ID, level, name);
+                                            }
+                                        });
+
+                                    }
+                                    else
+                                    {
+                                        runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                dialog = myapi.new LoadingDialog(MainActivity.this, "您已被房主剔除！", true);
+                                                dialog.execute();
+                                            }
+                                        });
+                                    }
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            dialog = myapi.new LoadingDialog(MainActivity.this, "伺服器發生錯誤！", true);
+                                            dialog.execute();
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                        //if(getIntent().hasExtra("Direct"))
+                        mythread.start();
+
+                    }
+                })
+                .setPositiveButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface mdialog, int which) {
+                        if (level.equals("1")) {
+                            mythread = new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                if(getIntent().getExtras()!=null)
+                                    if(getIntent().getExtras().containsKey("room_ID")&&
+                                            !getIntent().getExtras().getString("type","").equals("4"))
+                                        gotoRoomInfo(getIntent().getExtras().getString("room_ID"));
+                                    /*runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            dialog = myapi.new LoadingDialog(MainActivity.this, "請稍後...", false);
+                                            dialog.execute();
+                                        }
+                                    });
+                                    List<NameValuePair> params = new ArrayList<NameValuePair>();
+                                    params.add(new BasicNameValuePair("room_ID", room_ID));
+                                    params.add(new BasicNameValuePair("user_ID", pref.getString("num", "")));
+
+                                    String result = myapi.postMethod_getCode(MainActivity.this, App.memberLeave, params);
+                                    Log.v("memberLeave", result);
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            dialog.close();
+                                        }
+                                    });
+                                    try {
+                                        final JSONObject o = new JSONObject(result);
+                                        if (o.getString("status").equals("1")) {
+
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                dialog = myapi.new LoadingDialog(MainActivity.this, "伺服器發生錯誤！", true);
+                                                dialog.execute();
+                                            }
+                                        });
+                                    }*/
+                                }
+                            });
+                        } else {
+                            mythread = new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            dialog = myapi.new LoadingDialog(MainActivity.this, "請稍後...", false);
+                                            dialog.execute();
+                                        }
+                                    });
+                                    List<NameValuePair> params = new ArrayList<NameValuePair>();
+                                    params.add(new BasicNameValuePair("room_ID", room_ID));
+
+                                    String result = myapi.postMethod_getCode(MainActivity.this, App.DeleteRoom, params);
+                                    Log.v("DeleteRoom", result);
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            dialog.close();
+                                        }
+                                    });
+                                    try {
+                                        final JSONObject o = new JSONObject(result);
+                                        if (o.getString("status").equals("1")) {
+                                            if(getIntent().getExtras()!=null)
+                                                if(!getIntent().getExtras().getString("type","").equals("4"))
+                                                    gotoRoomInfo(getIntent().getExtras().getString("room_ID"));
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                dialog = myapi.new LoadingDialog(MainActivity.this, "伺服器發生錯誤！", true);
+                                                dialog.execute();
+                                                RetryDialog(room_ID, level, name);
+                                            }
+                                        });
+
+                                    }
+                                }
+                            });
+
+                        }
+                        mythread.start();
+                    }
+                })
+                .show();
+    }
+    private void enterRongChatRoom(final String room_ID, final String level, final String name){
+        //TODO 進入Rong聊天室
+        RongIM.getInstance().getRongIMClient().joinGroup(room_ID, name, new RongIMClient.OperationCallback() {
+
+            @Override
+            public void onSuccess() {
+
+                ConversationActivity.isGuest = level.equals("1");
+
+                RongIM.getInstance().refreshUserInfoCache(new UserInfo(pref.getString("num", "0"), pref.getString("name", ""), Uri.parse(pref.getString("photo", ""))));
+                RongIM.getInstance().startGroupChat(MainActivity.this, room_ID, name);
+
+            }
+
+            @Override
+            public void onError(RongIMClient.ErrorCode errorCode) {
+                Log.e("onError", "errorCode : " + errorCode);
+                RetryDialog(room_ID, level, name);
+
+            }
+        });
+    }
+    public void LogOut(View v){
+        new AlertDialog.Builder(this)
+                .setCancelable(true)
+                .setTitle("提醒")
+                .setMessage("確定登出？")
+                .setNegativeButton("確定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface mdialog, int which) {
+                        pref.edit().clear().apply();
+                        Intent intent = new Intent(MainActivity.this, StartActivity.class);
+                        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                        startActivity(intent);
+                        finish();
+                    }
+                })
+                .setPositiveButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface mdialog, int which) {
+
+
+                    }
+                })
+                .show();
+    }
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if(keyCode == KeyEvent.KEYCODE_BACK &&
                 (NearbyTab.isAlive||
                     SearchTab.isAlive||
                     AboutTab.isAlive)) {
-            //isAlive = false;
+            isAlive = false;
             moveTaskToBack(true);
 
         }

@@ -94,7 +94,7 @@
                     android:layout_marginLeft="4dp"
                     android:layout_centerVertical="true"
                     android:textColor="#646464"
-                    android:text="$200"
+                    android:text="200"
                     android:textSize="15sp"
                     android:layout_marginTop="3dp"/>
                 <View
@@ -123,7 +123,7 @@
                     android:layout_marginLeft="40dp"
                     android:textColor="#646464"
                     android:textSize = "15sp"
-                    android:text="$20"/>
+                    android:text="20"/>
                 <ImageView
                     android:id="@+id/nearby_ic_time"
                     android:layout_width="24dp"
@@ -139,6 +139,7 @@
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@+id/nearby_ic_time"
                     android:layout_marginLeft="10dp"
+                    android:singleLine="true"
                     android:textColor="#646464"
                     android:textSize = "15sp"
                     android:text="4pm"/>
