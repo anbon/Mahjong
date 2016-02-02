@@ -154,7 +154,7 @@ public class MyPushMessageReceiver extends PushMessageReceiver {
                 String room_ID = null;
                 if (!customJson.isNull("type")) {
 
-                    if(customJson.getInt("type")==3 || customJson.getInt("type") == 4) {
+                    if(customJson.getInt("type")==3 || customJson.getInt("type") == 4 || customJson.getInt("type") == 6) {
                         //TODO
                         Intent intent = new Intent(context.getApplicationContext(), StartActivity.class);
                         intent.putExtra("json", customJson.toString());

@@ -267,7 +267,7 @@ public class FillInActivity extends Activity {
         mythread.start();
 
     }
-    String gender ;
+    String gender = "0";
     String[] GenderListStr = {"女", "男"};
     public void GenderListAlertDialog(View v) {
 

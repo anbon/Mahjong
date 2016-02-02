@@ -120,7 +120,7 @@ public class MemberActivity extends Activity {
         member_nickname =  (TextView) findViewById(R.id.member_nickname);
         member_age =  (TextView) findViewById(R.id.member_age);
         member_follow = (TextView) findViewById(R.id.member_follow);
-        member_follow.setOnClickListener(new View.OnClickListener() {
+        member_follow_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Follow();

@@ -61,7 +61,7 @@
                 android:layout_marginLeft="80dp"
                 android:textColor="#3f3f3f"
                 android:textSize="17sp"
-                android:text="男"/>
+                android:text="女"/>
         </RelativeLayout>
         <RelativeLayout
             android:id="@+id/relative_nickname"

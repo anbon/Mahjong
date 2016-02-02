@@ -151,8 +151,6 @@ public class RoomInfoEditActivity extends Activity {
             delete_room_btn.setVisibility(View.VISIBLE);
 
 
-
-
         usersArray = bundle.getString("users");
         mPeople = bundle.getString("people");
         parseResult(bundle.getString("users"), bundle.getString("people"));

@@ -34,7 +34,7 @@
             android:textSize="22sp"
             android:textColorHint="#FFFFFF"
             android:textColor="#FFFFFF"
-            android:hint="請輸入帳號"/>
+            android:hint="請輸入帳號(電子郵件)"/>
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -136,13 +136,42 @@
 
     </RelativeLayout>
 
+    <TextView
+        android:id="@+id/pretext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/signin_number_panel"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:textColor="#ffffff"
+        android:text="註冊即表示同意"/>
+    <TextView
+        android:id="@+id/user_term"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/pretext"
+        android:layout_alignBaseline="@+id/pretext"
+        android:textColor="#006aff"
+        android:text="《使用者條款》"
+        />
+    <TextView
+        android:id="@+id/privacy_policy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/user_term"
+        android:layout_marginLeft="-5dp"
+        android:layout_alignBaseline="@+id/user_term"
+        android:textColor="#006aff"
+        android:text="《隱私權政策》"
+        />
+
 
     <TextView
         android:id="@+id/signin_confirm"
         android:layout_width="130dp"
         android:layout_height="56dp"
         android:layout_below="@id/signin_number_panel"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="80dp"
         android:layout_centerHorizontal="true"
         android:background="@drawable/white_confirm"
         android:clickable="true"

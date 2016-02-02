@@ -59,6 +59,7 @@ public class DatingContext {
     private SharedPreferences mPreferences;
     private RongIM.LocationProvider.LocationCallback mLastLocationCallback;
     private App myapi;
+    private SharedPreferences pref;
     public static DatingContext getInstance() {
 
         if (mDemoContext == null) {
@@ -73,6 +74,7 @@ public class DatingContext {
     private DatingContext(Context context) {
         mContext = context;
         mDemoContext = this;
+        pref = context.getSharedPreferences("Account", 0);
         //http初始化 用于登录、注册使用
         mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 
@@ -139,8 +141,8 @@ public class DatingContext {
         UserInfo userInfoReturn = new UserInfo(userId, userId, null);
 
 		params = new ArrayList<NameValuePair>();
-		params.add(new BasicNameValuePair("user_ID", userId));
-
+		params.add(new BasicNameValuePair("user_ID", pref.getString("num","")));
+        params.add(new BasicNameValuePair("Search_ID", userId));
 
 
 		//TODO

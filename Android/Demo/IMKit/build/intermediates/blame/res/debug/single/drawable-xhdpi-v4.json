@@ -260,12 +260,12 @@
         "source": "C:\\Users\\x51811danny\\Desktop\\Github\\Mahjong\\Android\\Demo\\IMKit\\src\\main\\res\\drawable-xhdpi\\u1f484.png"
     },
     {
-        "merged": "C:\\Users\\x51811danny\\Desktop\\Github\\Mahjong\\Android\\Demo\\IMKit\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\u1f436.png",
-        "source": "C:\\Users\\x51811danny\\Desktop\\Github\\Mahjong\\Android\\Demo\\IMKit\\src\\main\\res\\drawable-xhdpi\\u1f436.png"
-    },
-    {
         "merged": "C:\\Users\\x51811danny\\Desktop\\Github\\Mahjong\\Android\\Demo\\IMKit\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\u1f636.png",
         "source": "C:\\Users\\x51811danny\\Desktop\\Github\\Mahjong\\Android\\Demo\\IMKit\\src\\main\\res\\drawable-xhdpi\\u1f636.png"
+    },
+    {
+        "merged": "C:\\Users\\x51811danny\\Desktop\\Github\\Mahjong\\Android\\Demo\\IMKit\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\u1f436.png",
+        "source": "C:\\Users\\x51811danny\\Desktop\\Github\\Mahjong\\Android\\Demo\\IMKit\\src\\main\\res\\drawable-xhdpi\\u1f436.png"
     },
     {
         "merged": "C:\\Users\\x51811danny\\Desktop\\Github\\Mahjong\\Android\\Demo\\IMKit\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\u1f637.png",
@@ -360,12 +360,12 @@
         "source": "C:\\Users\\x51811danny\\Desktop\\Github\\Mahjong\\Android\\Demo\\IMKit\\src\\main\\res\\drawable-xhdpi\\u1f62a.png"
     },
     {
-        "merged": "C:\\Users\\x51811danny\\Desktop\\Github\\Mahjong\\Android\\Demo\\IMKit\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\rc_hands_free.png",
-        "source": "C:\\Users\\x51811danny\\Desktop\\Github\\Mahjong\\Android\\Demo\\IMKit\\src\\main\\res\\drawable-xhdpi\\rc_hands_free.png"
-    },
-    {
         "merged": "C:\\Users\\x51811danny\\Desktop\\Github\\Mahjong\\Android\\Demo\\IMKit\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\rc_ic_portrait_voip.png",
         "source": "C:\\Users\\x51811danny\\Desktop\\Github\\Mahjong\\Android\\Demo\\IMKit\\src\\main\\res\\drawable-xhdpi\\rc_ic_portrait_voip.png"
+    },
+    {
+        "merged": "C:\\Users\\x51811danny\\Desktop\\Github\\Mahjong\\Android\\Demo\\IMKit\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\rc_hands_free.png",
+        "source": "C:\\Users\\x51811danny\\Desktop\\Github\\Mahjong\\Android\\Demo\\IMKit\\src\\main\\res\\drawable-xhdpi\\rc_hands_free.png"
     },
     {
         "merged": "C:\\Users\\x51811danny\\Desktop\\Github\\Mahjong\\Android\\Demo\\IMKit\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\rc_unread_count_bg.9.png",

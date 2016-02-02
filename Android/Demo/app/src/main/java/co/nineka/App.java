@@ -80,6 +80,8 @@ public class App extends Application {
     public static HttpParams httpParameters;
 
     public static final String Photo_Repository = "http:/www.anbon.tw/mj/assets/photo/";
+    public static final String PrivateTerms = "http://www.anbon.tw/mj/index.php/PrivateTerms";
+    public static final String UserTerms = "http://www.anbon.tw/mj/index.php/UserTerms";
     public static final String Domain = "http://www.anbon.tw/mj/index.php/";
     public static final String register = Domain + "register";
     public static final String register_verify = Domain + "register_verify";
@@ -147,7 +149,7 @@ public class App extends Application {
                 return DatingContext.getInstance().getUserInfoById(userId);//根据 userId 去你的用户系统里查询对应的用户信息返回给融云 SDK。
             }
 
-        }, true);
+        }, false);
 
     }
     /**
@@ -307,6 +309,7 @@ public class App extends Application {
                     // filename);
                     entity.addPart("file", byteArrayBody);
                 }else{
+
                     entity.addPart(params.get(i).getName(),new StringBody(params.get(i).getValue(), chars));
                 }
             }

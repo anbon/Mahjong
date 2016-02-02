@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="co.nineka" >
+    package="co.nineka">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -29,43 +29,46 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
-    <uses-permission android:name="android.permission.ACCESS_DOWNLOAD_MANAGER"/>
+    <uses-permission android:name="android.permission.ACCESS_DOWNLOAD_MANAGER" />
     <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.EXPAND_STATUS_BAR" />
 
     <application
-        android:name="App"
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@android:style/Theme.Holo.Light" >
+        android:theme="@android:style/Theme.Holo.Light">
         <activity
             android:name=".StartActivity"
             android:clearTaskOnLaunch="true"
-            android:label="MahJong"
-            android:screenOrientation="portrait" >
+            android:label="9Ka"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <!--<intent-filter>
+            <!--
+            <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 &lt;!&ndash; Accepts URIs that begin with "http://recipe-app.com/recipes" &ndash;&gt;
                 <data android:scheme="nineka" android:host="scan" android:path="/"/>
-            </intent-filter>-->
+            </intent-filter>
+            -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <!-- Accepts URIs that begin with "recipe-app://recipes" -->
-                <data android:scheme="nineka"
-                    android:host="recipes" />
+                <data
+                    android:host="recipes"
+                    android:scheme="nineka" />
             </intent-filter>
         </activity>
         <activity
@@ -73,7 +76,7 @@
             android:clearTaskOnLaunch="true"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" >
+            android:windowSoftInputMode="adjustPan|stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -85,7 +88,7 @@
         </activity>
         <activity
             android:name=".ConversationActivity"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -99,17 +102,15 @@
         </activity>
         <activity
             android:name=".SignInActivity"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".RegisterActivity"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".CreateRoomActivity"
             android:label="@string/title_activity_create_room"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize" >
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -122,60 +123,50 @@
 
         <service
             android:name=".NearbyService"
-            android:exported="false" >
-        </service>
+            android:exported="false"></service>
 
         <activity
             android:name=".MemberActivity"
             android:label="@string/title_activity_member"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".MemberActivity2"
             android:label="@string/title_activity_member"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".MemberActivity3"
             android:label="@string/title_activity_member"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".SearchResultActivity"
             android:label="@string/title_activity_search_result"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".RoomInfoActivity"
             android:label="@string/title_activity_room_info"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize" >
-        </activity>
+            android:windowSoftInputMode="adjustResize"></activity>
         <activity
             android:name=".RoomInfoEditActivity"
             android:label="@string/title_activity_room_info"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize" >
-        </activity>
+            android:windowSoftInputMode="adjustResize"></activity>
         <activity
             android:name=".VerifyActivity"
             android:label="@string/title_activity_verify"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden">
-        </activity>
-
+            android:windowSoftInputMode="adjustPan|stateHidden"></activity>
         <activity
             android:name=".FillInActivity"
             android:label="@string/title_activity_fill_in"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden">
-        </activity>
+            android:windowSoftInputMode="adjustPan|stateHidden"></activity>
 
         <!-- push service start -->
         <!-- 用于接收系统消息以保证PushService正常运行 -->
         <receiver
             android:name="com.baidu.android.pushservice.PushServiceReceiver"
-            android:process=":bdservice_v1" >
+            android:process=":bdservice_v1">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
@@ -192,7 +183,7 @@
         <!-- 注意：RegistrationReceiver 在2.1.1及之前版本有拼写失误，为RegistratonReceiver ，用新版本SDK时请更改为如下代码 -->
         <receiver
             android:name="com.baidu.android.pushservice.RegistrationReceiver"
-            android:process=":bdservice_v1" >
+            android:process=":bdservice_v1">
             <intent-filter>
                 <action android:name="com.baidu.android.pushservice.action.METHOD" />
                 <action android:name="com.baidu.android.pushservice.action.BIND_SYNC" />
@@ -208,13 +199,15 @@
         <service
             android:name="com.baidu.android.pushservice.PushService"
             android:exported="true"
-            android:process=":bdservice_v1" >
+            android:process=":bdservice_v1">
             <intent-filter>
                 <action android:name="com.baidu.android.pushservice.action.PUSH_SERVICE" />
             </intent-filter>
         </service>
-        <receiver android:name="co.nineka.MyPushMessageReceiver" >
+
+        <receiver android:name=".MyPushMessageReceiver">
             <intent-filter>
+
                 <!-- 接收push消息 -->
                 <action android:name="com.baidu.android.pushservice.action.MESSAGE" />
                 <!-- 接收bind、setTags等method的返回结果 -->
@@ -227,15 +220,16 @@
         <service
             android:name="com.baidu.android.pushservice.CommandService"
             android:exported="true" />
-         <!--4.6版本新增的Activity声明，提升Push后台存活率 -->
+        <!-- 4.6版本新增的Activity声明，提升Push后台存活率 -->
         <activity
             android:name="com.baidu.android.pushservice.PushKeepAlive"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <!-- 在百度开发者中心查询应用的API Key -->
         <meta-data
             android:name="api_key"
             android:value="rReedOVCXcDjpc4nLU9iZKaS" />
         <!-- push service end -->
+        <activity android:name=".WebViewActivity"></activity>
     </application>
 
 </manifest>

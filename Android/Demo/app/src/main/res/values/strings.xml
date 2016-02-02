@@ -1,10 +1,10 @@
 <resources>
-    <string name="app_name">Demo</string>
+    <string name="app_name">9Ka</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
-<!-- TODO: Remove or change this placeholder text -->
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_nearby">附近</string>
     <string name="title_search">搜尋</string>

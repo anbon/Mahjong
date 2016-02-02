@@ -116,6 +116,13 @@ public class MainActivity extends FragmentActivity {
          //*
          //* 建立与服务器的连接
          //*
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                dialog = myapi.new LoadingDialog(MainActivity.this,"與伺服器連接中...", false);
+                dialog.execute();
+            }
+        });
         RongIM.connect(co.nineka.App.Token, new RongIMClient.ConnectCallback() {
             @Override
             public void onTokenIncorrect() {
@@ -125,7 +132,7 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onSuccess(String userId) {
                 Log.e("MainActivity", "——onSuccess— -" + userId);
-
+                mythread.start();
 
             }
 
@@ -241,13 +248,7 @@ public class MainActivity extends FragmentActivity {
         mythread = new Thread(new Runnable() {
             @Override
             public void run() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        dialog = myapi.new LoadingDialog(MainActivity.this, "請稍後...", false);
-                        dialog.execute();
-                    }
-                });
+
                 List<NameValuePair> params = new ArrayList<NameValuePair>();
                 params.add(new BasicNameValuePair("user_ID", pref.getString("num", "")));
 
@@ -294,17 +295,12 @@ public class MainActivity extends FragmentActivity {
             }
         });
         if(getIntent().getExtras()!=null)
-            if(getIntent().getExtras().getString("type","").equals("4")){
+            if(getIntent().getExtras().getString("type","").equals("4")||
+                    getIntent().getExtras().getString("type","").equals("6")){
                 mythread = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                dialog = myapi.new LoadingDialog(MainActivity.this, "請稍後...", false);
-                                dialog.execute();
-                            }
-                        });
+
                         List<NameValuePair> params = new ArrayList<NameValuePair>();
                         params.add(new BasicNameValuePair("user_ID", pref.getString("num", "")));
 
@@ -357,7 +353,7 @@ public class MainActivity extends FragmentActivity {
 
 
         //if(getIntent().hasExtra("Direct"))
-        mythread.start();
+
 
 }
 
@@ -601,13 +597,9 @@ public class MainActivity extends FragmentActivity {
                             mythread = new Thread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    //取消時，(這裡應當不可能為點擊房間已滿之意圖
-                                    //前往follow通知 或 sharelink 之夾帶房間
-                                    if(getIntent().getExtras()!=null)
-                                        if (getIntent().getExtras().containsKey("room_ID"))
-                                            gotoRoomInfo(getIntent().getExtras().getString("room_ID"));
 
-                                    /*runOnUiThread(new Runnable() {
+
+                                    runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
                                             dialog = myapi.new LoadingDialog(MainActivity.this, "請稍後...", false);
@@ -629,7 +621,11 @@ public class MainActivity extends FragmentActivity {
                                     try {
                                         final JSONObject o = new JSONObject(result);
                                         if (o.getString("status").equals("1")) {
-
+                                            //取消時，(這裡應當不可能為點擊房間已滿之意圖
+                                            //前往follow通知 或 sharelink 之夾帶房間
+                                            if(getIntent().getExtras()!=null)
+                                                if (getIntent().getExtras().containsKey("room_ID"))
+                                                    gotoRoomInfo(getIntent().getExtras().getString("room_ID"));
                                         }
                                     } catch (JSONException e) {
                                         e.printStackTrace();
@@ -640,7 +636,7 @@ public class MainActivity extends FragmentActivity {
                                                 dialog.execute();
                                             }
                                         });
-                                    }*/
+                                    }
                                 }
                             });
                         } else {
@@ -670,7 +666,8 @@ public class MainActivity extends FragmentActivity {
                                         final JSONObject o = new JSONObject(result);
                                         if (o.getString("status").equals("1")) {
                                             if (getIntent().getExtras()!=null)
-                                                gotoRoomInfo(getIntent().getExtras().getString("room_ID"));
+                                                if(getIntent().getExtras().containsKey("room_ID"))
+                                                    gotoRoomInfo(getIntent().getExtras().getString("room_ID"));
                                         }
                                     } catch (JSONException e) {
                                         e.printStackTrace();
@@ -768,11 +765,8 @@ public class MainActivity extends FragmentActivity {
                             mythread = new Thread(new Runnable() {
                                 @Override
                                 public void run() {
-                                if(getIntent().getExtras()!=null)
-                                    if(getIntent().getExtras().containsKey("room_ID")&&
-                                            !getIntent().getExtras().getString("type","").equals("4"))
-                                        gotoRoomInfo(getIntent().getExtras().getString("room_ID"));
-                                    /*runOnUiThread(new Runnable() {
+
+                                    runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
                                             dialog = myapi.new LoadingDialog(MainActivity.this, "請稍後...", false);
@@ -794,7 +788,9 @@ public class MainActivity extends FragmentActivity {
                                     try {
                                         final JSONObject o = new JSONObject(result);
                                         if (o.getString("status").equals("1")) {
-
+                                            if(getIntent().getExtras()!=null)
+                                                if(getIntent().getExtras().containsKey("room_ID"))
+                                                    gotoRoomInfo(getIntent().getExtras().getString("room_ID"));
                                         }
                                     } catch (JSONException e) {
                                         e.printStackTrace();
@@ -805,7 +801,7 @@ public class MainActivity extends FragmentActivity {
                                                 dialog.execute();
                                             }
                                         });
-                                    }*/
+                                    }
                                 }
                             });
                         } else {
@@ -834,7 +830,7 @@ public class MainActivity extends FragmentActivity {
                                         final JSONObject o = new JSONObject(result);
                                         if (o.getString("status").equals("1")) {
                                             if(getIntent().getExtras()!=null)
-                                                if(!getIntent().getExtras().getString("type","").equals("4"))
+                                                if(getIntent().getExtras().containsKey("room_ID"))
                                                     gotoRoomInfo(getIntent().getExtras().getString("room_ID"));
                                         }
                                     } catch (JSONException e) {

@@ -35,15 +35,15 @@ public class MemberActivity2 extends Activity {
     App myapi;
     App.LoadingDialog dialog;
     Thread mythread;
-    TextView titletextView, member_gender, member_nickname, member_age, member_comment, member_ban, block_btn_1, block_btn_2;
-    RelativeLayout frame_block_confirm, member_comment_btn;
+    TextView titletextView, member_gender, member_nickname, member_age, member_comment, member_ban, block_btn_1, block_btn_2, member_follow;
+    RelativeLayout frame_block_confirm, member_comment_btn, member_follow_btn;
     View customView;
     Bundle bundle;
     ImageView member_photo;
     RatingBar ratingBar;
     SharedPreferences pref;
     Animation FadeInAnimation, FadeOutAnimation;
-    Boolean isOnPanel=false;
+    Boolean isOnPanel=false, isFollowed;
     @Override
     public void onPause() {
         super.onPause();
@@ -88,7 +88,7 @@ public class MemberActivity2 extends Activity {
         FadeInAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_in);
         FadeOutAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_out);
         titletextView = (TextView) customView.findViewById(R.id.titletextView);
-        titletextView.setText(bundle.getString("Uname", ""));
+        titletextView.setText("(ID:"+bundle.getString("Unum")+")");
         TextView back = (TextView) customView.findViewById(R.id.back);
         back.setOnClickListener(new View.OnClickListener() {
 
@@ -122,6 +122,17 @@ public class MemberActivity2 extends Activity {
         frame_block_confirm = (RelativeLayout) findViewById(R.id.frame_block_confirm);
         block_btn_1 = (TextView) findViewById(R.id.block_btn_1);
         block_btn_2 = (TextView) findViewById(R.id.block_btn_2);
+        member_follow_btn = (RelativeLayout) findViewById(R.id.member_follow_btn);
+        member_follow = (TextView) findViewById(R.id.member_follow);
+        member_follow_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Follow();
+            }
+        });
+        if(!bundle.getString("Unum").equals(pref.getString("num","")))
+            member_follow_btn.setVisibility(View.VISIBLE);
+
         mythread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -133,7 +144,8 @@ public class MemberActivity2 extends Activity {
                     }
                 });
                 List<NameValuePair> params = new ArrayList<NameValuePair>();
-                params.add(new BasicNameValuePair("user_ID", bundle.getString("Unum")));
+                params.add(new BasicNameValuePair("user_ID", pref.getString("num","")));
+                params.add(new BasicNameValuePair("Search_ID", bundle.getString("Unum")));
                 String result = myapi.postMethod_getCode(MemberActivity2.this, App.Search_ID, params);
                 runOnUiThread(new Runnable() {
                     @Override
@@ -151,7 +163,7 @@ public class MemberActivity2 extends Activity {
                             public void run() {
                                 try {
                                     member_gender.setText(o_o.getString("gender").equals("0") ? "女" : "男");
-                                    titletextView.setText(o_o.getString("name"));
+                                    //titletextView.setText(o_o.getString("name"));
                                     member_nickname.setText(o_o.getString("name"));
                                     member_age.setText(o_o.getString("age"));
                                     Picasso.with(MemberActivity2.this)
@@ -161,6 +173,10 @@ public class MemberActivity2 extends Activity {
                                     Log.v(TAG, o_o.getString("rate"));
                                     ratingBar.setRating(Float.valueOf(o_o.getString("rate")));
                                     ratingBar.setIsIndicator(true);
+                                    isFollowed = o_o.getString("follow").equals("1");
+                                    if(isFollowed){
+                                        changeFollowStatus();
+                                    }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -203,6 +219,59 @@ public class MemberActivity2 extends Activity {
 
     }
     // Before running code in separate thread
+    private void Follow() {
+        mythread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        dialog = myapi.new LoadingDialog(MemberActivity2.this, "請稍後...", false);
+                        dialog.execute();
+                    }
+                });
+                List<NameValuePair> params = new ArrayList<NameValuePair>();
+                params.add(new BasicNameValuePair("user_ID", pref.getString("num","")));
+                params.add(new BasicNameValuePair("Follow_ID", bundle.getString("Unum","")));
+                String result = myapi.postMethod_getCode(MemberActivity2.this, App.follow, params);
+                Log.v("MemberActivity", result);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        dialog.close();
+                    }
+                });
+                try {
+                    final JSONObject o = new JSONObject(result);
+
+                    if(o.getString("status").equals("1")){
+                        isFollowed = !isFollowed;
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                changeFollowStatus();
+                            }
+                        });
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    dialog = myapi.new LoadingDialog(MemberActivity2.this, "伺服器發生錯誤！", true);
+                    dialog.execute();
+                }
+
+            }
+        });
+        mythread.start();
+    }
+    private void changeFollowStatus() {
+        if(isFollowed){
+            member_follow_btn.setBackgroundResource(R.drawable.btn_red_round_bg4);
+            member_follow.setText("UnFollow");
+        }else{
+            member_follow_btn.setBackgroundResource(R.drawable.btn_blue_round_bg4);
+            member_follow.setText("Follow");
+        }
+    }
     public void openBlockPanel(){
         isOnPanel = true;
         frame_block_confirm.setVisibility(View.VISIBLE);

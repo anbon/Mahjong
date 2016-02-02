@@ -8,6 +8,7 @@ import android.text.util.Linkify;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -24,6 +25,7 @@ public class RegisterActivity extends Activity {
     App.LoadingDialog dialog;
     Thread mythread;
     EditText username, password, signin_number;
+    TextView user_term, privacy_policy;
     @Override
     public void onPause() {
         super.onPause();
@@ -53,6 +55,30 @@ public class RegisterActivity extends Activity {
         username = (EditText) findViewById(R.id.signin_account);
         password = (EditText) findViewById(R.id.signin_password);
         signin_number = (EditText) findViewById(R.id.signin_number);
+        user_term = (TextView) findViewById(R.id.user_term);
+        privacy_policy = (TextView) findViewById(R.id.privacy_policy);
+        user_term.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent (RegisterActivity.this, WebViewActivity.class);
+                Bundle b = new Bundle();
+                b.putString("title","使用者條款");
+                b.putString("url", App.UserTerms);
+                intent.putExtras(b);
+                startActivity(intent);
+            }
+        });
+        privacy_policy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent (RegisterActivity.this, WebViewActivity.class);
+                Bundle b = new Bundle();
+                b.putString("title","隱私權政策");
+                b.putString("url", App.PrivateTerms);
+                intent.putExtras(b);
+                startActivity(intent);
+            }
+        });
         username.setText("");
         password.setText("");
         myapi = (App) this.getApplicationContext();
