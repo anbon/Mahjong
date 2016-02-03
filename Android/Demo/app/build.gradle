@@ -24,7 +24,7 @@ android {
         }
     }
 }
-
+repositories { mavenCentral() }
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':IMKit')
@@ -35,5 +35,6 @@ dependencies {
     compile files('libs/httpcore-4.3-beta1.jar')
     compile files('libs/pulltorefreshlibrary.jar')
     compile files("libs/pushservice-4.6.0.68.jar")
+    compile 'com.facebook.android:facebook-android-sdk:4.6.0'
 
 }

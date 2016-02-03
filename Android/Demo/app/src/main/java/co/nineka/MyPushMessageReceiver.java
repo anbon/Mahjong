@@ -162,7 +162,7 @@ public class MyPushMessageReceiver extends PushMessageReceiver {
                         b.putString("type", customJson.getInt("type")+"");
                         b.putString("room_ID", customJson.getString("message"));
                         intent.putExtras(b);*/
-                        Log.v("onNotificationClicked", customJson.getString("message"));
+                        //Log.v("onNotificationClicked", customJson.getString("message"));
 
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.getApplicationContext().startActivity(intent);
