@@ -28,6 +28,7 @@ public class SignInActivity extends Activity {
     App.LoadingDialog dialog;
     Thread mythread;
     EditText username, password;
+    SharedPreferences prefs;
     @Override
     public void onPause() {
         super.onPause();
@@ -58,10 +59,11 @@ public class SignInActivity extends Activity {
         ActionBar ab = this.getActionBar();
         ab.hide();
         setContentView(R.layout.activity_signin);
+        prefs = getSharedPreferences("Account", 0);
         username = (EditText) findViewById(R.id.signin_account);
         password = (EditText) findViewById(R.id.signin_password);
-        username.setText("");
-        password.setText("");
+        username.setText(prefs.getString("username",""));
+        password.setText(prefs.getString("password",""));
         myapi = (App) this.getApplicationContext();
 
 

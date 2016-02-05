@@ -189,7 +189,7 @@
                 android:layout_centerVertical="true"
                 android:layout_alignParentLeft="true"
                 android:layout_marginLeft="20dp"
-                android:digits="123456789"
+                android:digits="1234567890"
                 android:maxLength="2"
                 android:background="#00000000"
                 android:textColor="#3f3f3c"

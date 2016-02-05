@@ -105,42 +105,16 @@ public class MainActivity extends FragmentActivity {
         myapi = (App) this.getApplicationContext();
         pref = getSharedPreferences("Account", 0);
         isAlive = true;
-        //mHandler = new Handler();
 
-
-        //String Token = "vMleUWEOyE5BfsgHxZ6t1X/HM1K4crFYiwk+NfnKcpeOCpjbko8rq/i/nj1+B/pR7dRIQbhP85c=";
-        //vMleUWEOyE5BfsgHxZ6t1X/HM1K4crFYiwk+NfnKcpeOCpjbko8rq/i/nj1+B/pR7dRIQbhP85c= ->id=777
-        //
-            //*
-         //* IMKit SDK调用第二步
-         //*
-         //* 建立与服务器的连接
-         //*
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                dialog = myapi.new LoadingDialog(MainActivity.this,"與伺服器連接中...", false);
+                dialog = myapi.new LoadingDialog(MainActivity.this, "與伺服器連接中...", false);
                 dialog.execute();
             }
         });
-        RongIM.connect(co.nineka.App.Token, new RongIMClient.ConnectCallback() {
-            @Override
-            public void onTokenIncorrect() {
-                //Connect Token 失效的状态处理，需要重新获取 Token
-            }
 
-            @Override
-            public void onSuccess(String userId) {
-                Log.e("MainActivity", "——onSuccess— -" + userId);
-                mythread.start();
 
-            }
-
-            @Override
-            public void onError(RongIMClient.ErrorCode errorCode) {
-                Log.e("MainActivity", "——onError— -" + errorCode);
-            }
-        });
         Intent intent = new Intent(Intent.ACTION_SYNC, null, this, NearbyService.class);
         intent.putExtra("requestId", 1);
         startService(intent);
@@ -350,6 +324,26 @@ public class MainActivity extends FragmentActivity {
                     }
                 });
             }
+        RongIM.connect(pref.getString("token",""), new RongIMClient.ConnectCallback() {
+            @Override
+            public void onTokenIncorrect() {
+                //Connect Token 失效的状态处理，需要重新获取 Token
+                Log.e("RongIM.connect", "——onTokenIncorrect— -");
+            }
+
+            @Override
+            public void onSuccess(String userId) {
+                Log.e("RongIM.connect", "——onSuccess— -" + userId);
+                //RongIM.getInstance().getRongIMClient().setOnReceivePushMessageListener(myapi.getReceivePushMessageListener());
+                mythread.start();
+
+            }
+
+            @Override
+            public void onError(RongIMClient.ErrorCode errorCode) {
+                Log.e("RongIM.connect", "——onError— -" + errorCode);
+            }
+        });
 
 
         //if(getIntent().hasExtra("Direct"))

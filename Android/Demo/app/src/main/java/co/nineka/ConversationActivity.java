@@ -492,7 +492,7 @@ public class ConversationActivity extends FragmentActivity  {
 
         RelativeLayout loading_title_bar = (RelativeLayout) alertd.findViewById(R.id.loading_title_bar);
         txt_loading = (TextView) alertd.findViewById(R.id.request_message);
-        txt_loading.setText(Uname);
+        txt_loading.setText(Uname+"申請加入");
         ImageView request_photo = (ImageView) alertd.findViewById(R.id.request_photo);
         Picasso.with(ConversationActivity.this)
                 .load(photo)

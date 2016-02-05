@@ -109,7 +109,8 @@ public class SearchTab extends Fragment {
         pref = mActivity.getSharedPreferences("Account", 0);
         LayoutInflater li = LayoutInflater.from(mActivity);
         customView = li.inflate(R.layout.drawerlayout, null);
-
+        TextView back = (TextView) customView.findViewById(R.id.back);
+        back.setVisibility(View.GONE);
         titletextView = (TextView) customView.findViewById(R.id.titletextView);
         titletextView.setText(mActivity.getResources().getString(R.string.title_search));
         ab.setCustomView(customView);

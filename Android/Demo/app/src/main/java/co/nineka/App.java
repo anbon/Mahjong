@@ -21,26 +21,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
-import io.rong.imkit.CustomizeMessage;
-import io.rong.imkit.CustomizeMessageItemProvider;
-
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.HttpVersion;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.conn.ConnectTimeoutException;
 import org.apache.http.conn.HttpHostConnectException;
-import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.ByteArrayBody;
-import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
@@ -49,27 +39,21 @@ import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
-
-import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.SocketTimeoutException;
-import java.net.URLEncoder;
 import java.net.UnknownHostException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.rong.imkit.MyGroupConversationProvider;
 import io.rong.imkit.MyTextMessageItemProvider;
 import io.rong.imkit.RongIM;
+import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
 import io.rong.imlib.model.UserInfo;
+import io.rong.notification.PushNotificationMessage;
 
 
 /**
@@ -87,7 +71,6 @@ public class App extends Application {
     public static final String register_verify = Domain + "register_verify";
     public static final String Verify = Domain + "verify";
     public static final String forget_pass = Domain + "forget_pass";
-
     public static final String ReMessage = Domain + "ReMessage";
     public static final String Search_User = Domain + "Search_User";
     public static final String Search_ID = Domain + "Search_ID";
@@ -131,26 +114,43 @@ public class App extends Application {
         /**
          * 初始化融云
          */
+        if("co.nineka".equals(getCurProcessName(getApplicationContext())) ||
+                "io.rong.push".equals(getCurProcessName(getApplicationContext()))) {
+            RongIM.init(this);
 
-        RongIM.init(this);
 
+            //Thread.setDefaultUncaughtExceptionHandler(new RongExceptionHandler(this));
+            if ("co.nineka".equals(getCurProcessName(getApplicationContext()))) {
+                /**
+                                 * 设置接收 push 消息的监听器。
+                                 */
+                RongIM.setOnReceivePushMessageListener(new MyReceivePushMessageListener());
 
-        //Thread.setDefaultUncaughtExceptionHandler(new RongExceptionHandler(this));
-        RongIM.getInstance().registerMessageTemplate(new MyTextMessageItemProvider());
-        DatingContext.init(this);
-        RongIM.setConversationBehaviorListener(new MyConversationBehaviorListener());
-        //
-        RongIM.setUserInfoProvider(new RongIM.UserInfoProvider() {
+                /**
+                                 *  设置接收消息的监听器。
+                                 */
+                RongIM.setOnReceiveMessageListener(new MyReceiveMessageListener());
 
-            @Override
-            public UserInfo getUserInfo(String userId) {
+                RongIM.getInstance().registerMessageTemplate(new MyTextMessageItemProvider());
+                DatingContext.init(this);
+                RongIM.setConversationBehaviorListener(new MyConversationBehaviorListener());
+                //
+                RongIM.setUserInfoProvider(new RongIM.UserInfoProvider() {
 
-                Log.v("getUserInfo", userId);
-                return DatingContext.getInstance().getUserInfoById(userId);//根据 userId 去你的用户系统里查询对应的用户信息返回给融云 SDK。
+                    @Override
+                    public UserInfo getUserInfo(String userId) {
+
+                        Log.v("getUserInfo", userId);
+                        return DatingContext.getInstance().getUserInfoById(userId);//根据 userId 去你的用户系统里查询对应的用户信息返回给融云 SDK。
+                    }
+
+                }, false);
             }
+        }
 
-        }, false);
-
+    }
+    public RongIMClient.OnReceivePushMessageListener getReceivePushMessageListener(){
+        return new MyReceivePushMessageListener();
     }
     /**
      * 获得当前进程的名字
@@ -182,6 +182,36 @@ public class App extends Application {
         i.putExtras(b);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(i);
+    }
+    public class MyReceivePushMessageListener implements RongIMClient.OnReceivePushMessageListener{
+
+        /**
+         * 收到 push 消息的处理。
+         *
+         * @param pushNotificationMessage push 消息实体。
+         * @return true 自己来弹通知栏提示，false 融云 SDK 来弹通知栏提示。
+         */
+        @Override
+        public boolean onReceivePushMessage(PushNotificationMessage pushNotificationMessage) {
+            Log.d("onReceivePushMessage", pushNotificationMessage.getPushData());
+            return true;
+        }
+    }
+    private class MyReceiveMessageListener implements RongIMClient.OnReceiveMessageListener {
+
+        /**
+         * 收到消息的处理。
+         *
+         * @param message 收到的消息实体。
+         * @param left    剩余未拉取消息数目。
+         * @return 收到消息是否处理完成，true 表示走自已的处理方式，false 走融云默认处理方式。
+         */
+        @Override
+        public boolean onReceived(Message message, int left) {
+            //开发者根据自己需求自行处理
+            Log.d("ReceiveMessageListener", message.getContent().toString());
+            return true;
+        }
     }
     class MyConversationBehaviorListener implements RongIM.ConversationBehaviorListener{
 

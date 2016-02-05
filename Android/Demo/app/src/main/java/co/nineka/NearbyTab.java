@@ -299,16 +299,16 @@ public class NearbyTab extends Fragment implements LocationListener,XListView.IX
             @Override
             public void onDismiss(DialogInterface dialog) {
                 InputMethodManager imm = (InputMethodManager) mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(current_no_room.getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
+                imm.hideSoftInputFromWindow(current_no_room.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                 pb.setVisibility(View.VISIBLE);
                 list1.setVisibility(View.INVISIBLE);
                 current_no_room.setVisibility(View.INVISIBLE);
-                if(timer!=null)
+                if (timer != null)
                     timer.cancel();
 
 
                 new AsyncTaskGetMessage().execute(true);
-                TimerTask t= new TimerTask() {
+                TimerTask t = new TimerTask() {
                     public void run() {
                         mActivity.runOnUiThread(new Runnable() {
                             public void run() {
@@ -321,6 +321,12 @@ public class NearbyTab extends Fragment implements LocationListener,XListView.IX
                 };
                 timer = new Timer();
                 timer.schedule(t, 5000, 5000);
+            }
+        });
+        alertd.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+
             }
         });
         alertd.show();

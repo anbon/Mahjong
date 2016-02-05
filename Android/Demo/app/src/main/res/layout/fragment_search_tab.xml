@@ -19,6 +19,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:background="#00000000"
+                android:maxLength="8"
+                android:inputType="number"
                 android:singleLine="true"
                 android:padding="15dp"
                 android:hint="輸入ID"

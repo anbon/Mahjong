@@ -106,7 +106,7 @@ public class MemberActivity extends Activity {
 
 
         titletextView = (TextView) customView.findViewById(R.id.titletextView);
-        titletextView.setText(bundle.getString("name"));
+        titletextView.setText("(ID:"+bundle.getString("num")+")");
         TextView back = (TextView) customView.findViewById(R.id.back);
         back.setOnClickListener(new View.OnClickListener() {
 

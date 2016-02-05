@@ -81,7 +81,7 @@ public class StartActivity extends Activity {
         n.setNotificationDefaults(Notification.DEFAULT_ALL);
         n.setNotificationVibrate(new long[]{200, 500, 800, 300, 300, 300});
         n.setNotificationFlags(Notification.FLAG_AUTO_CANCEL);
-        n.setStatusbarIcon(R.drawable.majong_logo);
+        n.setStatusbarIcon(R.drawable.ic_launcher);
         n.setNotificationSound(PreferenceManager.getDefaultSharedPreferences(this).
                 getString("pref_tone", "content://settings/system/notification_sound"));
 
@@ -210,7 +210,8 @@ public class StartActivity extends Activity {
 
                             o_o = new JSONObject(json);
                             b.putString("type", o_o.getInt("type")+"");
-                            b.putString("room_ID", o_o.getString("message"));
+                            if(!o_o.isNull("message"))
+                                b.putString("room_ID", o_o.getString("message"));
                             Log.v("AsyncTaskLogin", "type = " + o_o.getString("type"));
 
                         }
