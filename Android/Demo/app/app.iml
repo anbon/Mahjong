@@ -86,12 +86,12 @@
     <orderEntry type="library" exported="" name="slider" level="project" />
     <orderEntry type="library" exported="" name="pushservice-4.6.0.68" level="project" />
     <orderEntry type="library" exported="" name="facebook-android-sdk-4.6.0" level="project" />
-    <orderEntry type="library" exported="" name="httpmime-4.3.1" level="project" />
-    <orderEntry type="library" exported="" name="httpcore-4.3-beta1" level="project" />
+    <orderEntry type="library" exported="" name="httpclient-android-4.3.5.1" level="project" />
     <orderEntry type="library" exported="" name="pulltorefreshlibrary" level="project" />
     <orderEntry type="library" exported="" name="support-v4-23.1.0" level="project" />
     <orderEntry type="library" exported="" name="bolts-android-1.2.0" level="project" />
     <orderEntry type="library" exported="" name="universal-image-loader-1.9.4" level="project" />
+    <orderEntry type="library" exported="" name="httpmime-4.3" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-23.1.0" level="project" />
     <orderEntry type="library" exported="" name="com-squareup-picasso_picasso" level="project" />
     <orderEntry type="module" module-name="IMKit" exported="" />

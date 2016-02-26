@@ -21,6 +21,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.HttpVersion;
@@ -39,6 +40,7 @@ import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.net.SocketTimeoutException;
@@ -63,13 +65,14 @@ import io.rong.notification.PushNotificationMessage;
 public class App extends Application {
     public static HttpParams httpParameters;
 
-    public static final String Photo_Repository = "http:/www.anbon.tw/mj/assets/photo/";
-    public static final String PrivateTerms = "http://www.anbon.tw/mj/index.php/PrivateTerms";
-    public static final String UserTerms = "http://www.anbon.tw/mj/index.php/UserTerms";
-    public static final String Domain = "http://www.anbon.tw/mj/index.php/";
+    public static final String Photo_Repository = "http:/www.9ka.co/mj/assets/photo/";
+    public static final String PrivateTerms = "http://www.9ka.co/mj/index.php/PrivateTerms";
+    public static final String UserTerms = "http://www.9ka.co/mj/index.php/UserTerms";
+    public static final String Domain = "http://www.9ka.co/mj/index.php/";
     public static final String register = Domain + "register";
     public static final String register_verify = Domain + "register_verify";
     public static final String Verify = Domain + "verify";
+    public static final String FB_Login = Domain + "FB_Login";
     public static final String forget_pass = Domain + "forget_pass";
     public static final String ReMessage = Domain + "ReMessage";
     public static final String Search_User = Domain + "Search_User";
@@ -310,6 +313,7 @@ public class App extends Application {
             //post.addHeader("Content-Type","multipart/form-data");
             //MultipartEntity entity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE,null,Charset.forName("UTF-8"));
             MultipartEntity entity = new MultipartEntity();
+
             Charset chars = Charset.forName("UTF-8");
             for(int i=0;i< params.size();i++){
                 //identify param type by Key
@@ -344,6 +348,7 @@ public class App extends Application {
                 }
             }
             post.setEntity(entity);
+
             //post.setEntity(new UrlEncodedFormEntity(params,"UTF-8"));
             //post.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
             httpParameters = new BasicHttpParams();
@@ -353,17 +358,18 @@ public class App extends Application {
             //ConnManagerParams.setTimeout(httpParameters, 2000);
             HttpConnectionParams.setConnectionTimeout(httpParameters,
                     this.timeoutConnection);
-            HttpConnectionParams.setSocketBufferSize(httpParameters, 1024);
+            HttpConnectionParams.setSocketBufferSize(httpParameters, 4096);
             HttpConnectionParams.setSoTimeout(httpParameters,
                     this.timeoutSocket);
             client = new DefaultHttpClient(myhttpparams());
             client.getParams().setParameter(
                     CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);
+            client.getParams().setParameter(CoreProtocolPNames.USER_AGENT, "Custom user agent");//
 
             HttpResponse httpResponse = client.execute(post);
             /*HttpResponse httpResponse = new DefaultHttpClient(myhttpparams())
                     .execute(post);*/
-
+            Log.v("status code", httpResponse.getStatusLine().toString()+ entity.getContentLength());
             if (httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                 String strRes = EntityUtils.toString(httpResponse.getEntity());
                     return strRes;
@@ -422,6 +428,7 @@ public class App extends Application {
                     shutdown);
             e.printStackTrace();
         }
+
         return "";
     }
 

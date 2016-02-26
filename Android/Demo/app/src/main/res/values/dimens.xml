@@ -4,7 +4,7 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="loadingpanel_width">300dp</dimen>
     <dimen name="start_button_height">40dp</dimen>
-    <dimen name="start_margin_bottom">20dp</dimen>
+    <dimen name="start_margin_bottom">45dp</dimen>
     <dimen name="start_title_size">30sp</dimen>
     <dimen name="start_logo_size">120dp</dimen>
     <dimen name="corner">18dp</dimen>

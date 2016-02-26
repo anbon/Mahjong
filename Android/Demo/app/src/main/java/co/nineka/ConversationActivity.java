@@ -367,8 +367,15 @@ public class ConversationActivity extends FragmentActivity  {
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    dialog = myapi.new LoadingDialog(ConversationActivity.this, "伺服器發生錯誤！", true);
-                    dialog.execute();
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            dialog = myapi.new LoadingDialog(ConversationActivity.this, "伺服器發生錯誤！", true);
+                            dialog.execute();
+                        }
+                    });
+
                 }
 
             }

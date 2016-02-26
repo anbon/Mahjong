@@ -26,8 +26,17 @@ import com.baidu.android.pushservice.BasicPushNotificationBuilder;
 import com.baidu.android.pushservice.PushConstants;
 import com.baidu.android.pushservice.PushManager;
 import com.baidu.android.pushservice.PushNotificationBuilder;
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 
 
 import org.apache.http.NameValuePair;
@@ -47,6 +56,10 @@ public class StartActivity extends Activity {
     SharedPreferences pref;
     ImageView start_register, start_signin;
     String room_ID="",json ;
+    LoginButton loginButton;
+    CallbackManager callbackManager;
+    private AccessToken accessToken;
+    String fb_id,email,nickname,sex;
     @Override
     protected void onResume() {
         super.onResume();
@@ -65,6 +78,7 @@ public class StartActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
+        callbackManager = CallbackManager.Factory.create();
         ActionBar ab = this.getActionBar();
         ab.hide();
         setContentView(R.layout.activity_start);
@@ -74,6 +88,63 @@ public class StartActivity extends Activity {
         pref = getSharedPreferences("Account", 0);
         dialog = myapi.new LoadingDialog(this,"手機認證已成功",true);
         pb = (ProgressBar) findViewById(R.id.progressBar);
+        loginButton = (LoginButton) findViewById(R.id.login_button);
+        loginButton.setReadPermissions("public_profile","email");
+        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                // App code
+                accessToken = loginResult.getAccessToken();
+                GraphRequest request = GraphRequest.newMeRequest(accessToken, new GraphRequest.GraphJSONObjectCallback()
+                {
+                    @Override
+                    public void onCompleted(JSONObject object, GraphResponse response)
+                    {
+                        Log.d("FB", object.toString());
+                        Log.d("FB", object.optString("name"));
+                        Log.d("FB", object.optString("link"));
+                        Log.d("FB", object.optString("id"));
+                        Log.d("FB", object.optString("email"));
+                        Log.d("FB", object.optString("gender"));
+                        Log.d("FB", object.optString("birthday"));
+                        if(object.optString("gender","0").equals("male"))
+                        {
+                            sex="1";
+                        }
+                        else
+                        {
+                            sex="0";
+                        }
+
+                        fb_id=object.optString("id");
+                        email=object.optString("email");
+                        nickname=object.optString("name");
+
+                        start_register.setVisibility(View.GONE);
+                        start_signin.setVisibility(View.GONE);
+                        new AsyncTaskLogin().execute();
+                        //refresh=false;
+                        loginButton.setVisibility(View.GONE);
+                        LoginManager.getInstance().logOut();
+                    }
+                });
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id,name,link,email,gender,birthday");
+                request.setParameters(parameters);
+                request.executeAsync();
+
+            }
+
+            @Override
+            public void onCancel() {
+                // App code
+            }
+
+            @Override
+            public void onError(FacebookException exception) {
+                // App code
+            }
+        });
         PushManager.startWork(getApplicationContext(),
                 PushConstants.LOGIN_TYPE_API_KEY, "rReedOVCXcDjpc4nLU9iZKaS");
 
@@ -103,8 +174,13 @@ public class StartActivity extends Activity {
         if(pref.getString("password","").isEmpty()){
             pb.setVisibility(View.INVISIBLE);
         }else{
+
             start_register.setVisibility(View.GONE);
             start_signin.setVisibility(View.GONE);
+            loginButton.setVisibility(View.GONE);
+            if(pref.contains("fb_id")){
+                fb_id=pref.getString("fb_id","");
+            }
             new AsyncTaskLogin().execute();
         }
         // Add code to print out the key hash
@@ -148,7 +224,11 @@ public class StartActivity extends Activity {
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         startActivity(intent);
     }
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
     public class AsyncTaskLogin extends AsyncTask<Boolean, Integer, String>
     {
         JSONObject o_o;
@@ -162,21 +242,40 @@ public class StartActivity extends Activity {
 
         protected String doInBackground(Boolean... state)
         {
+
             SharedPreferences pref2 = getSharedPreferences("Setting", 0);
             List<NameValuePair> params;
             params = new ArrayList<NameValuePair>();
-            params.add(new BasicNameValuePair("username", pref.getString("username", "")));
-            params.add(new BasicNameValuePair("password", pref.getString("password", "")));
-            params.add(new BasicNameValuePair("channel_Id", pref2.getString("channel_Id", "")));
-            params.add(new BasicNameValuePair("DeviceType", "3"));
 
-            //Log.v("params",params.toString());
+            if(fb_id==null) {
+                params.add(new BasicNameValuePair("username", pref.getString("username", "")));
+                params.add(new BasicNameValuePair("password", pref.getString("password", "")));
+                params.add(new BasicNameValuePair("channel_Id", pref2.getString("channel_Id", "")));
+                params.add(new BasicNameValuePair("DeviceType", "3"));
 
-            return myapi.postMethod_getCode(StartActivity.this, App.Verify, params);
+                //Log.v("params",params.toString());
+
+                return myapi.postMethod_getCode(StartActivity.this, App.Verify, params);
+            }else{
+                params.add(new BasicNameValuePair("FB_ID", fb_id));
+                if(email!=null) {
+                    params.add(new BasicNameValuePair("Email", email));
+                    params.add(new BasicNameValuePair("Name", nickname));
+                    params.add(new BasicNameValuePair("gender", sex));
+                }else{
+                    params.add(new BasicNameValuePair("Email", pref.getString("username","")));
+                    //params.add(new BasicNameValuePair("Name", ""));
+                }
+                params.add(new BasicNameValuePair("channel_Id", pref2.getString("channel_Id", "")));
+
+
+                params.add(new BasicNameValuePair("DeviceType", "3"));
+
+                return myapi.postMethod_getCode(StartActivity.this, App.FB_Login, params);
+            }
         }
         protected void onPostExecute(String result)
         {
-
             Log.v("AsyncTaskLogin", "result : " + result);
             try {
                 JSONObject o = new JSONObject(result);
@@ -198,7 +297,9 @@ public class StartActivity extends Activity {
                             .putString("rate", o_o.getString("rate"))
                             .putString("level", o_o.getString("level")).apply();
 
-
+                    if(fb_id!=null){
+                        pref.edit().putString("fb_id", fb_id).apply();
+                    }
                     Intent intent = new Intent();
                     intent.setClass(StartActivity.this, MainActivity.class);
                     overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
@@ -245,6 +346,7 @@ public class StartActivity extends Activity {
             } catch (JSONException e) {
                 start_register.setVisibility(View.VISIBLE);
                 start_signin.setVisibility(View.VISIBLE);
+                loginButton.setVisibility(View.VISIBLE);
                 e.printStackTrace();
             }
             pb.setVisibility(View.INVISIBLE);

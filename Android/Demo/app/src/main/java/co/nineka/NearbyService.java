@@ -78,7 +78,7 @@ public class NearbyService extends IntentService {
                         params.add(new BasicNameValuePair("upper_limit", pref2.getInt("upper_limit", 999999)+""));
                         params.add(new BasicNameValuePair("lower_limit", pref2.getInt("lower_limit", 0)+""));
                         params.add(new BasicNameValuePair("people_limit", pref2.getInt("people_limit", 3)+""));
-                        //Log.v("params",params.toString());
+                        Log.v("params", params.toString());
                         String temp="";
                         temp = postMethod_getCode(App.seed, params);
                         try {
@@ -161,7 +161,7 @@ public class NearbyService extends IntentService {
             timeoutSocket = 4000;
         try {
             //setup multipart entity
-            MultipartEntity entity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+            MultipartEntity entity = new MultipartEntity();
             for(int i=0;i< params.size();i++){
                 //identify param type by Key
                 if(params.get(i).getName().equals("photo")){
@@ -184,21 +184,22 @@ public class NearbyService extends IntentService {
             //ConnManagerParams.setTimeout(httpParameters, 2000);
             HttpConnectionParams.setConnectionTimeout(httpParameters,
                     this.timeoutConnection);
-            HttpConnectionParams.setSocketBufferSize(httpParameters,1024);
+            HttpConnectionParams.setSocketBufferSize(httpParameters, 4096);
             HttpConnectionParams.setSoTimeout(httpParameters,
                     this.timeoutSocket);
             client = new DefaultHttpClient(myhttpparams());
             client.getParams().setParameter(
                     CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);
+            client.getParams().setParameter(CoreProtocolPNames.USER_AGENT, "Custom user agent");//
             HttpResponse httpResponse = client.execute(post);
             /*HttpResponse httpResponse = new DefaultHttpClient(myhttpparams())
                     .execute(post);*/
-
+            Log.v("status code", httpResponse.getStatusLine().toString()+ entity.getContentLength());
             if (httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                 String strRes = EntityUtils.toString(httpResponse.getEntity());
                 return strRes;
             }else{
-                return "{\"status\":\"-1\"}";
+                //return "{\"status\":\"-1\"}";
             }
             // return executeRequest(post);
         } catch (ConnectTimeoutException cte) {
